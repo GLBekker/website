@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Change Request Template - Virtual Life Solutions</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    /* Common styles for both screen and print */
+    :root {
+      --form-spacing: 1.5rem;
+      --input-height: 2.5rem;
+      --textarea-height: 6rem;
+    }
+
+    .document-container {
+      max-width: 850px;
+      margin: 0 auto;
+      background: rgba(17, 24, 39, 0.8);
+      border: 1px solid var(--neon-blue);
+      border-radius: 15px;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .form-section {
+      margin-bottom: var(--form-spacing);
+      break-inside: avoid;
+    }
+
+    .section-header {
+      color: var(--electric-purple);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px var(--electric-purple);
+      border-bottom: 2px solid var(--electric-purple);
+      padding-bottom: 0.5rem;
+    }
+
+    .form-field {
+      margin-bottom: 1rem;
+      break-inside: avoid;
+    }
+
+    .form-label {
+      color: var(--neon-blue);
+      font-family: 'Share Tech Mono', monospace;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 5px var(--neon-blue);
+      display: block;
+    }
+
+    .form-input {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--neon-blue);
+      border-radius: 5px;
+      padding: 0.5rem;
+      color: var(--light-gray);
+      min-height: var(--input-height);
+      width: 100%;
+    }
+
+    .text-area {
+      min-height: var(--textarea-height);
+    }
+
+    .required-field::after {
+      content: '*';
+      color: var(--magenta-pink);
+      margin-left: 4px;
+    }
+
+    .document-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      break-after: avoid;
+    }
+
+    .document-header img {
+      height: 60px;
+      margin-bottom: 1rem;
+    }
+
+    .document-header h1 {
+      color: var(--neon-blue);
+      text-shadow: 0 0 10px var(--neon-blue);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    /* Screen-only styles */
+    @media screen {
+      .action-buttons {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+      }
+
+      .btn-export {
+        background: linear-gradient(90deg, var(--neon-blue), var(--electric-purple));
+        border: none;
+        color: var(--black);
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 600;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .btn-export:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(0, 200, 255, 0.5);
+      }
+
+      .btn-export i {
+        margin-right: 8px;
+      }
+
+      .template-info {
+        margin-bottom: 2rem;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      @page {
+        size: A4;
+        margin: 2cm;
+      }
+
+      body {
+        background: white !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .navbar, .action-buttons, .template-info, footer {
+        display: none !important;
+      }
+
+      .document-container {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: white !important;
+      }
+
+      .section-header {
+        color: var(--electric-purple) !important;
+        border-bottom: 2px solid var(--electric-purple) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .form-label {
+        color: var(--neon-blue) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .form-input {
+        border: 1px solid var(--neon-blue) !important;
+        background: white !important;
+        min-height: var(--input-height) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .text-area {
+        min-height: var(--textarea-height) !important;
+      }
+
+      .document-header img {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .document-header h1 {
+        color: var(--neon-blue) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid var(--neon-blue);
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    .loading-text {
+      color: var(--neon-blue);
+      font-family: 'Share Tech Mono', monospace;
+      text-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="cyberpunk-theme">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <img src="../images/vlLogo.png" alt="Virtual Life Solutions Logo" height="50">
+        Change Request Template
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="../templates.html">Back to Templates</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button class="btn btn-export" onclick="exportToWord()">
+      <i class="fas fa-file-word"></i> Export to Word
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container py-5 mt-5">
+    <div class="template-info">
+      <h2><i class="fas fa-exchange-alt me-2"></i>Change Request Template</h2>
+      <p>Click the Export to Word button to save this template as an editable Word document.</p>
+    </div>
+
+    <div class="document-container">
+      <!-- Document Header -->
+      <div class="document-header">
+        <img src="../images/vlLogo.png" alt="Virtual Life Solutions Logo">
+        <h1>Change Request Form</h1>
+        <p style="color: var(--light-gray); margin-top: 1rem;">
+          Please complete this form to request changes to your existing system. 
+          We will review your request and schedule a meeting to discuss the details.
+        </p>
+      </div>
+
+      <!-- Basic Information -->
+      <div class="form-section">
+        <h3 class="section-header">1. Contact Information</h3>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-field">
+              <label class="form-label required-field">Your Name</label>
+              <div class="form-input"></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-field">
+              <label class="form-label required-field">Email</label>
+              <div class="form-input"></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-field">
+              <label class="form-label required-field">Company Name</label>
+              <div class="form-input"></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-field">
+              <label class="form-label required-field">Phone Number</label>
+              <div class="form-input"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Information -->
+      <div class="form-section">
+        <h3 class="section-header">2. System Information</h3>
+        <div class="form-field">
+          <label class="form-label required-field">System/Application Name</label>
+          <div class="form-input"></div>
+        </div>
+        <div class="form-field">
+          <label class="form-label required-field">Current Version/Module (if known)</label>
+          <div class="form-input"></div>
+        </div>
+      </div>
+
+      <!-- Change Request Details -->
+      <div class="form-section">
+        <h3 class="section-header">3. Change Request Details</h3>
+        <div class="form-field">
+          <label class="form-label required-field">Brief Description of Required Change</label>
+          <div class="form-input text-area"></div>
+        </div>
+        <div class="form-field">
+          <label class="form-label required-field">Why is this change needed?</label>
+          <div class="form-input text-area"></div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Preferred Timeline (if any)</label>
+          <div class="form-input"></div>
+        </div>
+      </div>
+
+      <!-- Additional Information -->
+      <div class="form-section">
+        <h3 class="section-header">4. Additional Information</h3>
+        <div class="form-field">
+          <label class="form-label">Any other relevant information or specific requirements</label>
+          <div class="form-input text-area"></div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Preferred meeting times for discussion (optional)</label>
+          <div class="form-input"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-3">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 Virtual Life Solutions. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Mammoth.js for Word document generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Generating Word Document...</div>
+  </div>
+
+  <script>
+    function generateWordContent() {
+      // Get the logo from the actual image element
+      const logoImg = document.querySelector('.document-header img');
+      let logoSrc = logoImg.src;
+
+      const content = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset="utf-8">
+          <title>Change Request Form</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+            
+            body { 
+              font-family: Arial, sans-serif;
+              max-width: 800px;
+              margin: 0 auto;
+              padding: 20px;
+              background-color: #111827;
+              color: #CCCCCC;
+            }
+
+            .header { 
+              text-align: center; 
+              margin-bottom: 40px;
+              padding: 20px;
+              background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(17, 24, 39, 0.98));
+              border: 2px solid #00C8FF;
+              border-radius: 15px;
+              box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+            }
+
+            .logo {
+              width: 60px;
+              height: auto;
+              margin-bottom: 20px;
+              filter: drop-shadow(0 0 10px #00C8FF);
+            }
+
+            .header h1 {
+              font-family: 'Orbitron', Arial, sans-serif;
+              color: #00C8FF;
+              font-size: 28px;
+              margin: 0;
+              text-transform: uppercase;
+              letter-spacing: 2px;
+              text-shadow: 0 0 10px #00C8FF;
+            }
+
+            .header h2 {
+              font-family: 'Orbitron', Arial, sans-serif;
+              color: #9900FF;
+              font-size: 24px;
+              margin: 10px 0;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              text-shadow: 0 0 10px #9900FF;
+            }
+
+            .section { 
+              margin-bottom: 30px;
+              padding: 20px;
+              background: rgba(17, 24, 39, 0.8);
+              border: 1px solid #00C8FF;
+              border-radius: 10px;
+              box-shadow: 0 0 15px rgba(0, 200, 255, 0.2);
+            }
+
+            .section-header { 
+              color: #9900FF;
+              border-bottom: 2px solid #9900FF;
+              padding-bottom: 10px;
+              margin-bottom: 20px;
+              font-size: 18px;
+              font-weight: bold;
+              font-family: 'Orbitron', Arial, sans-serif;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              text-shadow: 0 0 5px #9900FF;
+            }
+
+            .form-field { 
+              margin-bottom: 20px; 
+            }
+
+            .form-label { 
+              color: #00C8FF;
+              font-weight: bold;
+              display: block;
+              margin-bottom: 8px;
+              font-family: 'Courier New', monospace;
+              text-shadow: 0 0 5px #00C8FF;
+            }
+
+            .form-input {
+              border: 1px solid #00C8FF;
+              background-color: rgba(0, 0, 0, 0.4);
+              min-height: 30px;
+              padding: 8px;
+              width: 100%;
+              box-sizing: border-box;
+              color: #CCCCCC;
+              box-shadow: 0 0 10px rgba(0, 200, 255, 0.1);
+              border-radius: 5px;
+            }
+
+            .form-input:focus {
+              outline: none;
+              border-color: #9900FF;
+              box-shadow: 0 0 15px rgba(153, 0, 255, 0.3);
+            }
+
+            .required::after {
+              content: '*';
+              color: #FF00CC;
+              margin-left: 4px;
+              text-shadow: 0 0 5px #FF00CC;
+            }
+
+            .text-area {
+              min-height: 80px;
+            }
+
+            table {
+              width: 100%;
+              border-collapse: separate;
+              border-spacing: 0 10px;
+            }
+
+            td {
+              padding: 8px;
+              vertical-align: top;
+            }
+
+            .intro-text {
+              color: #CCCCCC;
+              font-size: 14px;
+              line-height: 1.6;
+              margin: 20px 0;
+              padding: 15px;
+              background: rgba(0, 0, 0, 0.3);
+              border-radius: 8px;
+              border: 1px solid rgba(0, 200, 255, 0.2);
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <img src="${logoSrc}" alt="Virtual Life Solutions Logo" class="logo">
+            <h1>Virtual Life Solutions</h1>
+            <h2>Change Request Form</h2>
+            <p class="intro-text">
+              Please complete this form to request changes to your existing system. 
+              We will review your request and schedule a meeting to discuss the details.
+            </p>
+          </div>
+
+          <div class="section">
+            <h3 class="section-header">1. Contact Information</h3>
+            <table>
+              <tr>
+                <td width="30%"><label class="form-label required">Your Name</label></td>
+                <td><div class="form-input" contenteditable="true">&nbsp;</div></td>
+              </tr>
+              <tr>
+                <td><label class="form-label required">Email</label></td>
+                <td><div class="form-input" contenteditable="true">&nbsp;</div></td>
+              </tr>
+              <tr>
+                <td><label class="form-label required">Company Name</label></td>
+                <td><div class="form-input" contenteditable="true">&nbsp;</div></td>
+              </tr>
+              <tr>
+                <td><label class="form-label required">Phone Number</label></td>
+                <td><div class="form-input" contenteditable="true">&nbsp;</div></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="section">
+            <h3 class="section-header">2. System Information</h3>
+            <table>
+              <tr>
+                <td width="30%"><label class="form-label required">System/Application Name</label></td>
+                <td><div class="form-input" contenteditable="true">&nbsp;</div></td>
+              </tr>
+              <tr>
+                <td><label class="form-label required">Current Version/Module (if known)</label></td>
+                <td><div class="form-input" contenteditable="true">&nbsp;</div></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="section">
+            <h3 class="section-header">3. Change Request Details</h3>
+            <table>
+              <tr>
+                <td width="30%"><label class="form-label required">Brief Description of Required Change</label></td>
+                <td><div class="form-input text-area" contenteditable="true">&nbsp;</div></td>
+              </tr>
+              <tr>
+                <td><label class="form-label required">Why is this change needed?</label></td>
+                <td><div class="form-input text-area" contenteditable="true">&nbsp;</div></td>
+              </tr>
+              <tr>
+                <td><label class="form-label">Preferred Timeline (if any)</label></td>
+                <td><div class="form-input" contenteditable="true">&nbsp;</div></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="section">
+            <h3 class="section-header">4. Additional Information</h3>
+            <table>
+              <tr>
+                <td width="30%"><label class="form-label">Any other relevant information or specific requirements</label></td>
+                <td><div class="form-input text-area" contenteditable="true">&nbsp;</div></td>
+              </tr>
+              <tr>
+                <td><label class="form-label">Preferred meeting times for discussion (optional)</label></td>
+                <td><div class="form-input" contenteditable="true">&nbsp;</div></td>
+              </tr>
+            </table>
+          </div>
+        </body>
+        </html>
+      `;
+      return content;
+    }
+
+    function exportToWord() {
+      const loadingOverlay = document.querySelector('.loading-overlay');
+      loadingOverlay.style.display = 'flex';
+
+      try {
+        const content = generateWordContent();
+        const blob = new Blob([content], { type: 'application/msword' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'change-request-form.doc';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } catch (error) {
+        console.error('Word document generation failed:', error);
+        alert('Failed to generate Word document. Please try again.');
+      } finally {
+        loadingOverlay.style.display = 'none';
+      }
+    }
+
+    // Initialize when page loads
+    window.onload = function() {
+      document.querySelectorAll('.btn-export').forEach(btn => {
+        btn.disabled = false;
+      });
+    };
+  </script>
+</body>
+</html> 

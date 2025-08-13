@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Virtual Life: Sheep Rumble</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Game-specific styles */
+    .game-section {
+      padding-top: 80px;
+      padding-bottom: 40px;
+      min-height: calc(100vh - 60px);
+      background-color: var(--deep-navy);
+      position: relative;
+      z-index: 1;
+    }
+
+    .game-container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: rgba(17, 24, 39, 0.95);
+      border-radius: 15px;
+      border: 1px solid var(--neon-blue);
+      box-shadow: 0 0 20px rgba(0, 200, 255, 0.2);
+      backdrop-filter: blur(5px);
+      position: relative;
+      z-index: 2;
+    }
+
+    #gameCanvas {
+      width: 800px;
+      height: 600px;
+      display: block;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.9);
+      border: 2px solid var(--neon-blue);
+      border-radius: 10px;
+      box-shadow: 0 0 20px var(--neon-blue);
+    }
+
+    .game-controls {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      border: 1px solid var(--neon-blue);
+    }
+
+    .score-display {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.2rem;
+      color: var(--neon-blue);
+      text-shadow: 0 0 10px currentColor;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 5px 15px;
+      border-radius: 5px;
+      border: 1px solid currentColor;
+    }
+
+    .game-title {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-blue);
+      text-shadow: 0 0 20px var(--neon-blue);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+    }
+
+    .game-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 10;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .game-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .game-overlay h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-blue);
+      text-shadow: 0 0 20px var(--neon-blue);
+      margin-bottom: 20px;
+    }
+
+    .game-overlay p {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--light-gray);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .control-key {
+      display: inline-block;
+      padding: 5px 10px;
+      background: rgba(0, 200, 255, 0.1);
+      border: 1px solid var(--neon-blue);
+      border-radius: 5px;
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--neon-blue);
+      margin: 0 5px;
+    }
+
+    #startGame, #startGameTitle {
+      background: rgba(0, 200, 255, 0.2);
+      border: 2px solid var(--neon-blue);
+      color: var(--neon-blue);
+      padding: 15px 40px;
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+      cursor: pointer;
+      text-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    #startGame:hover, #startGameTitle:hover {
+      background: var(--neon-blue);
+      color: black;
+      box-shadow: 0 0 30px var(--neon-blue);
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    .power-up-indicator {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--electric-purple);
+      border-radius: 5px;
+      color: var(--electric-purple);
+      font-family: 'Share Tech Mono', monospace;
+      text-shadow: 0 0 10px var(--electric-purple);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .power-up-indicator.active {
+      opacity: 1;
+    }
+
+    @keyframes glowPulse {
+      0% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 0.5; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="cyberpunk-theme">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="images/vlLogo.png" alt="Virtual Life Solutions Logo" height="50">
+        Virtual Life
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Back to Home</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Game Section -->
+  <section class="game-section">
+    <div class="container">
+      <h1 class="game-title text-center">Virtual Life: Sheep Rumble</h1>
+      
+      <div class="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div class="power-up-indicator">
+          POWER-UP ACTIVE: <span id="powerUpType"></span>
+        </div>
+        <div class="game-controls">
+          <button id="startGame" type="button">
+            <i class="fas fa-play me-2"></i> Start Game
+          </button>
+          <span class="score-display">Score: <span id="score">0</span></span>
+          <span class="score-display" style="color: var(--electric-purple);">High Score: <span id="highScore">0</span></span>
+          <span class="score-display" style="color: var(--magenta-pink);">Lives: <span id="lives">3</span></span>
+        </div>
+      </div>
+
+      <!-- Game Instructions -->
+      <div class="game-overlay" id="titleScreen">
+        <h2>Virtual Life: Sheep Rumble</h2>
+        <p>
+          Guide your cyberpunk sheep through waves of wolf drones!<br>
+          Create wool trails to trap wolves, shoot wool balls to destroy them,<br>
+          and collect power-ups for special abilities.
+        </p>
+        <p>
+          Controls:<br>
+          <span class="control-key">A</span> / <span class="control-key">←</span> Move Left<br>
+          <span class="control-key">D</span> / <span class="control-key">→</span> Move Right<br>
+          <span class="control-key">Space</span> Shoot Wool Ball<br>
+          <span class="control-key">Esc</span> Pause Game
+        </p>
+        <p>
+          Tips:<br>
+          - Use your wool trail to block and trap wolves<br>
+          - Collect power-ups for special abilities<br>
+          - Watch out for falling blocks and complete rows for bonus points
+        </p>
+        <button id="startGameTitle" class="btn">
+          <i class="fas fa-play me-2"></i> Start Game
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Game Script -->
+  <script>
+    // Game initialization and variables
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const startBtn = document.getElementById('startGame');
+    const startTitleBtn = document.getElementById('startGameTitle');
+    const scoreElement = document.getElementById('score');
+    const highScoreElement = document.getElementById('highScore');
+    const livesElement = document.getElementById('lives');
+    const titleScreen = document.getElementById('titleScreen');
+    const powerUpIndicator = document.querySelector('.power-up-indicator');
+    const powerUpTypeElement = document.getElementById('powerUpType');
+
+    // Game state
+    let isPlaying = false;
+    let isPaused = false;
+    let score = 0;
+    let lives = 3;
+    let highScore = localStorage.getItem('sheepRumbleHighScore') || 0;
+    let keys = {};
+    let lastShootTime = 0;
+    let gameTime = 0;
+    let lastWolfSpawnTime = 0;
+    let currentLevel = 1;
+    let combo = 0;
+    let comboTimer = 0;
+    const COMBO_TIMEOUT = 3000; // 3 seconds to maintain combo
+    const SHOOT_COOLDOWN = 500; // milliseconds
+    const WOLF_SPAWN_INTERVAL = 3000; // milliseconds
+
+    // Update initial display
+    highScoreElement.textContent = highScore;
+    livesElement.textContent = lives;
+
+    // Game colors (following design system)
+    const COLORS = {
+      black: '#000000',
+      deepNavy: '#111827',
+      neonBlue: '#00C8FF',
+      electricPurple: '#9900FF',
+      magentaPink: '#FF00CC',
+      cyanBlue: '#0099CC',
+      lightGray: '#CCCCCC',
+      white: '#FFFFFF'
+    };
+
+    // Game objects
+    const sheep = {
+      x: canvas.width / 2,
+      y: canvas.height - 40,
+      width: 40,
+      height: 40,
+      speed: 5,
+      woolTrail: [],
+      trailMaxLength: 150,
+      trailOffset: 30,
+      color: COLORS.white,
+      outlineColor: COLORS.neonBlue,
+      glowColor: COLORS.electricPurple,
+      isInvulnerable: false,
+      closedShapes: [],
+      draw() {
+        // Save context
+        ctx.save();
+        
+        // Draw glow effect
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = this.glowColor;
+        
+        // Draw sheep body
+        ctx.fillStyle = this.color;
+        ctx.strokeStyle = this.outlineColor;
+        ctx.lineWidth = 2;
+        
+        // Draw cyberpunk sheep
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y); // Body center
+        
+        // Body (rounded rectangle)
+        ctx.roundRect(this.x - this.width/2, this.y - this.height/2, 
+                     this.width, this.height, 10);
+        
+        // Head (slightly smaller rounded rectangle on top)
+        ctx.roundRect(this.x - this.width/3, this.y - this.height/2 - 10,
+                     this.width/1.5, this.height/2, 8);
+        
+        ctx.fill();
+        ctx.stroke();
+        
+        // Eyes (neon glow)
+        ctx.fillStyle = COLORS.neonBlue;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = COLORS.neonBlue;
+        ctx.beginPath();
+        ctx.arc(this.x - 8, this.y - this.height/2 - 5, 3, 0, Math.PI * 2);
+        ctx.arc(this.x + 8, this.y - this.height/2 - 5, 3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.restore();
+      },
+      update() {
+        // Full directional movement
+        if ((keys.ArrowLeft || keys.a) && this.x > this.width/2) {
+          this.x -= this.speed;
+        }
+        if ((keys.ArrowRight || keys.d) && this.x < canvas.width - this.width/2) {
+          this.x += this.speed;
+        }
+        if ((keys.ArrowUp || keys.w) && this.y > this.height/2) {
+          this.y -= this.speed;
+        }
+        if ((keys.ArrowDown || keys.s) && this.y < canvas.height - this.height/2) {
+          this.y += this.speed;
+        }
+        
+        // Update wool trail with offset
+        this.woolTrail.push({
+          x: this.x,
+          y: this.y + this.height/2 + this.trailOffset
+        });
+        
+        if (this.woolTrail.length > this.trailMaxLength) {
+          this.woolTrail.shift();
+        }
+        
+        // Check for trail intersection to create shapes
+        this.checkTrailIntersection();
+        this.drawWoolTrail();
+      },
+      drawWoolTrail() {
+        if (this.woolTrail.length < 2) return;
+        
+        ctx.save();
+        ctx.strokeStyle = COLORS.lightGray;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = COLORS.neonBlue;
+        
+        // Draw active trail
+        ctx.beginPath();
+        ctx.moveTo(this.woolTrail[0].x, this.woolTrail[0].y);
+        for (let i = 1; i < this.woolTrail.length; i++) {
+          const point = this.woolTrail[i];
+          ctx.lineTo(point.x, point.y);
+        }
+        ctx.stroke();
+        
+        // Draw closed shapes
+        this.closedShapes.forEach(shape => {
+          ctx.beginPath();
+          ctx.moveTo(shape[0].x, shape[0].y);
+          for (let i = 1; i < shape.length; i++) {
+            ctx.lineTo(shape[i].x, shape[i].y);
+          }
+          ctx.closePath();
+          ctx.stroke();
+          
+          // Fill with semi-transparent color
+          ctx.fillStyle = 'rgba(200, 200, 200, 0.2)';
+          ctx.fill();
+        });
+        
+        ctx.restore();
+      },
+      checkTrailIntersection() {
+        if (this.woolTrail.length < 20) return;
+        
+        const currentPoint = this.woolTrail[this.woolTrail.length - 1];
+        
+        // Check if current point is near any point in the trail (except recent points)
+        for (let i = 0; i < this.woolTrail.length - 20; i++) {
+          const point = this.woolTrail[i];
+          const dx = currentPoint.x - point.x;
+          const dy = currentPoint.y - point.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 10) { // If points are close enough
+            // Create a new closed shape from the intersecting trail segment
+            const shape = this.woolTrail.slice(i, this.woolTrail.length);
+            this.closedShapes.push(shape);
+            
+            // Reset trail to start from the intersection point
+            this.woolTrail = this.woolTrail.slice(this.woolTrail.length - 20);
+            
+            // Create effect for shape creation
+            for (let i = 0; i < 20; i++) {
+              particles.add(
+                point.x,
+                point.y,
+                COLORS.neonBlue,
+                3 + Math.random() * 3,
+                2 + Math.random() * 2,
+                1000
+              );
+            }
+            createPowerUpSound();
+            break;
+          }
+        }
+      }
+    };
+
+    const woolBalls = {
+      balls: [],
+      speed: 8,
+      size: 8,
+      homingRange: 200,
+      homingStrength: 0.2,
+      multiShot: false,
+      
+      add() {
+        const currentTime = Date.now();
+        if (currentTime - lastShootTime < SHOOT_COOLDOWN) return;
+        
+        lastShootTime = currentTime;
+        
+        if (this.multiShot) {
+          // Add three shots in a spread pattern
+          this.addBall(0);
+          this.addBall(-0.3);
+          this.addBall(0.3);
+        } else {
+          this.addBall(0);
+        }
+      },
+      
+      addBall(angleOffset) {
+        // Find nearest target (wolf or block)
+        let nearestTarget = null;
+        let nearestDistance = this.homingRange;
+        let targetType = null;
+        
+        // Check wolves
+        wolfDrones.drones.forEach(drone => {
+          const dx = drone.x - sheep.x;
+          const dy = drone.y - sheep.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < nearestDistance) {
+            nearestTarget = drone;
+            nearestDistance = distance;
+            targetType = 'wolf';
+          }
+        });
+        
+        // Check blocks
+        blocks.list.forEach(block => {
+          if (!block.falling) return; // Only target falling blocks
+          const dx = block.x - sheep.x;
+          const dy = block.y - sheep.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < nearestDistance) {
+            nearestTarget = block;
+            nearestDistance = distance;
+            targetType = 'block';
+          }
+        });
+        
+        // Calculate initial velocity
+        let vx = 0;
+        let vy = -this.speed;
+        
+        if (nearestTarget) {
+          const dx = nearestTarget.x - sheep.x;
+          const dy = nearestTarget.y - sheep.y;
+          const angle = Math.atan2(dy, dx);
+          vx = Math.cos(angle) * this.speed;
+          vy = Math.sin(angle) * this.speed;
+        }
+        
+        this.balls.push({
+          x: sheep.x,
+          y: sheep.y - sheep.height/2,
+          vx: vx,
+          vy: vy,
+          active: true,
+          targetType: targetType
+        });
+        
+        createShootSound();
+        createShootingEffect(sheep.x, sheep.y - sheep.height/2);
+      },
+      
+      update() {
+        for (let i = this.balls.length - 1; i >= 0; i--) {
+          const ball = this.balls[i];
+          
+          // Find nearest target based on type
+          let nearestTarget = null;
+          let nearestDistance = this.homingRange;
+          
+          if (ball.targetType === 'wolf') {
+            wolfDrones.drones.forEach(drone => {
+              const dx = drone.x - ball.x;
+              const dy = drone.y - ball.y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+              
+              if (distance < nearestDistance) {
+                nearestTarget = drone;
+                nearestDistance = distance;
+              }
+            });
+          } else if (ball.targetType === 'block') {
+            blocks.list.forEach(block => {
+              if (!block.falling) return;
+              const dx = block.x - ball.x;
+              const dy = block.y - ball.y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+              
+              if (distance < nearestDistance) {
+                nearestTarget = block;
+                nearestDistance = distance;
+              }
+            });
+          }
+          
+          // Update velocity to home in on target
+          if (nearestTarget) {
+            const dx = nearestTarget.x - ball.x;
+            const dy = nearestTarget.y - ball.y;
+            const angle = Math.atan2(dy, dx);
+            
+            ball.vx += Math.cos(angle) * this.homingStrength;
+            ball.vy += Math.sin(angle) * this.homingStrength;
+            
+            // Normalize velocity to maintain constant speed
+            const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+            ball.vx = (ball.vx / speed) * this.speed;
+            ball.vy = (ball.vy / speed) * this.speed;
+          }
+          
+          // Update position
+          ball.x += ball.vx;
+          ball.y += ball.vy;
+          
+          // Check collisions with blocks
+          for (let j = blocks.list.length - 1; j >= 0; j--) {
+            const block = blocks.list[j];
+            if (!block.falling) continue;
+            
+            const dx = ball.x - (block.x + blocks.grid.cellSize/2);
+            const dy = ball.y - (block.y + blocks.grid.cellSize/2);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < blocks.grid.cellSize/2 + this.size) {
+              // Add block to side grid
+              if (sideGrid.addBlock(block.type)) {
+                createHitSound();
+                // Create collection effect
+                for (let k = 0; k < 10; k++) {
+                  particles.add(
+                    block.x + blocks.grid.cellSize/2,
+                    block.y + blocks.grid.cellSize/2,
+                    block.type.color,
+                    3 + Math.random() * 3,
+                    2 + Math.random() * 2,
+                    800
+                  );
+                }
+                blocks.list.splice(j, 1);
+              }
+              this.balls.splice(i, 1);
+              break;
+            }
+          }
+          
+          // Remove if out of bounds
+          if (ball.x < -this.size || ball.x > canvas.width + this.size ||
+              ball.y < -this.size || ball.y > canvas.height + this.size) {
+            this.balls.splice(i, 1);
+          }
+        }
+      },
+      draw() {
+        ctx.save();
+        ctx.fillStyle = COLORS.neonBlue;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = COLORS.neonBlue;
+        
+        this.balls.forEach(ball => {
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        
+        ctx.restore();
+      }
+    };
+
+    // Particle system for effects
+    const particles = {
+      list: [],
+      add(x, y, color, speed, size, lifetime) {
+        this.list.push({
+          x,
+          y,
+          color,
+          speed,
+          size,
+          lifetime,
+          creation: Date.now(),
+          vx: (Math.random() - 0.5) * speed,
+          vy: (Math.random() - 0.5) * speed
+        });
+      },
+      update() {
+        const currentTime = Date.now();
+        for (let i = this.list.length - 1; i >= 0; i--) {
+          const particle = this.list[i];
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+          
+          // Remove dead particles
+          if (currentTime - particle.creation > particle.lifetime) {
+            this.list.splice(i, 1);
+          }
+        }
+      },
+      draw() {
+        ctx.save();
+        this.list.forEach(particle => {
+          const age = Date.now() - particle.creation;
+          const opacity = 1 - (age / particle.lifetime);
+          
+          ctx.fillStyle = particle.color;
+          ctx.globalAlpha = opacity;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = particle.color;
+          
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.restore();
+      }
+    };
+
+    function createShootingEffect(x, y) {
+      for (let i = 0; i < 8; i++) {
+        particles.add(x, y, COLORS.neonBlue, 3, 2, 500);
+      }
+    }
+
+    // Wolf drones system
+    const wolfDrones = {
+      drones: [],
+      formationTypes: ['V', 'LINE', 'CIRCLE'],
+      currentFormation: 'V',
+      formationSpacing: 60,
+      speed: 1,
+      size: 30,
+      spawnY: -50,
+      maxDrones: 8,
+      followSpeed: 0.8,
+      
+      spawn() {
+        if (this.drones.length >= this.maxDrones) return;
+        
+        // Clear all shapes when spawning new wave if no drones are present
+        if (this.drones.length === 0) {
+          sheep.closedShapes = [];
+          // Create effect for shape clearing
+          for (let i = 0; i < 30; i++) {
+            particles.add(
+              Math.random() * canvas.width,
+              Math.random() * canvas.height,
+              COLORS.neonBlue,
+              3 + Math.random() * 3,
+              2 + Math.random() * 2,
+              1000
+            );
+          }
+          createPowerUpSound();
+        }
+        
+        const formation = this.getFormationPositions();
+        formation.forEach(pos => {
+          this.drones.push({
+            x: pos.x,
+            y: this.spawnY + pos.y,
+            targetX: pos.x,
+            targetY: pos.y,
+            angle: 0,
+            health: 2,
+            hit: false,
+            hitTime: 0
+          });
+        });
+        
+        // Change formation for next spawn
+        const formationIndex = this.formationTypes.indexOf(this.currentFormation);
+        this.currentFormation = this.formationTypes[(formationIndex + 1) % this.formationTypes.length];
+      },
+      
+      getFormationPositions() {
+        const positions = [];
+        const centerX = canvas.width / 2;
+        const baseY = 100;
+        
+        switch(this.currentFormation) {
+          case 'V':
+            for(let i = 0; i < 5; i++) {
+              positions.push({
+                x: centerX + (i - 2) * this.formationSpacing,
+                y: baseY + Math.abs(i - 2) * 40
+              });
+            }
+            break;
+            
+          case 'LINE':
+            for(let i = 0; i < 6; i++) {
+              positions.push({
+                x: centerX + (i - 2.5) * this.formationSpacing,
+                y: baseY
+              });
+            }
+            break;
+            
+          case 'CIRCLE':
+            const radius = this.formationSpacing * 2;
+            for(let i = 0; i < 8; i++) {
+              const angle = (i / 8) * Math.PI * 2;
+              positions.push({
+                x: centerX + Math.cos(angle) * radius,
+                y: baseY + Math.sin(angle) * radius
+              });
+            }
+            break;
+        }
+        
+        return positions;
+      },
+      
+      update() {
+        const currentTime = Date.now();
+        
+        // Spawn new formation if needed
+        if (currentTime - lastWolfSpawnTime > WOLF_SPAWN_INTERVAL && this.drones.length === 0) {
+          this.spawn();
+          lastWolfSpawnTime = currentTime;
+        }
+        
+        // Update each drone
+        for(let i = this.drones.length - 1; i >= 0; i--) {
+          const drone = this.drones[i];
+          
+          // Calculate direction to sheep
+          const dx = sheep.x - drone.x;
+          const dy = sheep.y - drone.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          // Move towards sheep more slowly
+          if (distance > 150) { // Increased minimum distance from 100
+            drone.x += (dx / distance) * this.followSpeed;
+            drone.y += (dy / distance) * this.followSpeed;
+          }
+          
+          // Update wool trail collision
+          checkWoolTrailCollision(drone);
+          
+          // Slower oscillation
+          drone.x += Math.sin(gameTime / 2000 + i) * 1; // Reduced from 2, slower frequency
+          drone.y += Math.cos(gameTime / 3000 + i) * 0.5; // Reduced from 1, slower frequency
+          
+          // Slower descent
+          drone.targetY += 0.1; // Reduced from 0.2
+          
+          // Remove if too low
+          if (drone.y > canvas.height + 50) {
+            this.drones.splice(i, 1);
+            continue;
+          }
+          
+          // Check collision with wool balls
+          for(let j = woolBalls.balls.length - 1; j >= 0; j--) {
+            const ball = woolBalls.balls[j];
+            const dx = ball.x - drone.x;
+            const dy = ball.y - drone.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < this.size + woolBalls.size) {
+              // Hit effect and sound
+              drone.hit = true;
+              drone.hitTime = currentTime;
+              drone.health--;
+              createHitSound();
+              
+              // Remove wool ball
+              woolBalls.balls.splice(j, 1);
+              
+              // Create explosion if destroyed
+              if (drone.health <= 0) {
+                this.createExplosion(drone.x, drone.y);
+                createExplosionSound();
+                this.drones.splice(i, 1);
+                updateScore(100);
+              }
+              break;
+            }
+          }
+          
+          // Check collision with sheep
+          const dxSheep = sheep.x - drone.x;
+          const dySheep = sheep.y - drone.y;
+          const distanceSheep = Math.sqrt(dxSheep * dxSheep + dySheep * dySheep);
+          
+          if (distanceSheep < this.size + sheep.width/2) {
+            lives--;
+            livesElement.textContent = lives;
+            this.createExplosion(drone.x, drone.y);
+            this.drones.splice(i, 1);
+            
+            if (lives <= 0) {
+              gameOver();
+            }
+          }
+        }
+      },
+      
+      draw() {
+        const currentTime = Date.now();
+        
+        this.drones.forEach(drone => {
+          ctx.save();
+          
+          // Flash effect when hit
+          if (drone.hit && currentTime - drone.hitTime < 200) {
+            ctx.globalAlpha = 0.5 + Math.sin((currentTime - drone.hitTime) / 20) * 0.5;
+          }
+          
+          // Draw wolf drone body
+          ctx.translate(drone.x, drone.y);
+          ctx.rotate(Math.sin(gameTime / 500) * 0.1); // Slight wobble
+          
+          // Glowing effect
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = COLORS.magentaPink;
+          
+          // Body
+          ctx.fillStyle = COLORS.deepNavy;
+          ctx.strokeStyle = COLORS.magentaPink;
+          ctx.lineWidth = 2;
+          
+          // Draw hexagonal body
+          ctx.beginPath();
+          for(let i = 0; i < 6; i++) {
+            const angle = (i / 6) * Math.PI * 2;
+            const x = Math.cos(angle) * this.size/2;
+            const y = Math.sin(angle) * this.size/2;
+            if(i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          
+          // Draw "eyes"
+          ctx.fillStyle = COLORS.magentaPink;
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(-5, -5, 3, 0, Math.PI * 2);
+          ctx.arc(5, -5, 3, 0, Math.PI * 2);
+          ctx.fill();
+          
+          ctx.restore();
+        });
+      },
+      
+      createExplosion(x, y) {
+        // Create particle explosion
+        for(let i = 0; i < 20; i++) {
+          particles.add(
+            x, y,
+            COLORS.magentaPink,
+            5 + Math.random() * 5,
+            2 + Math.random() * 2,
+            1000
+          );
+        }
+      }
+    };
+
+    // Falling blocks system
+    const blocks = {
+      list: [],
+      types: [
+        { name: 'fence', color: COLORS.neonBlue, points: 50 },
+        { name: 'hay', color: COLORS.electricPurple, points: 75 },
+        { name: 'crate', color: COLORS.magentaPink, points: 100 }
+      ],
+      grid: {
+        cols: 10,
+        rows: 15,
+        cellSize: 40,
+        offsetX: 100, // Center the grid
+        offsetY: 50
+      },
+      spawnInterval: 5000,
+      lastSpawnTime: 0,
+      
+      spawn() {
+        const currentTime = Date.now();
+        if (currentTime - this.lastSpawnTime < this.spawnInterval) return;
+        
+        this.lastSpawnTime = currentTime;
+        
+        // Random block type
+        const type = this.types[Math.floor(Math.random() * this.types.length)];
+        
+        // Random column
+        const col = Math.floor(Math.random() * this.grid.cols);
+        
+        this.list.push({
+          x: this.grid.offsetX + col * this.grid.cellSize,
+          y: -this.grid.cellSize,
+          targetY: null,
+          col: col,
+          row: -1,
+          type: type,
+          falling: true,
+          scale: 1,
+          rotation: 0
+        });
+      },
+      
+      update() {
+        const fallSpeed = 5;
+        
+        for (let i = this.list.length - 1; i >= 0; i--) {
+          const block = this.list[i];
+          
+          if (block.falling) {
+            block.y += fallSpeed;
+            block.rotation += 0.05;
+            
+            // Find landing position
+            const gridY = Math.floor((block.y - this.grid.offsetY) / this.grid.cellSize);
+            const nextRow = this.findNextAvailableRow(block.col);
+            
+            if (nextRow !== -1) {
+              const targetY = this.grid.offsetY + nextRow * this.grid.cellSize;
+              
+              if (block.y >= targetY) {
+                block.y = targetY;
+                block.row = nextRow;
+                block.falling = false;
+                block.rotation = 0;
+                
+                // Check for completed rows
+                this.checkRows();
+              }
+            }
+          } else {
+            // Landed block effects
+            block.scale = 1 + Math.sin(gameTime / 500) * 0.05;
+          }
+        }
+      },
+      
+      findNextAvailableRow(col) {
+        for (let row = this.grid.rows - 1; row >= 0; row--) {
+          if (!this.isPositionOccupied(col, row)) {
+            return row;
+          }
+        }
+        return -1;
+      },
+      
+      isPositionOccupied(col, row) {
+        return this.list.some(block => 
+          !block.falling && block.col === col && block.row === row
+        );
+      },
+      
+      checkRows() {
+        for (let row = this.grid.rows - 1; row >= 0; row--) {
+          let blocksInRow = 0;
+          
+          // Count blocks in this row
+          for (let col = 0; col < this.grid.cols; col++) {
+            if (this.isPositionOccupied(col, row)) {
+              blocksInRow++;
+            }
+          }
+          
+          // Complete row found
+          if (blocksInRow === this.grid.cols) {
+            this.clearRow(row);
+            updateScore(1000);
+          }
+        }
+      },
+      
+      clearRow(rowToClear) {
+        // Remove blocks in row
+        this.list = this.list.filter(block => {
+          if (block.row === rowToClear) {
+            createExplosionSound();
+            // Create score popup
+            showScorePopup(2000, this.x + this.cols * this.cellSize / 2, this.y + rowToClear * this.cellSize, COLORS.neonBlue);
+            return false;
+          }
+          return true;
+        });
+        
+        // Move blocks above down
+        this.list.forEach(block => {
+          if (block.row < rowToClear) {
+            block.row++;
+          }
+        });
+      },
+      
+      draw() {
+        // Draw grid
+        ctx.save();
+        ctx.strokeStyle = `rgba(0, 200, 255, 0.1)`;
+        ctx.lineWidth = 1;
+        
+        // Vertical lines
+        for (let col = 0; col <= this.grid.cols; col++) {
+          const x = this.grid.offsetX + col * this.grid.cellSize;
+          ctx.beginPath();
+          ctx.moveTo(x, this.grid.offsetY);
+          ctx.lineTo(x, this.grid.offsetY + this.grid.rows * this.grid.cellSize);
+          ctx.stroke();
+        }
+        
+        // Horizontal lines
+        for (let row = 0; row <= this.grid.rows; row++) {
+          const y = this.grid.offsetY + row * this.grid.cellSize;
+          ctx.beginPath();
+          ctx.moveTo(this.grid.offsetX, y);
+          ctx.lineTo(this.grid.offsetX + this.grid.cols * this.grid.cellSize, y);
+          ctx.stroke();
+        }
+        
+        // Draw blocks
+        this.list.forEach(block => {
+          ctx.save();
+          
+          // Position and rotation
+          ctx.translate(block.x + this.grid.cellSize/2, block.y + this.grid.cellSize/2);
+          ctx.rotate(block.rotation);
+          ctx.scale(block.scale, block.scale);
+          
+          // Block style
+          ctx.fillStyle = block.type.color;
+          ctx.strokeStyle = COLORS.white;
+          ctx.lineWidth = 2;
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = block.type.color;
+          
+          // Draw block shape
+          ctx.beginPath();
+          ctx.rect(-this.grid.cellSize/2 + 2, -this.grid.cellSize/2 + 2, 
+                   this.grid.cellSize - 4, this.grid.cellSize - 4);
+          
+          // Add visual details based on block type
+          switch(block.type.name) {
+            case 'fence':
+              // Add cross pattern
+              ctx.moveTo(-this.grid.cellSize/2, -this.grid.cellSize/2);
+              ctx.lineTo(this.grid.cellSize/2, this.grid.cellSize/2);
+              ctx.moveTo(this.grid.cellSize/2, -this.grid.cellSize/2);
+              ctx.lineTo(-this.grid.cellSize/2, this.grid.cellSize/2);
+              break;
+            case 'hay':
+              // Add circular pattern
+              ctx.arc(0, 0, this.grid.cellSize/4, 0, Math.PI * 2);
+              break;
+            case 'crate':
+              // Add box pattern
+              ctx.rect(-this.grid.cellSize/4, -this.grid.cellSize/4, 
+                      this.grid.cellSize/2, this.grid.cellSize/2);
+              break;
+          }
+          
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+        });
+        
+        ctx.restore();
+      }
+    };
+
+    // Power-up system
+    const powerUps = {
+      list: [],
+      types: [
+        {
+          name: 'Time Slow',
+          color: COLORS.electricPurple,
+          duration: 5000,
+          icon: '⌛',
+          effect: () => {
+            wolfDrones.speed *= 0.5;
+            blocks.spawnInterval *= 1.5;
+          },
+          revert: () => {
+            wolfDrones.speed *= 2;
+            blocks.spawnInterval /= 1.5;
+          }
+        },
+        {
+          name: 'Rapid Fire',
+          color: COLORS.neonBlue,
+          duration: 4000,
+          icon: '⚡',
+          effect: () => {
+            SHOOT_COOLDOWN /= 2;
+          },
+          revert: () => {
+            SHOOT_COOLDOWN *= 2;
+          }
+        },
+        {
+          name: 'Shield',
+          color: COLORS.magentaPink,
+          duration: 6000,
+          icon: '🛡️',
+          effect: () => {
+            sheep.isInvulnerable = true;
+            sheep.glowColor = COLORS.magentaPink;
+          },
+          revert: () => {
+            sheep.isInvulnerable = false;
+            sheep.glowColor = COLORS.electricPurple;
+          }
+        },
+        {
+          name: 'Multi Shot',
+          color: COLORS.cyanBlue,
+          duration: 8000,
+          icon: '🎯',
+          effect: () => {
+            woolBalls.multiShot = true;
+          },
+          revert: () => {
+            woolBalls.multiShot = false;
+          }
+        },
+        {
+          name: 'Extra Life',
+          color: '#00FF00',
+          duration: 0,
+          icon: '❤️',
+          effect: () => {
+            if (lives < 5) {
+              lives++;
+              livesElement.textContent = lives;
+              createPowerUpSound();
+            }
+          },
+          revert: () => {}
+        }
+      ],
+      spawnInterval: 10000,
+      lastSpawnTime: 0,
+      activeEffects: [],
+      
+      spawn() {
+        const currentTime = Date.now();
+        if (currentTime - this.lastSpawnTime < this.spawnInterval) return;
+        
+        this.lastSpawnTime = currentTime;
+        
+        // Random power-up type
+        const type = this.types[Math.floor(Math.random() * this.types.length)];
+        
+        // Random position (avoiding block grid)
+        const x = Math.random() * (canvas.width - 40) + 20;
+        const y = Math.random() * (canvas.height / 2) + 50;
+        
+        this.list.push({
+          x,
+          y,
+          type,
+          size: 20,
+          rotation: 0,
+          scale: 1,
+          creation: currentTime
+        });
+      },
+      
+      update() {
+        const currentTime = Date.now();
+        
+        // Update existing power-ups
+        for (let i = this.list.length - 1; i >= 0; i--) {
+          const powerUp = this.list[i];
+          
+          // Floating animation
+          powerUp.y += Math.sin((currentTime - powerUp.creation) / 500) * 0.5;
+          powerUp.rotation += 0.02;
+          powerUp.scale = 1 + Math.sin((currentTime - powerUp.creation) / 300) * 0.1;
+          
+          // Check collision with sheep
+          const dx = sheep.x - powerUp.x;
+          const dy = sheep.y - powerUp.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < sheep.width/2 + powerUp.size) {
+            // Collect power-up
+            this.activate(powerUp.type);
+            this.createCollectEffect(powerUp.x, powerUp.y, powerUp.type.color);
+            this.list.splice(i, 1);
+          }
+        }
+        
+        // Update active effects
+        for (let i = this.activeEffects.length - 1; i >= 0; i--) {
+          const effect = this.activeEffects[i];
+          
+          if (currentTime - effect.startTime >= effect.type.duration) {
+            // Effect expired
+            effect.type.revert();
+            this.activeEffects.splice(i, 1);
+            powerUpIndicator.classList.remove('active');
+          }
+        }
+      },
+      
+      activate(type) {
+        const currentTime = Date.now();
+        
+        // Remove existing effect of same type
+        const existingIndex = this.activeEffects.findIndex(effect => effect.type.name === type.name);
+        if (existingIndex !== -1) {
+          const existing = this.activeEffects[existingIndex];
+          existing.type.revert();
+          this.activeEffects.splice(existingIndex, 1);
+        }
+        
+        // Play power-up sound
+        createPowerUpSound();
+        
+        // Apply new effect using requestAnimationFrame
+        requestAnimationFrame(() => {
+          type.effect();
+          this.activeEffects.push({
+            type,
+            startTime: currentTime
+          });
+          
+          // Update UI
+          powerUpIndicator.classList.add('active');
+          powerUpTypeElement.textContent = type.name;
+        });
+      },
+      
+      createCollectEffect(x, y, color) {
+        for (let i = 0; i < 15; i++) {
+          particles.add(
+            x, y,
+            color,
+            4 + Math.random() * 4,
+            2 + Math.random() * 2,
+            1000
+          );
+        }
+      },
+      
+      draw() {
+        this.list.forEach(powerUp => {
+          ctx.save();
+          
+          // Position and rotation
+          ctx.translate(powerUp.x, powerUp.y);
+          ctx.rotate(powerUp.rotation);
+          ctx.scale(powerUp.scale, powerUp.scale);
+          
+          // Glow effect
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = powerUp.type.color;
+          
+          // Draw hexagonal shape
+          ctx.beginPath();
+          for (let i = 0; i < 6; i++) {
+            const angle = (i / 6) * Math.PI * 2;
+            const x = Math.cos(angle) * powerUp.size;
+            const y = Math.sin(angle) * powerUp.size;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          
+          // Fill and stroke
+          ctx.fillStyle = COLORS.black;
+          ctx.strokeStyle = powerUp.type.color;
+          ctx.lineWidth = 2;
+          ctx.fill();
+          ctx.stroke();
+          
+          // Draw icon
+          ctx.fillStyle = powerUp.type.color;
+          ctx.font = '16px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(powerUp.type.icon, 0, 0);
+          
+          ctx.restore();
+        });
+        
+        // Draw active effect timer
+        if (this.activeEffects.length > 0) {
+          const effect = this.activeEffects[0];
+          const timeLeft = effect.type.duration - (Date.now() - effect.startTime);
+          const percentage = timeLeft / effect.type.duration;
+          
+          ctx.save();
+          ctx.strokeStyle = effect.type.color;
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(canvas.width - 30, 30, 15, -Math.PI/2, -Math.PI/2 + percentage * Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    };
+
+    // Add side grid for collected blocks
+    const sideGrid = {
+      x: canvas.width - 200, // Position on right side
+      y: 50,
+      cols: 5,
+      rows: 10,
+      cellSize: 30,
+      blocks: [], // Array of collected blocks
+      
+      addBlock(type) {
+        // Find first empty position from bottom up
+        for (let row = this.rows - 1; row >= 0; row--) {
+          for (let col = 0; col < this.cols; col++) {
+            if (!this.isPositionOccupied(col, row)) {
+              this.blocks.push({
+                col: col,
+                row: row,
+                type: type
+              });
+              this.checkRows();
+              return true;
+            }
+          }
+        }
+        return false; // Grid is full
+      },
+      
+      isPositionOccupied(col, row) {
+        return this.blocks.some(block => block.col === col && block.row === row);
+      },
+      
+      checkRows() {
+        for (let row = this.rows - 1; row >= 0; row--) {
+          let blocksInRow = 0;
+          for (let col = 0; col < this.cols; col++) {
+            if (this.isPositionOccupied(col, row)) {
+              blocksInRow++;
+            }
+          }
+          
+          if (blocksInRow === this.cols) {
+            // Clear row and add bonus points
+            this.clearRow(row);
+            updateScore(2000);
+          }
+        }
+      },
+      
+      clearRow(rowToClear) {
+        // Remove blocks in row
+        this.blocks = this.blocks.filter(block => {
+          if (block.row === rowToClear) {
+            createExplosionSound();
+            // Create score popup
+            showScorePopup(2000, this.x + this.cols * this.cellSize / 2, this.y + rowToClear * this.cellSize, COLORS.neonBlue);
+            return false;
+          }
+          return true;
+        });
+        
+        // Move blocks above down
+        this.blocks.forEach(block => {
+          if (block.row < rowToClear) {
+            block.row++;
+          }
+        });
+      },
+      
+      draw() {
+        ctx.save();
+        
+        // Draw grid
+        ctx.strokeStyle = `rgba(0, 200, 255, 0.2)`;
+        ctx.lineWidth = 1;
+        
+        for (let col = 0; col <= this.cols; col++) {
+          const x = this.x + col * this.cellSize;
+          ctx.beginPath();
+          ctx.moveTo(x, this.y);
+          ctx.lineTo(x, this.y + this.rows * this.cellSize);
+          ctx.stroke();
+        }
+        
+        for (let row = 0; row <= this.rows; row++) {
+          const y = this.y + row * this.cellSize;
+          ctx.beginPath();
+          ctx.moveTo(this.x, y);
+          ctx.lineTo(this.x + this.cols * this.cellSize, y);
+          ctx.stroke();
+        }
+        
+        // Draw blocks
+        this.blocks.forEach(block => {
+          const x = this.x + block.col * this.cellSize;
+          const y = this.y + block.row * this.cellSize;
+          
+          ctx.fillStyle = block.type.color;
+          ctx.strokeStyle = COLORS.white;
+          ctx.lineWidth = 2;
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = block.type.color;
+          
+          ctx.fillRect(x + 2, y + 2, this.cellSize - 4, this.cellSize - 4);
+          ctx.strokeRect(x + 2, y + 2, this.cellSize - 4, this.cellSize - 4);
+        });
+        
+        ctx.restore();
+      }
+    };
+
+    // Event listeners for controls
+    window.addEventListener('keydown', (e) => {
+      keys[e.key.toLowerCase()] = true;
+      
+      // Shoot on spacebar
+      if (e.code === 'Space' && isPlaying && !isPaused) {
+        woolBalls.add();
+        e.preventDefault();
+      }
+      
+      // Pause on Escape
+      if (e.code === 'Escape' && isPlaying) {
+        isPaused = !isPaused;
+        if (!isPaused) gameLoop();
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      keys[e.key.toLowerCase()] = false;
+    });
+
+    // Audio System
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const sounds = {
+      shoot: null,
+      explosion: null,
+      powerUp: null,
+      hit: null,
+      gameOver: null,
+      bgm: null
+    };
+
+    // Create retro-style sounds
+    function createShootSound() {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.type = 'square';
+      oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.1);
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.1);
+    }
+
+    function createExplosionSound() {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      const noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.1, audioContext.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noiseBuffer.length; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+      const noise = audioContext.createBufferSource();
+      noise.buffer = noiseBuffer;
+      
+      const filter = audioContext.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1000, audioContext.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+      
+      noise.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+      
+      noise.start();
+    }
+
+    function createPowerUpSound() {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.1);
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.1);
+    }
+
+    function createHitSound() {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.type = 'sawtooth';
+      oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 0.1);
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.1);
+    }
+
+    function createGameOverSound() {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 0.5);
+      gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.5);
+    }
+
+    // Background Music
+    function createBackgroundMusic() {
+      const oscillator1 = audioContext.createOscillator();
+      const oscillator2 = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator1.connect(gainNode);
+      oscillator2.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator1.type = 'sine';
+      oscillator2.type = 'square';
+      
+      const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+      let noteIndex = 0;
+      
+      setInterval(() => {
+        const time = audioContext.currentTime;
+        oscillator1.frequency.setValueAtTime(notes[noteIndex], time);
+        oscillator2.frequency.setValueAtTime(notes[noteIndex] / 2, time);
+        noteIndex = (noteIndex + 1) % notes.length;
+      }, 500);
+      
+      gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+      
+      oscillator1.start();
+      oscillator2.start();
+      
+      return { oscillators: [oscillator1, oscillator2], gainNode };
+    }
+
+    // Start game function
+    function startGame() {
+      isPlaying = true;
+      score = 0;
+      lives = 3;
+      scoreElement.textContent = score;
+      livesElement.textContent = lives;
+      titleScreen.classList.add('hidden');
+      startBtn.innerHTML = '<i class="fas fa-sync-alt me-1"></i> Restart';
+      
+      // Initialize game objects and start game loop
+      initGame();
+      gameLoop();
+      
+      // Start background music
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      sounds.bgm = createBackgroundMusic();
+    }
+
+    // Update game initialization
+    function initGame() {
+      // Reset game objects
+      sheep.x = canvas.width / 2;
+      sheep.y = canvas.height - 40;
+      sheep.woolTrail = [];
+      sheep.isInvulnerable = false;
+      sheep.glowColor = COLORS.electricPurple;
+      woolBalls.balls = [];
+      particles.list = [];
+      wolfDrones.drones = [];
+      blocks.list = [];
+      powerUps.list = [];
+      powerUps.activeEffects = [];
+      keys = {};
+      lastShootTime = 0;
+      lastWolfSpawnTime = 0;
+      gameTime = 0;
+      currentLevel = 1;
+      combo = 0;
+      comboTimer = 0;
+      powerUpIndicator.classList.remove('active');
+      sideGrid.blocks = [];
+    }
+
+    // Update main game loop
+    function gameLoop() {
+      if (!isPlaying || isPaused) return;
+
+      // Update game time
+      gameTime = Date.now();
+
+      // Check combo timeout
+      if (combo > 0 && gameTime - comboTimer > COMBO_TIMEOUT) {
+        combo = 0;
+      }
+
+      // Update difficulty based on score
+      currentLevel = Math.floor(score / 1000) + 1;
+      wolfDrones.speed = 1 + (currentLevel * 0.1);
+      blocks.spawnInterval = Math.max(3000 - (currentLevel * 200), 1000);
+
+      // Clear canvas
+      ctx.fillStyle = COLORS.black;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw background grid
+      drawBackground();
+      
+      // Update and draw game objects
+      sheep.update();
+      sheep.draw();
+      
+      woolBalls.update();
+      woolBalls.draw();
+      
+      wolfDrones.update();
+      wolfDrones.draw();
+      
+      blocks.spawn();
+      blocks.update();
+      blocks.draw();
+      
+      powerUps.spawn();
+      powerUps.update();
+      powerUps.draw();
+      
+      sideGrid.draw();
+      
+      particles.update();
+      particles.draw();
+      
+      // Draw combo and level
+      drawCombo();
+      drawLevel();
+      
+      // Update and draw score popups
+      updateScorePopups();
+      drawScorePopups();
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    function checkWoolTrailCollision(drone) {
+      if (!drone) return;
+      
+      // Check collision with active trail
+      if (sheep.woolTrail.length >= 20) {
+        for (let i = 0; i < sheep.woolTrail.length - 19; i++) {
+          const segment = sheep.woolTrail[i];
+          const dx = drone.x - segment.x;
+          const dy = drone.y - segment.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < wolfDrones.size / 2) {
+            // Bounce effect
+            const angle = Math.atan2(dy, dx);
+            drone.x += Math.cos(angle) * 10;
+            drone.y += Math.sin(angle) * 10;
+            
+            // Create bounce effect
+            for (let i = 0; i < 5; i++) {
+              particles.add(
+                segment.x,
+                segment.y,
+                COLORS.lightGray,
+                3 + Math.random() * 2,
+                2 + Math.random() * 2,
+                500
+              );
+            }
+            createHitSound();
+            return;
+          }
+        }
+      }
+      
+      // Check if wolf is inside any closed shape
+      sheep.closedShapes.forEach(shape => {
+        if (isPointInShape(drone.x, drone.y, shape)) {
+          // Keep wolf inside shape
+          const bounds = getShapeBounds(shape);
+          drone.x = Math.max(bounds.minX + wolfDrones.size/2, 
+                    Math.min(bounds.maxX - wolfDrones.size/2, drone.x));
+          drone.y = Math.max(bounds.minY + wolfDrones.size/2,
+                    Math.min(bounds.maxY - wolfDrones.size/2, drone.y));
+        }
+      });
+    }
+
+    // Helper function to check if a point is inside a shape
+    function isPointInShape(x, y, shape) {
+      let inside = false;
+      for (let i = 0, j = shape.length - 1; i < shape.length; j = i++) {
+        const xi = shape[i].x, yi = shape[i].y;
+        const xj = shape[j].x, yj = shape[j].y;
+        
+        const intersect = ((yi > y) != (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+      }
+      return inside;
+    }
+
+    // Helper function to get shape bounds
+    function getShapeBounds(shape) {
+      let minX = Infinity, minY = Infinity;
+      let maxX = -Infinity, maxY = -Infinity;
+      
+      shape.forEach(point => {
+        minX = Math.min(minX, point.x);
+        minY = Math.min(minY, point.y);
+        maxX = Math.max(maxX, point.x);
+        maxY = Math.max(maxY, point.y);
+      });
+      
+      return { minX, minY, maxX, maxY };
+    }
+
+    function gameOver() {
+      isPlaying = false;
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('sheepRumbleHighScore', highScore);
+        highScoreElement.textContent = highScore;
+      }
+      titleScreen.classList.remove('hidden');
+      
+      // Stop background music
+      if (sounds.bgm) {
+        sounds.bgm.oscillators.forEach(osc => osc.stop());
+        sounds.bgm = null;
+      }
+      createGameOverSound();
+      
+      // Clear all game objects
+      sheep.woolTrail = [];
+      sheep.closedShapes = [];
+      woolBalls.balls = [];
+      wolfDrones.drones = [];
+      blocks.list = [];
+      powerUps.list = [];
+      powerUps.activeEffects = [];
+      particles.list = [];
+    }
+
+    // Background with cyberpunk grid effect
+    function drawBackground() {
+      // Create dynamic gradient background
+      const gradientOffset = (Math.sin(Date.now() / 5000) + 1) / 2;
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, COLORS.black);
+      gradient.addColorStop(gradientOffset * 0.5, COLORS.deepNavy);
+      gradient.addColorStop(1, COLORS.black);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw grid with perspective
+      ctx.strokeStyle = `rgba(0, 200, 255, 0.2)`;
+      ctx.lineWidth = 1;
+      
+      const gridSize = 50;
+      const time = Date.now() / 5000;
+      
+      // Vertical lines
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        const offset = Math.sin(x / canvas.width * Math.PI + time) * 5;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x + offset, canvas.height);
+        ctx.stroke();
+      }
+      
+      // Horizontal lines
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        const offset = Math.sin(y / canvas.height * Math.PI + time) * 5;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width + offset, y);
+        ctx.stroke();
+      }
+    }
+
+    // Event listeners
+    startBtn.addEventListener('click', startGame);
+    startTitleBtn.addEventListener('click', startGame);
+
+    // Initial render
+    drawBackground();
+
+    // Add mute button to game controls
+    const gameControls = document.querySelector('.game-controls');
+    const muteBtn = document.createElement('button');
+    muteBtn.id = 'muteButton';
+    muteBtn.className = 'btn btn-outline-primary';
+    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+    muteBtn.style.marginLeft = '10px';
+    gameControls.appendChild(muteBtn);
+
+    let isMuted = false;
+    muteBtn.addEventListener('click', () => {
+      isMuted = !isMuted;
+      if (isMuted) {
+        audioContext.suspend();
+        muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+      } else {
+        audioContext.resume();
+        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+      }
+    });
+
+    // Add score popup system
+    function showScorePopup(value, x, y, color, text) {
+      const popup = {
+        value,
+        x,
+        y,
+        color,
+        opacity: 1,
+        scale: 1,
+        life: 1,
+        text
+      };
+      scorePopups.push(popup);
+    }
+
+    let scorePopups = [];
+
+    function updateScorePopups() {
+      for (let i = scorePopups.length - 1; i >= 0; i--) {
+        const popup = scorePopups[i];
+        popup.y -= 2;
+        popup.opacity = popup.life;
+        popup.life -= 0.02;
+        popup.scale += 0.02;
+        if (popup.life <= 0) {
+          scorePopups.splice(i, 1);
+        }
+      }
+    }
+
+    function drawScorePopups() {
+      ctx.save();
+      scorePopups.forEach(popup => {
+        ctx.globalAlpha = popup.opacity;
+        ctx.fillStyle = popup.color;
+        ctx.shadowColor = popup.color;
+        ctx.shadowBlur = 10;
+        ctx.font = `${20 * popup.scale}px 'Share Tech Mono'`;
+        ctx.textAlign = 'center';
+        ctx.fillText(popup.text, popup.x, popup.y);
+      });
+      ctx.restore();
+    }
+
+    // Add combo display
+    function drawCombo() {
+      if (combo > 1) {
+        const timeSinceLastCombo = Date.now() - comboTimer;
+        if (timeSinceLastCombo < COMBO_TIMEOUT) {
+          ctx.save();
+          ctx.fillStyle = COLORS.electricPurple;
+          ctx.font = '20px "Share Tech Mono"';
+          ctx.textAlign = 'right';
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = COLORS.electricPurple;
+          
+          const comboText = `${combo}x COMBO!`;
+          ctx.fillText(comboText, canvas.width - 20, 50);
+          
+          // Draw combo timer bar
+          const timerWidth = 100;
+          const remainingTime = 1 - (timeSinceLastCombo / COMBO_TIMEOUT);
+          ctx.fillRect(canvas.width - 20 - timerWidth, 60, 
+                      timerWidth * remainingTime, 5);
+          
+          ctx.restore();
+        } else {
+          combo = 0;
+        }
+      }
+    }
+
+    // Add level display
+    function drawLevel() {
+      ctx.save();
+      ctx.fillStyle = COLORS.neonBlue;
+      ctx.font = '16px "Share Tech Mono"';
+      ctx.textAlign = 'left';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = COLORS.neonBlue;
+      ctx.fillText(`LEVEL ${currentLevel}`, 20, 70);
+      ctx.restore();
+    }
+
+    // Update score calculation with combo system
+    function updateScore(points) {
+      const comboMultiplier = Math.min(Math.floor(combo / 5) + 1, 5);
+      const finalPoints = points * comboMultiplier;
+      score += finalPoints;
+      scoreElement.textContent = score;
+      
+      // Update combo
+      combo++;
+      comboTimer = Date.now();
+      
+      // Show combo popup
+      showScorePopup(finalPoints, sheep.x, sheep.y - 30, 
+        comboMultiplier > 1 ? COLORS.electricPurple : COLORS.neonBlue,
+        `${comboMultiplier}x COMBO!`);
+    }
+  </script>
+</body>
+</html> 

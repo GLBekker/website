@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Business Templates - Virtual Life Solutions</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .template-card {
+      background: rgba(17, 24, 39, 0.8);
+      border: 1px solid var(--neon-blue);
+      border-radius: 15px;
+      padding: 2rem;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .template-card::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--electric-purple), var(--magenta-pink));
+      z-index: -1;
+      border-radius: 16px;
+      filter: blur(15px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .template-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(0, 200, 255, 0.3);
+      border-color: transparent;
+    }
+
+    .template-card:hover::after {
+      opacity: 0.5;
+    }
+
+    .template-card i {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      color: var(--neon-blue);
+      transition: all 0.3s ease;
+    }
+
+    .template-card:hover i {
+      color: var(--electric-purple);
+      transform: scale(1.1);
+    }
+
+    .template-card h3 {
+      color: var(--neon-blue);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      text-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+    }
+
+    .template-card p {
+      color: var(--light-gray);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .template-card .btn {
+      background: transparent;
+      border: 1px solid var(--neon-blue);
+      color: var(--neon-blue);
+      transition: all 0.3s ease;
+    }
+
+    .template-card .btn:hover {
+      background: var(--neon-blue);
+      color: var(--black);
+      box-shadow: 0 0 15px var(--neon-blue);
+    }
+
+    .section-description {
+      color: var(--light-gray);
+      text-align: center;
+      margin-bottom: 3rem;
+      font-family: 'Share Tech Mono', monospace;
+    }
+  </style>
+</head>
+<body class="cyberpunk-theme">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="images/vlLogo.png" alt="Virtual Life Solutions Logo" height="50">
+        Business Templates
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Back to Home</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container py-5 mt-5">
+    <h1 class="text-center mb-4" style="color: var(--neon-blue); text-shadow: 0 0 20px var(--neon-blue);">
+      Business Templates
+    </h1>
+    <p class="section-description">
+      Access our collection of professional business templates designed to streamline your workflow and maintain consistency across all communications.
+    </p>
+
+    <div class="row g-4">
+      <!-- Change Requests -->
+      <div class="col-md-4">
+        <div class="template-card">
+          <i class="fas fa-exchange-alt"></i>
+          <h3>Change Requests</h3>
+          <p>Standardized forms for requesting and documenting project changes, ensuring proper tracking and approval processes.</p>
+          <a href="templates/change-request.html" class="btn">View Template</a>
+        </div>
+      </div>
+
+      <!-- Estimations -->
+      <div class="col-md-4">
+        <div class="template-card">
+          <i class="fas fa-calculator"></i>
+          <h3>Estimations</h3>
+          <p>Professional templates for project cost estimations, timelines, and resource allocation planning.</p>
+          <a href="templates/estimation.html" class="btn">View Template</a>
+        </div>
+      </div>
+
+      <!-- Invoices -->
+      <div class="col-md-4">
+        <div class="template-card">
+          <i class="fas fa-file-invoice-dollar"></i>
+          <h3>Invoices</h3>
+          <p>Clean, professional invoice templates with automatic calculations and branded styling.</p>
+          <a href="templates/invoice.html" class="btn">View Template</a>
+        </div>
+      </div>
+
+      <!-- Brochures -->
+      <div class="col-md-4">
+        <div class="template-card">
+          <i class="fas fa-book-open"></i>
+          <h3>Brochures</h3>
+          <p>Eye-catching brochure templates for marketing materials and product showcases.</p>
+          <a href="templates/brochure.html" class="btn">View Template</a>
+        </div>
+      </div>
+
+      <!-- Email Templates -->
+      <div class="col-md-4">
+        <div class="template-card">
+          <i class="fas fa-envelope-open-text"></i>
+          <h3>Email Templates</h3>
+          <p>Professional email templates for various business communications and marketing campaigns.</p>
+          <a href="templates/email.html" class="btn">View Template</a>
+        </div>
+      </div>
+
+      <!-- Letterheads -->
+      <div class="col-md-4">
+        <div class="template-card">
+          <i class="fas fa-file-alt"></i>
+          <h3>Letterheads</h3>
+          <p>Official letterhead templates with company branding and professional layouts.</p>
+          <a href="templates/letterhead.html" class="btn">View Template</a>
+        </div>
+      </div>
+
+      <!-- Presentations -->
+      <div class="col-md-4">
+        <div class="template-card">
+          <i class="fas fa-presentation"></i>
+          <h3>Presentations</h3>
+          <p>Modern presentation templates with consistent branding and dynamic layouts.</p>
+          <a href="templates/presentation.html" class="btn">View Template</a>
+        </div>
+      </div>
+
+      <!-- Proposals -->
+      <div class="col-md-4">
+        <div class="template-card">
+          <i class="fas fa-handshake"></i>
+          <h3>Proposals</h3>
+          <p>Professional business proposal templates with sections for all essential information.</p>
+          <a href="templates/proposal.html" class="btn">View Template</a>
+        </div>
+      </div>
+
+      <!-- Acceptance Certificates -->
+      <div class="col-md-4">
+        <div class="template-card">
+          <i class="fas fa-certificate"></i>
+          <h3>Acceptance Certificates</h3>
+          <p>Official templates for project completion and deliverable acceptance documentation.</p>
+          <a href="templates/acceptance.html" class="btn">View Template</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-3">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 Virtual Life Solutions. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
