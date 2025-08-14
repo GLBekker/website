@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Virtual Life Solutions - Innovative Digital Solutions</title>
+  <title>Virtual Life - Innovative Digital Solutions</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- FontAwesome -->
@@ -16,8 +16,11 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">
-        <img src="http://virtual-life.co.za/img/vlLogo.png" alt="Virtual Life Solutions Logo" height="50">
-        Virtual Life Solutions
+        <div class="navbar-logo-wrapper">
+          <img src="images/vlLogo.png" alt="Virtual Life Solutions Logo" height="50">
+          <div class="logo-pulse-bg"></div>
+        </div>
+        <span class="insight-icon-shimmer">Virtual Life</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -28,10 +31,16 @@
             <a class="nav-link" href="#home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#about">About</a>
+            <a class="nav-link" href="#about">The Challenge</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#services">Services</a>
+            <a class="nav-link" href="#insights">Insights</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#services">Solutions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#decision">Decide</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#contact">Contact</a>
@@ -43,75 +52,173 @@
 
   <!-- Hero Section -->
   <header id="home" class="hero">
-    <div class="container text-center">
-      <h1 class="display-4 mb-4">Innovative Digital Solutions</h1>
-      <p class="lead mb-5">Empowering your business with cutting-edge technology solutions</p>
+    <canvas id="neuralCanvas"></canvas>
+    <canvas id="dataStreamCanvas"></canvas>
+    <div class="ai-grid-overlay"></div>
+    <div class="neural-nodes">
+      <div class="node node-1"></div>
+      <div class="node node-2"></div>
+      <div class="node node-3"></div>
+      <div class="node node-4"></div>
+      <div class="node node-5"></div>
+      <div class="node node-6"></div>
+    </div>
+    <svg class="neural-connections" width="100%" height="100%">
+      <defs>
+        <linearGradient id="neural-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#00D4FF;stop-opacity:0.6" />
+          <stop offset="100%" style="stop-color:#00FFE0;stop-opacity:0.2" />
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="container text-center hero-content">
+      <h1 class="display-4 mb-4 hero-shimmer" data-text="Build It Right. Deploy It Fast.">Build It Right. Deploy It Fast.</h1>
+      <p class="lead mb-5 data-stream">From mobile apps to cloud infrastructure - we turn your vision into production-ready reality.</p>
       <div class="d-flex justify-content-center gap-3">
-        <a href="#services" class="btn btn-primary btn-lg">Our Services</a>
-        <a href="#contact" class="btn btn-outline-light btn-lg">Contact Us</a>
+        <a href="#services" class="btn btn-glow btn-primary btn-lg">See What We Build</a>
+        <a href="#contact" class="btn btn-pulse btn-outline-light btn-lg">Start Your Project</a>
       </div>
     </div>
   </header>
 
   <!-- About Section -->
-  <section id="about" class="py-5">
+  <section id="about" class="py-5 fade-in-section">
     <div class="container">
-      <h2 class="text-center mb-5">About Virtual Life Solutions</h2>
+      <h2 class="text-center mb-5">Why Companies Choose Virtual Life</h2>
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="about-content">
-            <h3 class="mb-4">Transforming Ideas into Digital Reality</h3>
-            <p class="mb-4">With years of expertise in digital transformation, Virtual Life Solutions delivers comprehensive technology solutions that power your business forward. We specialize in:</p>
+            <h3 class="mb-4">Focused Development. Complete Solutions.</h3>
+            <p class="mb-4">Virtual Life delivers enterprise-quality solutions with the focus and agility of an independent consultancy. Direct communication, rapid iterations, and complete project ownership from concept to deployment.</p>
+            <h4 class="mb-3 text-primary">Core Expertise:</h4>
             <ul class="list-unstyled">
-              <li><i class="fas fa-check-circle text-primary me-2"></i> Cross-platform Mobile applications</li>
-              <li><i class="fas fa-check-circle text-primary me-2"></i> Dynamic websites with robust backends</li>
-              <li><i class="fas fa-check-circle text-primary me-2"></i> Scalable Azure Cloud solutions</li>
-              <li><i class="fas fa-check-circle text-primary me-2"></i> Infrastructure as Code (IaC)</li>
+              <li><i class="fas fa-brain text-primary me-2"></i> <strong>AI Integration</strong> - Smart features that enhance applications</li>
+              <li><i class="fas fa-mobile-alt text-primary me-2"></i> <strong>Cross-Platform Apps</strong> - One codebase for iOS, Android, Web, and Desktop using Flutter or .NET MAUI</li>
+              <li><i class="fas fa-code text-primary me-2"></i> <strong>Dynamic Web Development</strong> - Modern, responsive websites with powerful backend systems</li>
+              <li><i class="fas fa-cloud text-primary me-2"></i> <strong>Azure Cloud Architecture</strong> - Scalable, secure, cost-optimized cloud solutions</li>
+              <li><i class="fas fa-server text-primary me-2"></i> <strong>Infrastructure as Code</strong> - Automated deployments, consistent environments, zero downtime</li>
             </ul>
-            <h3 class="mb-4">Our Team</h3>
-            <div class="team-member mb-4">
-              <h4>Amanda Knoetze</h4>
-              <p>Core Team Member</p>
-            </div>
-            <div class="team-member mb-4">
-              <h4>Giovanni Bekker</h4>
-              <p>Core Team Member</p>
+            <div class="mt-4">
+              <a href="#services" class="btn btn-explore">
+                <span class="btn-text">Explore Solutions</span>
+                <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
+              </a>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="about-image text-center">
-            <img src="http://virtual-life.co.za/img/vlLogo.png" alt="About Us" class="img-fluid rounded shadow">
+            <img src="images/vlLogo.png" alt="About Us" class="img-fluid rounded shadow">
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Services Section -->
-  <section id="services" class="py-5 bg-light">
+  <!-- Insights Section -->
+  <section id="insights" class="py-5" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 0, 0, 0.95));">
     <div class="container">
-      <h2 class="text-center mb-5">Our Services</h2>
+      <h2 class="text-center mb-5">Key Insights for Digital Success</h2>
       <div class="row">
-        <div class="col-md-4">
-          <div class="service-card text-center">
-            <i class="fas fa-mobile-alt fa-3x text-primary mb-4"></i>
-            <h3>Mobile Solutions</h3>
-            <p>Cross-platform mobile applications using Flutter or .NET MAUI, delivering performance and beautiful interfaces.</p>
+        <div class="col-md-4 mb-4">
+          <div class="insight-card p-4" style="background: rgba(255, 0, 255, 0.1); border-left: 4px solid var(--ai-primary); border-radius: 10px;">
+            <h4 class="text-primary mb-3"><i class="fas fa-mobile-alt me-2 insight-icon-shimmer"></i>Mobile-First World</h4>
+            <p class="mb-3">Users spend most of their digital time on mobile devices. A native app experience isn't optional anymore - it's essential for customer engagement and retention.</p>
+            <small class="text-primary"><strong>Mobile Apps built with Flutter</strong></small>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
+          <div class="insight-card p-4" style="background: rgba(255, 107, 0, 0.1); border-left: 4px solid var(--ai-orange); border-radius: 10px;">
+            <h4 class="text-primary mb-3"><i class="fas fa-brain me-2 insight-icon-shimmer"></i>AI-Enhanced Experiences</h4>
+            <p class="mb-3">Modern applications need intelligence built-in. AI systems that understand data, automate complex workflows, and integrate seamlessly with existing tools - making businesses smarter, not just faster.</p>
+            <small class="text-primary"><strong>Delivered: Intelligent automation & smart integrations</strong></small>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="insight-card p-4" style="background: rgba(0, 212, 255, 0.1); border-left: 4px solid var(--ai-cyan); border-radius: 10px;">
+            <h4 class="text-primary mb-3"><i class="fas fa-cogs me-2 insight-icon-shimmer"></i>Automate Everything</h4>
+            <p class="mb-3">Infrastructure as Code means entire systems can be deployed, scaled, or recovered in minutes. Manual processes are error-prone and slow.</p>
+            <small class="text-primary"><strong>Implemented: IaC with Terraform & ARM</strong></small>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <h3 class="mb-3 ai-text" data-text="Technology That Powers Growth">Technology That Powers Growth</h3>
+        <p class="lead data-stream">Building systems that scale with ambitions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-5 parallax-section services-sentient">
+    <div class="services-bg-wrapper" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: url('sentient2.png') center/60% repeat; opacity: 0.5; z-index: 0;"></div>
+    <div class="services-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(10, 14, 39, 0.5)); z-index: 1;"></div>
+    <div class="container" style="position: relative; z-index: 2;">
+      <h2 class="text-center mb-5">Services & Solutions</h2>
+      <div class="row">
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card text-center position-relative" style="border: 1px solid rgba(255, 0, 255, 0.3); box-shadow: 0 0 20px rgba(255, 0, 255, 0.1);">
+            <span class="badge bg-primary position-absolute" style="top: 10px; right: 10px; font-size: 0.7rem;">TRENDING</span>
+            <i class="fas fa-brain fa-3x mb-4" style="color: #ff00ff; text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);"></i>
+            <h3>AI Integration</h3>
+            <p>Enhance applications with intelligent features - from chatbots and recommendation engines to predictive analytics and automated workflows. AI integration where it adds real value.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card text-center">
+            <i class="fas fa-mobile-alt fa-3x text-primary mb-4"></i>
+            <h3>Mobile Development</h3>
+            <p>Beautiful, performant apps for iOS, Android, Web, and Desktop. Using Flutter or .NET MAUI, build once and deploy everywhere - saving time and ensuring consistency across platforms.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
           <div class="service-card text-center">
             <i class="fas fa-code fa-3x text-primary mb-4"></i>
             <h3>Web Development</h3>
-            <p>Responsive and robust websites with integrated backend systems tailored to your business needs.</p>
+            <p>From landing pages to complex web applications - responsive, fast, and secure websites. Modern frameworks, robust backends, and seamless user experiences.</p>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6 col-lg-3">
           <div class="service-card text-center">
             <i class="fas fa-cloud fa-3x text-primary mb-4"></i>
-            <h3>Azure Cloud & IaC</h3>
-            <p>Scalable, secure cloud solutions leveraging Azure Cloud and Infrastructure as Code.</p>
+            <h3>Azure Cloud & IAC</h3>
+            <p>Complete cloud solutions on Microsoft Azure - from initial architecture to deployment and optimization. Databases, storage, compute, networking, and security with Infrastructure as Code for repeatability.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Decision Section -->
+  <section id="decision" class="py-5" style="background: linear-gradient(135deg, rgba(0, 255, 204, 0.1), rgba(0, 0, 0, 0.95));">
+    <div class="container text-center">
+      <h2 class="mb-4 ai-text" data-text="Development Partnership">Development Partnership</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <p class="lead mb-4">Building technology that empowers businesses for years to come.</p>
+          <div class="row mt-5 justify-content-center">
+            <div class="col-md-8">
+              <div class="decision-card p-5" style="background: rgba(0, 255, 204, 0.05); border: 2px solid rgba(0, 255, 204, 0.3); border-radius: 15px; box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);">
+                <h3 class="text-primary mb-4">Development Philosophy</h3>
+                <div class="text-start">
+                  <p class="mb-3"><strong>Direct Engagement:</strong> Streamlined communication with technical expertise at every step.</p>
+                  <p class="mb-3"><strong>Flexible Solutions:</strong> From rapid prototypes to enterprise systems - solutions scaled to needs.</p>
+                  <p class="mb-3"><strong>Transparent Process:</strong> Clear milestones, regular updates, and continuous collaboration.</p>
+                  <p class="mb-3"><strong>Long-term Partnership:</strong> Ongoing support and evolution as business needs grow.</p>
+                  <p class="mb-3"><strong>Value-Driven:</strong> Professional quality at competitive rates - maximum ROI.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <h3 class="mb-3">Ready to Build Something Great?</h3>
+            <p class="lead data-stream">Mobile apps, web platforms, or cloud infrastructure - bringing visions to life.</p>
+            <div class="mt-4">
+              <a href="#contact" class="btn btn-explore btn-lg">
+                <span class="btn-text">Discuss Your Project</span>
+                <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -119,14 +226,21 @@
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="py-5">
+  <section id="contact" class="py-5 contact-section">
     <div class="container">
-      <h2 class="text-center mb-5">Contact Us</h2>
+      <h2 class="text-center mb-5">Start Your Next Project</h2>
       <div class="row">
         <div class="col-lg-6">
           <div class="contact-info">
             <h3 class="mb-4">Get in Touch</h3>
-            <p><i class="fas fa-building me-2"></i> Virtual Life Solutions (PTY) Ltd</p>
+            <p class="mb-4"><strong>Process:</strong></p>
+            <ol class="mb-4">
+              <li class="mb-2">Initial consultation to understand project needs</li>
+              <li class="mb-2">Technical proposal with timeline and budget</li>
+              <li class="mb-2">Agile development with regular updates</li>
+              <li class="mb-2">Deployment, testing, and ongoing support</li>
+            </ol>
+            <p><i class="fas fa-building me-2"></i> Virtual Life (PTY) Ltd</p>
             <p><i class="fas fa-map-marker-alt me-2"></i> 75 Country Walk, Mooikloof Ridge Estate, Pretoria East, South Africa</p>
             <p><i class="fas fa-phone me-2"></i> <a href="tel:+27743488311">(074) 348-8311</a></p>
             <p><i class="fas fa-envelope me-2"></i> <a href="mailto:office@virtual-life.co.za">office@virtual-life.co.za</a></p>
@@ -143,19 +257,23 @@
           </div>
         </div>
         <div class="col-lg-6">
-          <div class="contact-form p-4 bg-white rounded shadow">
-            <h3 class="mb-4">Send us a Message</h3>
-            <form>
+          <div class="contact-form p-4 rounded shadow" style="background: rgba(17, 24, 39, 0.95); border: 1px solid var(--neon-blue);">
+            <h3 class="mb-4">Send Project Details</h3>
+            <p class="mb-3 text-primary"><strong>Specializing in:</strong> Mobile Apps • Web Development • Cloud Solutions • Infrastructure as Code</p>
+            <form id="contactForm" onsubmit="sendEmail(event)">
               <div class="mb-3">
-                <input type="text" class="form-control" placeholder="Your Name" required>
+                <input type="text" id="userName" class="form-control" placeholder="Your Name" required style="background: rgba(0, 0, 0, 0.5); color: var(--white); border: 1px solid var(--ai-primary);">
               </div>
               <div class="mb-3">
-                <input type="email" class="form-control" placeholder="Your Email" required>
+                <input type="email" id="userEmail" class="form-control" placeholder="Your Email" required style="background: rgba(0, 0, 0, 0.5); color: var(--white); border: 1px solid var(--ai-primary);">
               </div>
               <div class="mb-3">
-                <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                <input type="tel" id="userPhone" class="form-control" placeholder="Your Phone Number" required style="background: rgba(0, 0, 0, 0.5); color: var(--white); border: 1px solid var(--ai-primary);">
               </div>
-              <button type="submit" class="btn btn-primary">Send Message</button>
+              <div class="mb-3">
+                <textarea id="projectDetails" class="form-control" rows="5" placeholder="Describe your project - What needs to be built?" required style="background: rgba(0, 0, 0, 0.5); color: var(--white); border: 1px solid var(--ai-primary);"></textarea>
+              </div>
+              <button type="submit" class="btn btn-pulse btn-outline-light btn-lg w-100">Start Your Project</button>
             </form>
           </div>
         </div>
@@ -168,7 +286,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <p class="mb-0">&copy; 2025 Virtual Life Solutions. All rights reserved.</p>
+          <p class="mb-0">&copy; 2025 Virtual Life. All rights reserved.</p>
           <p><a href="terms.html">Terms & Conditions</a></p>
         </div>
       </div>
@@ -177,8 +295,9 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom JS for smooth scroll -->
+  <!-- Custom JS for smooth scroll and animations -->
   <script>
+    // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -187,6 +306,287 @@
         });
       });
     });
+
+    // Neural Network Visualization
+    const neuralCanvas = document.getElementById('neuralCanvas');
+    if (neuralCanvas) {
+      const ctx = neuralCanvas.getContext('2d');
+      neuralCanvas.width = window.innerWidth;
+      neuralCanvas.height = window.innerHeight;
+
+      // Neural network nodes
+      const nodes = [];
+      const connections = [];
+      const nodeCount = 15;
+
+      // Create nodes
+      for (let i = 0; i < nodeCount; i++) {
+        nodes.push({
+          x: Math.random() * neuralCanvas.width,
+          y: Math.random() * neuralCanvas.height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          radius: Math.random() * 3 + 2,
+          pulsePhase: Math.random() * Math.PI * 2
+        });
+      }
+
+      function drawNeuralNetwork() {
+        ctx.clearRect(0, 0, neuralCanvas.width, neuralCanvas.height);
+
+        // Update and draw connections
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 200) {
+              const opacity = (1 - distance / 200) * 0.4;
+              const gradient = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
+              gradient.addColorStop(0, `rgba(255, 0, 255, ${opacity})`);
+              gradient.addColorStop(0.5, `rgba(255, 107, 0, ${opacity * 0.8})`);
+              gradient.addColorStop(1, `rgba(0, 212, 255, ${opacity})`);
+              ctx.strokeStyle = gradient;
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.stroke();
+
+              // Data packets
+              if (Math.random() < 0.01) {
+                const packet = {
+                  x: nodes[i].x,
+                  y: nodes[i].y,
+                  targetX: nodes[j].x,
+                  targetY: nodes[j].y,
+                  progress: 0
+                };
+                connections.push(packet);
+              }
+            }
+          }
+        }
+
+        // Update and draw data packets
+        for (let i = connections.length - 1; i >= 0; i--) {
+          const packet = connections[i];
+          packet.progress += 0.02;
+
+          if (packet.progress >= 1) {
+            connections.splice(i, 1);
+            continue;
+          }
+
+          const x = packet.x + (packet.targetX - packet.x) * packet.progress;
+          const y = packet.y + (packet.targetY - packet.y) * packet.progress;
+
+          const glow = ctx.createRadialGradient(x, y, 0, x, y, 4);
+          glow.addColorStop(0, 'rgba(255, 0, 255, 1)');
+          glow.addColorStop(0.5, 'rgba(255, 107, 0, 0.8)');
+          glow.addColorStop(1, 'rgba(0, 212, 255, 0.6)');
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(x, y, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Update and draw nodes
+        nodes.forEach(node => {
+          // Update position
+          node.x += node.vx;
+          node.y += node.vy;
+
+          // Bounce off edges
+          if (node.x <= 0 || node.x >= neuralCanvas.width) node.vx *= -1;
+          if (node.y <= 0 || node.y >= neuralCanvas.height) node.vy *= -1;
+
+          // Keep in bounds
+          node.x = Math.max(0, Math.min(neuralCanvas.width, node.x));
+          node.y = Math.max(0, Math.min(neuralCanvas.height, node.y));
+
+          // Update pulse
+          node.pulsePhase += 0.02;
+
+          // Draw node
+          const pulseSize = Math.sin(node.pulsePhase) * 0.5 + 1;
+          const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, node.radius * pulseSize * 3);
+          gradient.addColorStop(0, 'rgba(255, 0, 255, 1)');
+          gradient.addColorStop(0.5, 'rgba(255, 107, 0, 0.8)');
+          gradient.addColorStop(1, 'rgba(0, 212, 255, 0.4)');
+          ctx.fillStyle = gradient;
+          ctx.shadowBlur = 30;
+          ctx.shadowColor = '#ff00ff';
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, node.radius * pulseSize, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        });
+
+        requestAnimationFrame(drawNeuralNetwork);
+      }
+
+      drawNeuralNetwork();
+
+      window.addEventListener('resize', () => {
+        neuralCanvas.width = window.innerWidth;
+        neuralCanvas.height = window.innerHeight;
+      });
+    }
+
+    // Data Stream Animation
+    const dataCanvas = document.getElementById('dataStreamCanvas');
+    if (dataCanvas) {
+      const ctx = dataCanvas.getContext('2d');
+      dataCanvas.width = window.innerWidth;
+      dataCanvas.height = window.innerHeight;
+
+      const dataStreams = [];
+      const streamCount = 5;
+
+      class DataStream {
+        constructor() {
+          this.x = Math.random() * dataCanvas.width;
+          this.y = 0;
+          this.speed = Math.random() * 2 + 1;
+          this.length = Math.random() * 100 + 50;
+          this.opacity = Math.random() * 0.5 + 0.5;
+          this.chars = '01';
+        }
+
+        update() {
+          this.y += this.speed;
+          if (this.y > dataCanvas.height + this.length) {
+            this.y = -this.length;
+            this.x = Math.random() * dataCanvas.width;
+          }
+        }
+
+        draw() {
+          const gradient = ctx.createLinearGradient(this.x, this.y - this.length, this.x, this.y);
+          gradient.addColorStop(0, 'rgba(0, 255, 224, 0)');
+          gradient.addColorStop(1, `rgba(0, 255, 224, ${this.opacity})`);
+          
+          ctx.font = '10px monospace';
+          ctx.fillStyle = gradient;
+          
+          for (let i = 0; i < this.length; i += 10) {
+            const char = this.chars[Math.floor(Math.random() * this.chars.length)];
+            ctx.fillText(char, this.x, this.y - i);
+          }
+        }
+      }
+
+      for (let i = 0; i < streamCount; i++) {
+        dataStreams.push(new DataStream());
+      }
+
+      function animateDataStreams() {
+        ctx.clearRect(0, 0, dataCanvas.width, dataCanvas.height);
+        dataStreams.forEach(stream => {
+          stream.update();
+          stream.draw();
+        });
+        requestAnimationFrame(animateDataStreams);
+      }
+
+      animateDataStreams();
+
+      window.addEventListener('resize', () => {
+        dataCanvas.width = window.innerWidth;
+        dataCanvas.height = window.innerHeight;
+      });
+    }
+
+    // Add intersection observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.service-card').forEach(card => {
+      observer.observe(card);
+    });
+
+    // Observe sections for fade-in animation
+    document.querySelectorAll('.fade-in-section').forEach(section => {
+      observer.observe(section);
+    });
+
+    // Add parallax effect
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const parallax = document.querySelector('.parallax-section');
+      if (parallax) {
+        parallax.style.backgroundPositionY = -(scrolled * 0.5) + 'px';
+      }
+    });
+
+    // Add mouse move effect for hero
+    document.addEventListener('mousemove', (e) => {
+      const shapes = document.querySelectorAll('.shape');
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      shapes.forEach((shape, index) => {
+        const speed = (index + 1) * 20;
+        const xOffset = (x - 0.5) * speed;
+        const yOffset = (y - 0.5) * speed;
+        shape.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+      });
+    });
+  </script>
+
+  <!-- Contact Form Email Handler -->
+  <script>
+    function sendEmail(event) {
+      event.preventDefault();
+      
+      // Get form values
+      const name = document.getElementById('userName').value;
+      const email = document.getElementById('userEmail').value;
+      const phone = document.getElementById('userPhone').value;
+      const project = document.getElementById('projectDetails').value;
+      
+      // Format the email body - simpler format for better compatibility
+      const subject = `New Project Inquiry from ${name}`;
+      const body = `Hey Virtual Life!
+
+** NEW PROJECT INCOMING **
+
+=== WHO'S CALLING ===
+Name: ${name}
+Email: ${email}
+Phone: ${phone}
+
+=== THE PROJECT ===
+${project}
+
+=== WHY VIRTUAL LIFE? ===
+Because this project needs that special magic touch!
+
+Ready to build something awesome together?
+
+Best regards,
+${name}`;
+      
+      // Create mailto link with properly encoded content
+      const mailtoLink = `mailto:contact@virtuallife.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      
+      // Open email client
+      window.location.href = mailtoLink;
+      
+      return false;
+    }
   </script>
 </body>
 </html>
