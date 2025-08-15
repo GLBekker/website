@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Social Media Banners - Virtual Life</title>
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌩️</text></svg>">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
+    
+    body {
+      background: linear-gradient(135deg, #000000 0%, #111827 50%, #000000 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .banner-container {
+      margin: 20px 0;
+      padding: 20px;
+      background: rgba(17, 24, 39, 0.8);
+      border-radius: 15px;
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .banner-container:hover {
+      border-color: rgba(0, 200, 255, 0.6);
+      box-shadow: 0 0 30px rgba(0, 200, 255, 0.3);
+      transform: translateY(-5px);
+    }
+
+    .banner-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .banner-info {
+      margin-top: 15px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+    }
+
+    .platform-badge {
+      display: inline-block;
+      padding: 5px 15px;
+      margin: 5px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, rgba(0, 200, 255, 0.2), rgba(153, 0, 255, 0.2));
+      border: 1px solid rgba(0, 200, 255, 0.5);
+    }
+
+    .download-btn {
+      background: linear-gradient(135deg, #00C8FF, #9900FF);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin: 5px;
+    }
+
+    .download-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 200, 255, 0.5);
+    }
+
+    /* Banner Styles */
+    .banner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', monospace;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Style 1: Neon Glow */
+    .banner-style-1 {
+      background: linear-gradient(135deg, #000000, #111827);
+      position: relative;
+    }
+
+    .banner-style-1::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 200, 255, 0.4), transparent);
+      animation: scanline 3s linear infinite;
+    }
+
+    @keyframes scanline {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .banner-style-1 .logo {
+      filter: drop-shadow(0 0 20px rgba(0, 200, 255, 0.8));
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 200, 255, 0.8)); }
+      50% { filter: drop-shadow(0 0 40px rgba(0, 200, 255, 1)); }
+    }
+
+    .banner-style-1 h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      background: linear-gradient(135deg, #00C8FF, #FF00CC);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(0, 200, 255, 0.5);
+    }
+
+    .banner-style-1 .tagline {
+      font-size: 1.2rem;
+      color: #00C8FF;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-top: 10px;
+    }
+
+    /* Style 2: Matrix Rain */
+    .banner-style-2 {
+      background: #000000;
+      position: relative;
+    }
+
+    .matrix-rain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      opacity: 0.3;
+    }
+
+    .matrix-column {
+      position: absolute;
+      top: -100%;
+      font-family: monospace;
+      font-size: 20px;
+      color: #00FF00;
+      animation: matrix-fall linear infinite;
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+    }
+
+    @keyframes matrix-fall {
+      to {
+        top: 100%;
+      }
+    }
+
+    .banner-style-2 .content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .banner-style-2 h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #00FF00;
+      text-shadow: 0 0 10px #00FF00;
+      animation: glitch 2s infinite;
+    }
+
+    @keyframes glitch {
+      0%, 100% { text-shadow: 0 0 10px #00FF00; }
+      20% { text-shadow: 3px 0 10px #FF00CC, -3px 0 10px #00C8FF; }
+      40% { text-shadow: -3px 0 10px #FF00CC, 3px 0 10px #00C8FF; }
+    }
+
+    /* Style 3: Cyberpunk Grid */
+    .banner-style-3 {
+      background: linear-gradient(180deg, #1a0033 0%, #330066 50%, #000000 100%);
+      position: relative;
+    }
+
+    .cyber-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: grid-move 10s linear infinite;
+    }
+
+    @keyframes grid-move {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    .banner-style-3 h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #FF00CC;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow: 
+        0 0 20px #FF00CC,
+        0 0 40px #FF00CC,
+        0 0 60px #FF00CC;
+    }
+
+    /* Style 4: Electric Pulse */
+    .banner-style-4 {
+      background: radial-gradient(circle at center, #001133 0%, #000000 100%);
+      position: relative;
+    }
+
+    .electric-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+    }
+
+    .electric-line {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00C8FF, transparent);
+      animation: electric-flow 2s linear infinite;
+    }
+
+    @keyframes electric-flow {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .banner-style-4 h1 {
+      font-size: 3rem;
+      background: linear-gradient(90deg, #00C8FF, #9900FF, #FF00CC, #00C8FF);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-shift 3s linear infinite;
+    }
+
+    @keyframes gradient-shift {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* Style 5: Minimal Tech */
+    .banner-style-5 {
+      background: #000000;
+      border: 2px solid #00C8FF;
+      position: relative;
+    }
+
+    .banner-style-5::before,
+    .banner-style-5::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: 2px solid #00C8FF;
+      background: #000;
+    }
+
+    .banner-style-5::before {
+      top: -2px;
+      left: -2px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .banner-style-5::after {
+      bottom: -2px;
+      right: -2px;
+      border-left: none;
+      border-top: none;
+    }
+
+    .banner-style-5 h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: #00C8FF;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+    }
+
+    .banner-style-5 .subtitle {
+      font-size: 0.9rem;
+      color: #9900FF;
+      letter-spacing: 5px;
+      margin-top: 10px;
+    }
+
+    /* Style 6: Holographic */
+    .banner-style-6 {
+      background: linear-gradient(45deg, #FF00CC, #00C8FF, #9900FF, #FF00CC);
+      background-size: 300% 300%;
+      animation: holographic 5s ease infinite;
+      position: relative;
+    }
+
+    @keyframes holographic {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .banner-style-6::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .banner-style-6 .content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .banner-style-6 h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    /* Size Presets */
+    .banner-facebook { width: 820px; height: 312px; }
+    .banner-twitter { width: 1500px; height: 500px; }
+    .banner-linkedin { width: 1128px; height: 191px; }
+    .banner-instagram-post { width: 1080px; height: 1080px; }
+    .banner-instagram-story { width: 1080px; height: 1920px; }
+    .banner-youtube { width: 2560px; height: 1440px; }
+
+    /* Responsive Scaling */
+    @media (max-width: 1400px) {
+      .banner-facebook,
+      .banner-twitter,
+      .banner-linkedin,
+      .banner-instagram-post,
+      .banner-instagram-story,
+      .banner-youtube {
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: attr(width) / attr(height);
+      }
+    }
+
+    .section-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #00C8FF;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin: 40px 0;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(0, 200, 255, 0.5);
+    }
+
+    canvas {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="images/vlLogo.png" alt="Virtual Life Logo" height="50">
+        <span class="ms-2">Virtual Life</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Social Banners</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <h1 class="text-center mb-5" style="font-family: 'Orbitron', monospace; color: #00C8FF; text-transform: uppercase; letter-spacing: 5px;">
+      Social Media Banner Gallery
+    </h1>
+    <p class="text-center text-light mb-5">Choose from our collection of cyberpunk-themed banners for your social media presence</p>
+
+    <!-- Facebook Banners -->
+    <h2 class="section-title">Facebook Cover Photos</h2>
+    
+    <!-- Style 1: Neon Glow -->
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="fb-banner-1" class="banner-facebook"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 class="text-primary">Neon Glow Edition</h4>
+        <div>
+          <span class="platform-badge">Facebook</span>
+          <span class="platform-badge">820x312px</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('fb-banner-1')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+
+    <!-- Style 2: Matrix Rain -->
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="fb-banner-2" class="banner-facebook"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 class="text-success">Matrix Code Edition</h4>
+        <div>
+          <span class="platform-badge">Facebook</span>
+          <span class="platform-badge">820x312px</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('fb-banner-2')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+
+    <!-- Twitter Banners -->
+    <h2 class="section-title mt-5">Twitter Headers</h2>
+    
+    <!-- Style 3: Cyberpunk Grid -->
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="tw-banner-1" class="banner-twitter"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 style="color: #FF00CC;">Cyberpunk Grid Edition</h4>
+        <div>
+          <span class="platform-badge">Twitter</span>
+          <span class="platform-badge">1500x500px</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('tw-banner-1')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+
+    <!-- Style 4: Electric Pulse -->
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="tw-banner-2" class="banner-twitter"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 class="text-info">Electric Pulse Edition</h4>
+        <div>
+          <span class="platform-badge">Twitter</span>
+          <span class="platform-badge">1500x500px</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('tw-banner-2')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+
+    <!-- LinkedIn Banners -->
+    <h2 class="section-title mt-5">LinkedIn Covers</h2>
+    
+    <!-- Style 5: Minimal Tech -->
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="li-banner-1" class="banner-linkedin"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 class="text-primary">Minimal Tech Edition</h4>
+        <div>
+          <span class="platform-badge">LinkedIn</span>
+          <span class="platform-badge">1128x191px</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('li-banner-1')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+
+    <!-- Style 6: Holographic -->
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="li-banner-2" class="banner-linkedin"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 style="background: linear-gradient(90deg, #FF00CC, #00C8FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          Holographic Edition
+        </h4>
+        <div>
+          <span class="platform-badge">LinkedIn</span>
+          <span class="platform-badge">1128x191px</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('li-banner-2')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+
+    <!-- Instagram Square Posts -->
+    <h2 class="section-title mt-5">Instagram Posts</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="ig-post-1" class="banner-instagram-post" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-primary">Tech Announcement</h4>
+            <div>
+              <span class="platform-badge">Instagram Post</span>
+              <span class="platform-badge">1080x1080px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('ig-post-1')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="ig-post-2" class="banner-instagram-post" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 style="color: #FF00CC;">Neon Announcement</h4>
+            <div>
+              <span class="platform-badge">Instagram Post</span>
+              <span class="platform-badge">1080x1080px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('ig-post-2')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- YouTube Channel Art -->
+    <h2 class="section-title mt-5">YouTube Channel Art</h2>
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="yt-channel-art" style="max-width: 100%; height: auto;"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 class="text-danger">Main Channel Banner</h4>
+        <div>
+          <span class="platform-badge">YouTube Channel Art</span>
+          <span class="platform-badge">2560x1440px</span>
+          <span class="platform-badge">TV Safe</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('yt-channel-art')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+
+    <!-- YouTube Thumbnails -->
+    <h2 class="section-title mt-5">YouTube Thumbnails</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="yt-thumb-1" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-danger">Tech Tutorial Style</h4>
+            <div>
+              <span class="platform-badge">YouTube Thumbnail</span>
+              <span class="platform-badge">1280x720px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('yt-thumb-1')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="yt-thumb-2" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-warning">Product Launch Style</h4>
+            <div>
+              <span class="platform-badge">YouTube Thumbnail</span>
+              <span class="platform-badge">1280x720px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('yt-thumb-2')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="yt-thumb-3" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-success">Coding Tutorial</h4>
+            <div>
+              <span class="platform-badge">YouTube Thumbnail</span>
+              <span class="platform-badge">1280x720px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('yt-thumb-3')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="yt-thumb-4" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-info">Live Stream</h4>
+            <div>
+              <span class="platform-badge">YouTube Thumbnail</span>
+              <span class="platform-badge">1280x720px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('yt-thumb-4')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- YouTube End Screens -->
+    <h2 class="section-title mt-5">YouTube End Screens</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="yt-end-screen-1" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-primary">Subscribe End Screen</h4>
+            <div>
+              <span class="platform-badge">End Screen</span>
+              <span class="platform-badge">1920x1080px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('yt-end-screen-1')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="yt-end-screen-2" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 style="color: #FF00CC;">Next Video End Screen</h4>
+            <div>
+              <span class="platform-badge">End Screen</span>
+              <span class="platform-badge">1920x1080px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('yt-end-screen-2')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- YouTube Video Intro Cards -->
+    <h2 class="section-title mt-5">YouTube Video Intros</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="yt-intro-1" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-warning">Animated Intro Card</h4>
+            <div>
+              <span class="platform-badge">Video Intro</span>
+              <span class="platform-badge">1920x1080px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('yt-intro-1')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="yt-intro-2" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-success">Tech Intro Card</h4>
+            <div>
+              <span class="platform-badge">Video Intro</span>
+              <span class="platform-badge">1920x1080px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('yt-intro-2')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instagram Stories -->
+    <h2 class="section-title mt-5">Instagram Stories</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="ig-story-1" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-info">Announcement Story</h4>
+            <div>
+              <span class="platform-badge">IG Story</span>
+              <span class="platform-badge">1080x1920px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('ig-story-1')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="ig-story-2" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 style="color: #00FF00;">Matrix Story</h4>
+            <div>
+              <span class="platform-badge">IG Story</span>
+              <span class="platform-badge">1080x1920px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('ig-story-2')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="ig-story-3" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-primary">Gradient Story</h4>
+            <div>
+              <span class="platform-badge">IG Story</span>
+              <span class="platform-badge">1080x1920px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('ig-story-3')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discord Banners -->
+    <h2 class="section-title mt-5">Discord Server Banners</h2>
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="discord-banner-1" style="max-width: 100%; height: auto;"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 style="color: #5865F2;">Gaming Server Style</h4>
+        <div>
+          <span class="platform-badge">Discord Banner</span>
+          <span class="platform-badge">960x540px</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('discord-banner-1')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="discord-banner-2" style="max-width: 100%; height: auto;"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 class="text-primary">Tech Community Style</h4>
+        <div>
+          <span class="platform-badge">Discord Banner</span>
+          <span class="platform-badge">960x540px</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('discord-banner-2')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+
+    <!-- Pinterest Pins -->
+    <h2 class="section-title mt-5">Pinterest Pins</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="pinterest-1" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-danger">Tech Tips Pin</h4>
+            <div>
+              <span class="platform-badge">Pinterest</span>
+              <span class="platform-badge">1000x1500px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('pinterest-1')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="pinterest-2" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 style="color: #FF00CC;">Infographic Pin</h4>
+            <div>
+              <span class="platform-badge">Pinterest</span>
+              <span class="platform-badge">1000x1500px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('pinterest-2')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="banner-container">
+          <div class="banner-wrapper">
+            <canvas id="pinterest-3" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="banner-info">
+            <h4 class="text-warning">Service List Pin</h4>
+            <div>
+              <span class="platform-badge">Pinterest</span>
+              <span class="platform-badge">1000x1500px</span>
+            </div>
+            <button class="download-btn mt-3" onclick="downloadBanner('pinterest-3')">
+              <i class="fas fa-download me-2"></i>Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Headers -->
+    <h2 class="section-title mt-5">Email Headers</h2>
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="email-header-1" style="max-width: 100%; height: auto;"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 class="text-primary">Professional Email Header</h4>
+        <div>
+          <span class="platform-badge">Email Header</span>
+          <span class="platform-badge">600x200px</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('email-header-1')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <div class="banner-wrapper">
+        <canvas id="email-header-2" style="max-width: 100%; height: auto;"></canvas>
+      </div>
+      <div class="banner-info">
+        <h4 style="color: #00C8FF;">Newsletter Header</h4>
+        <div>
+          <span class="platform-badge">Email Header</span>
+          <span class="platform-badge">600x200px</span>
+        </div>
+        <button class="download-btn mt-3" onclick="downloadBanner('email-header-2')">
+          <i class="fas fa-download me-2"></i>Download PNG
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 mt-5">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 Virtual Life. All rights reserved.</p>
+      <p><a href="index.html" class="text-primary">Back to Main Site</a></p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Banner Generation Script -->
+  <script>
+    // Preload images
+    const logoImg = new Image();
+    logoImg.src = 'images/vlLogo.png';
+    const sentientImg1 = new Image();
+    sentientImg1.src = 'sentient.png';
+    const sentientImg2 = new Image();
+    sentientImg2.src = 'sentient2.png';
+
+    // Helper function to draw actual logo
+    function drawLogo(ctx, x, y, size) {
+      if (logoImg.complete) {
+        ctx.save();
+        ctx.shadowColor = '#00C8FF';
+        ctx.shadowBlur = 20;
+        ctx.drawImage(logoImg, x - size/2, y - size/2, size, size);
+        ctx.restore();
+      } else {
+        // Fallback to text if image not loaded
+        ctx.save();
+        ctx.font = `bold ${size * 0.6}px Orbitron`;
+        ctx.fillStyle = '#00C8FF';
+        ctx.shadowColor = '#00C8FF';
+        ctx.shadowBlur = 20;
+        ctx.textAlign = 'center';
+        ctx.fillText('VL', x, y + size * 0.2);
+        ctx.restore();
+      }
+    }
+
+    // Helper function to draw sentient orbs
+    function drawSentientOrbs(ctx, width, height, opacity = 0.3) {
+      // Draw multiple glowing orbs
+      const orbs = [
+        { x: width * 0.2, y: height * 0.3, r: 60, color1: '#FF00CC', color2: '#00C8FF' },
+        { x: width * 0.7, y: height * 0.2, r: 40, color1: '#9900FF', color2: '#FF00CC' },
+        { x: width * 0.8, y: height * 0.7, r: 80, color1: '#00C8FF', color2: '#9900FF' },
+        { x: width * 0.3, y: height * 0.8, r: 50, color1: '#FF6B00', color2: '#FF00CC' },
+        { x: width * 0.5, y: height * 0.5, r: 100, color1: '#00C8FF', color2: '#FF00CC' }
+      ];
+
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      
+      orbs.forEach(orb => {
+        // Outer glow
+        const glow = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r * 2);
+        glow.addColorStop(0, orb.color1);
+        glow.addColorStop(0.3, orb.color2);
+        glow.addColorStop(1, 'transparent');
+        ctx.fillStyle = glow;
+        ctx.fillRect(orb.x - orb.r * 2, orb.y - orb.r * 2, orb.r * 4, orb.r * 4);
+
+        // Inner orb
+        const gradient = ctx.createRadialGradient(orb.x - orb.r/3, orb.y - orb.r/3, 0, orb.x, orb.y, orb.r);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+        gradient.addColorStop(0.3, orb.color1);
+        gradient.addColorStop(0.7, orb.color2);
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Liquid effect lines
+        ctx.strokeStyle = orb.color1;
+        ctx.lineWidth = 2;
+        ctx.globalAlpha = opacity * 0.5;
+        ctx.beginPath();
+        for (let i = 0; i < 3; i++) {
+          const angle = (Math.PI * 2 / 3) * i;
+          const x1 = orb.x + Math.cos(angle) * orb.r;
+          const y1 = orb.y + Math.sin(angle) * orb.r;
+          const x2 = orb.x + Math.cos(angle + 0.5) * orb.r * 1.5;
+          const y2 = orb.y + Math.sin(angle + 0.5) * orb.r * 1.5;
+          ctx.moveTo(x1, y1);
+          ctx.quadraticCurveTo(x2, y2, orb.x + Math.cos(angle + 1) * orb.r, orb.y + Math.sin(angle + 1) * orb.r);
+        }
+        ctx.stroke();
+        ctx.globalAlpha = opacity;
+      });
+
+      ctx.restore();
+    }
+
+    // Helper function to draw sentient background
+    function drawSentientBackground(ctx, canvas, imageNum = 1) {
+      const img = imageNum === 1 ? sentientImg1 : sentientImg2;
+      if (img.complete) {
+        ctx.save();
+        ctx.globalAlpha = 0.3;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        ctx.restore();
+      } else {
+        // Fallback to generated orbs if image not loaded
+        drawSentientOrbs(ctx, canvas.width, canvas.height, 0.3);
+      }
+    }
+
+    // Helper function to draw animated particles
+    function drawParticles(ctx, width, height, color) {
+      const particles = 50;
+      for (let i = 0; i < particles; i++) {
+        const x = Math.random() * width;
+        const y = Math.random() * height;
+        const size = Math.random() * 2;
+        
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.globalAlpha = Math.random() * 0.5;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    // Style 1: Neon Glow Facebook Banner with Sentient Orbs
+    function drawFacebookBanner1() {
+      const canvas = document.getElementById('fb-banner-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 820;
+      canvas.height = 312;
+
+      // Background gradient
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#000000');
+      gradient.addColorStop(0.5, '#111827');
+      gradient.addColorStop(1, '#000000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient orbs background
+      drawSentientOrbs(ctx, canvas.width, canvas.height, 0.2);
+
+      // Draw grid lines
+      ctx.strokeStyle = 'rgba(0, 200, 255, 0.1)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < canvas.width; i += 50) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, canvas.height);
+        ctx.stroke();
+      }
+      for (let i = 0; i < canvas.height; i += 50) {
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.lineTo(canvas.width, i);
+        ctx.stroke();
+      }
+
+      // Draw particles
+      drawParticles(ctx, canvas.width, canvas.height, 'rgba(0, 200, 255, 0.5)');
+
+      // Main text
+      ctx.font = 'bold 60px Orbitron';
+      const text = 'VIRTUAL LIFE';
+      const gradient2 = ctx.createLinearGradient(0, 0, canvas.width, 0);
+      gradient2.addColorStop(0, '#00C8FF');
+      gradient2.addColorStop(0.5, '#FF00CC');
+      gradient2.addColorStop(1, '#00C8FF');
+      ctx.fillStyle = gradient2;
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 30;
+      ctx.textAlign = 'center';
+      ctx.fillText(text, canvas.width / 2, canvas.height / 2 - 20);
+
+      // Tagline
+      ctx.font = '22px Inter';
+      ctx.fillStyle = '#00C8FF';
+      ctx.shadowBlur = 10;
+      ctx.fillText('Dream It. Build It. Launch It.', canvas.width / 2, canvas.height / 2 + 30);
+
+      // Logo
+      // Logo removed - drawLogo(ctx, 80, 80, 120);
+    }
+
+    // Style 2: Matrix Rain Facebook Banner with Sentient Background
+    function drawFacebookBanner2() {
+      const canvas = document.getElementById('fb-banner-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 820;
+      canvas.height = 312;
+
+      // Black background
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Matrix rain effect
+      ctx.font = '14px monospace';
+      ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
+      const chars = '01';
+      for (let x = 0; x < canvas.width; x += 20) {
+        for (let y = 0; y < canvas.height; y += 20) {
+          ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y);
+        }
+      }
+
+      // Main content
+      ctx.font = 'bold 55px Orbitron';
+      ctx.fillStyle = '#00FF00';
+      ctx.shadowColor = '#00FF00';
+      ctx.shadowBlur = 20;
+      ctx.textAlign = 'center';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2);
+
+      // Subtitle
+      ctx.font = '20px monospace';
+      ctx.fillStyle = '#00FF00';
+      ctx.shadowBlur = 10;
+      ctx.fillText('< Dream It. Build It. Launch It. />', canvas.width / 2, canvas.height / 2 + 40);
+    }
+
+    // Style 3: Cyberpunk Grid Twitter Banner with Logo
+    function drawTwitterBanner1() {
+      const canvas = document.getElementById('tw-banner-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1500;
+      canvas.height = 500;
+
+      // Purple gradient background
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, '#1a0033');
+      gradient.addColorStop(0.5, '#330066');
+      gradient.addColorStop(1, '#000000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient background
+      drawSentientOrbs(ctx, canvas.width, canvas.height, 0.2);
+
+      // Grid pattern
+      ctx.strokeStyle = 'rgba(255, 0, 255, 0.2)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Draw logo on the left
+      // Logo removed - drawLogo(ctx, 180, canvas.height / 2, 160);
+
+      // Main text centered
+      ctx.font = 'bold 80px Orbitron';
+      ctx.fillStyle = '#FF00CC';
+      ctx.shadowColor = '#FF00CC';
+      ctx.shadowBlur = 40;
+      ctx.textAlign = 'center';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2 - 30);
+
+      // Tagline
+      ctx.font = '30px Inter';
+      ctx.fillStyle = '#00C8FF';
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 20;
+      ctx.fillText('CLOUD • AI • MOBILE • WEB', canvas.width / 2, canvas.height / 2 + 40);
+    }
+
+    // Style 4: Electric Pulse Twitter Banner
+    function drawTwitterBanner2() {
+      const canvas = document.getElementById('tw-banner-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1500;
+      canvas.height = 500;
+
+      // Dark blue gradient
+      const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width/2);
+      gradient.addColorStop(0, '#001133');
+      gradient.addColorStop(1, '#000000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Electric lines
+      ctx.strokeStyle = '#00C8FF';
+      ctx.lineWidth = 2;
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 10;
+      
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height / 6 * (i + 1));
+        ctx.lineTo(canvas.width, canvas.height / 6 * (i + 1));
+        ctx.stroke();
+      }
+
+      // Main text with gradient
+      ctx.font = 'bold 90px Orbitron';
+      const textGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+      textGradient.addColorStop(0, '#00C8FF');
+      textGradient.addColorStop(0.33, '#9900FF');
+      textGradient.addColorStop(0.66, '#FF00CC');
+      textGradient.addColorStop(1, '#00C8FF');
+      ctx.fillStyle = textGradient;
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 30;
+      ctx.textAlign = 'center';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2);
+
+      // Tech subtitle
+      ctx.font = '25px monospace';
+      ctx.fillStyle = '#00C8FF';
+      ctx.shadowBlur = 15;
+      ctx.fillText('{ TRANSFORMING IDEAS INTO DIGITAL REALITY }', canvas.width / 2, canvas.height / 2 + 60);
+    }
+
+    // Style 5: Minimal Tech LinkedIn Banner with Logo
+    function drawLinkedInBanner1() {
+      const canvas = document.getElementById('li-banner-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1128;
+      canvas.height = 191;
+
+      // Black background
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add subtle sentient orbs
+      drawSentientOrbs(ctx, canvas.width, canvas.height, 0.1);
+
+      // Border
+      ctx.strokeStyle = '#00C8FF';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+
+      // Corner decorations
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillRect(0, 0, 20, 2);
+      ctx.fillRect(0, 0, 2, 20);
+      ctx.fillRect(canvas.width - 20, canvas.height - 2, 20, 2);
+      ctx.fillRect(canvas.width - 2, canvas.height - 20, 2, 20);
+
+      // Draw logo on left side
+      // Logo removed - drawLogo(ctx, 130, canvas.height / 2, 120);
+
+      // Main text
+      ctx.font = '50px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'center';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2 + 10);
+
+      // Subtitle
+      ctx.font = '16px Inter';
+      ctx.fillStyle = '#9900FF';
+      ctx.fillText('PROFESSIONAL DIGITAL SOLUTIONS', canvas.width / 2, canvas.height / 2 + 40);
+    }
+
+    // Style 6: Holographic LinkedIn Banner
+    function drawLinkedInBanner2() {
+      const canvas = document.getElementById('li-banner-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1128;
+      canvas.height = 191;
+
+      // Holographic gradient
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#FF00CC');
+      gradient.addColorStop(0.25, '#00C8FF');
+      gradient.addColorStop(0.5, '#9900FF');
+      gradient.addColorStop(0.75, '#00C8FF');
+      gradient.addColorStop(1, '#FF00CC');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Dark overlay
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Main text
+      ctx.font = 'bold 55px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 20;
+      ctx.textAlign = 'center';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2 + 15);
+
+      // Tech line
+      ctx.font = '14px monospace';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('AZURE • FLUTTER • AI • INFRASTRUCTURE AS CODE', canvas.width / 2, canvas.height / 2 + 45);
+    }
+
+    // Instagram Post 1 with Logo and Sentient Background
+    function drawInstagramPost1() {
+      const canvas = document.getElementById('ig-post-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1080;
+      canvas.height = 1080;
+
+      // Background
+      const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width/2);
+      gradient.addColorStop(0, '#111827');
+      gradient.addColorStop(1, '#000000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient background
+      drawSentientBackground(ctx, canvas, 1);
+
+      // Circular tech pattern
+      ctx.strokeStyle = 'rgba(0, 200, 255, 0.2)';
+      ctx.lineWidth = 1;
+      for (let r = 50; r < canvas.width; r += 100) {
+        ctx.beginPath();
+        ctx.arc(canvas.width/2, canvas.height/2, r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Draw prominent logo
+      // Logo removed - drawLogo(ctx, canvas.width / 2, canvas.height / 2 - 150, 200);
+
+      // Company name (adjusted position without logo)
+      ctx.font = 'bold 80px Orbitron';
+      ctx.textAlign = 'center';
+      const textGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+      textGradient.addColorStop(0, '#00C8FF');
+      textGradient.addColorStop(0.5, '#FF00CC');
+      textGradient.addColorStop(1, '#00C8FF');
+      ctx.fillStyle = textGradient;
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 30;
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2 - 80);
+
+      // Services - properly centered
+      ctx.font = '30px Inter';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'center';
+      ctx.shadowBlur = 10;
+      ctx.fillText('CLOUD SOLUTIONS', canvas.width / 2, canvas.height / 2 + 20);
+      ctx.fillText('AI INTEGRATION', canvas.width / 2, canvas.height / 2 + 65);
+      ctx.fillText('MOBILE APPS', canvas.width / 2, canvas.height / 2 + 110);
+      ctx.fillText('WEB DEVELOPMENT', canvas.width / 2, canvas.height / 2 + 155);
+
+      // Website
+      ctx.font = '22px monospace';
+      ctx.fillStyle = '#9900FF';
+      ctx.textAlign = 'center';
+      ctx.shadowBlur = 0;
+      ctx.fillText('www.virtual-life.co.za', canvas.width / 2, canvas.height - 80);
+    }
+
+    // Instagram Post 2
+    function drawInstagramPost2() {
+      const canvas = document.getElementById('ig-post-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1080;
+      canvas.height = 1080;
+
+      // Neon gradient background
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#FF00CC');
+      gradient.addColorStop(0.5, '#000000');
+      gradient.addColorStop(1, '#00C8FF');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Dark overlay
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Glitch effect lines
+      for (let i = 0; i < 10; i++) {
+        const y = Math.random() * canvas.height;
+        const height = Math.random() * 5 + 1;
+        ctx.fillStyle = `rgba(255, 0, 204, ${Math.random() * 0.5})`;
+        ctx.fillRect(0, y, canvas.width, height);
+      }
+
+      // Main message
+      ctx.font = 'bold 80px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = '#FF00CC';
+      ctx.shadowBlur = 30;
+      ctx.textAlign = 'center';
+      ctx.fillText('BUILD', canvas.width / 2, canvas.height / 2 - 150);
+      ctx.fillText('INNOVATE', canvas.width / 2, canvas.height / 2 - 50);
+      ctx.fillText('DEPLOY', canvas.width / 2, canvas.height / 2 + 50);
+
+      // Virtual Life branding
+      ctx.font = '40px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 20;
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2 + 200);
+
+      // Call to action
+      ctx.font = '25px Inter';
+      ctx.fillStyle = '#FF00CC';
+      ctx.fillText('Transform Your Ideas Today', canvas.width / 2, canvas.height - 150);
+    }
+
+    // YouTube Thumbnail 1
+    function drawYouTubeThumbnail1() {
+      const canvas = document.getElementById('yt-thumb-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1280;
+      canvas.height = 720;
+
+      // Dark background with tech pattern
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient background
+      drawSentientBackground(ctx, canvas.width, canvas.height, 0.1);
+
+      // Circuit board pattern
+      ctx.strokeStyle = 'rgba(0, 200, 255, 0.3)';
+      ctx.lineWidth = 2;
+      // Draw circuit lines
+      for (let i = 0; i < 10; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + Math.random() * 200, y);
+        ctx.lineTo(x + Math.random() * 200, y + Math.random() * 100);
+        ctx.stroke();
+        
+        // Circuit nodes
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#00C8FF';
+        ctx.fill();
+      }
+
+      // Big text for YouTube
+      ctx.font = 'bold 100px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 30;
+      ctx.textAlign = 'left';
+      ctx.fillText('CLOUD', 50, 200);
+      ctx.fillText('DEPLOY', 50, 320);
+
+      // Accent text
+      ctx.font = 'bold 60px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('IN 5 MINUTES', 50, 420);
+
+      // Logo in bottom right corner
+      // Logo removed - drawLogo(ctx, canvas.width - 130, canvas.height - 130, 120);
+      
+      // Virtual Life branding
+      ctx.font = '40px Orbitron';
+      ctx.fillStyle = '#FF00CC';
+      ctx.textAlign = 'right';
+      ctx.fillText('VIRTUAL LIFE', canvas.width - 170, canvas.height - 50);
+
+      // Play button hint
+      ctx.beginPath();
+      ctx.moveTo(canvas.width - 200, 100);
+      ctx.lineTo(canvas.width - 150, 130);
+      ctx.lineTo(canvas.width - 200, 160);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
+      ctx.fill();
+    }
+
+    // YouTube Channel Art with Logo and Sentient Background
+    function drawYouTubeChannelArt() {
+      const canvas = document.getElementById('yt-channel-art');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 2560;
+      canvas.height = 1440;
+
+      // Epic gradient background
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#000000');
+      gradient.addColorStop(0.25, '#1a0033');
+      gradient.addColorStop(0.5, '#330066');
+      gradient.addColorStop(0.75, '#1a0033');
+      gradient.addColorStop(1, '#000000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw sentient background
+      drawSentientBackground(ctx, canvas, 2);
+
+      // Draw additional orbs for depth
+      drawSentientOrbs(ctx, canvas.width, canvas.height, 0.15);
+
+      // Safe area indicators (for TV display)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([10, 10]);
+      // TV safe area
+      ctx.strokeRect(507, 150, 1546, 423);
+      // Desktop/tablet safe area
+      ctx.strokeRect(507, 150, 1546, 423);
+      ctx.setLineDash([]);
+
+      // Draw large logo centered above text
+      // Logo removed - drawLogo(ctx, canvas.width / 2, canvas.height / 2 - 150, 200);
+
+      // Main branding text (adjusted for no logo)
+      ctx.font = 'bold 180px Orbitron';
+      const titleGradient = ctx.createLinearGradient(0, canvas.height/2 - 100, 0, canvas.height/2 + 100);
+      titleGradient.addColorStop(0, '#00C8FF');
+      titleGradient.addColorStop(0.5, '#FF00CC');
+      titleGradient.addColorStop(1, '#00C8FF');
+      ctx.fillStyle = titleGradient;
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 50;
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2 - 50);
+
+      // Tagline
+      ctx.font = '60px Inter';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowBlur = 20;
+      ctx.textAlign = 'center';
+      ctx.fillText('INNOVATIVE DIGITAL SOLUTIONS', canvas.width / 2, canvas.height / 2 + 50);
+
+      // Services icons and text
+      ctx.font = '45px Inter';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'center';
+      ctx.fillText('CLOUD • AI • MOBILE • WEB • INFRASTRUCTURE', canvas.width / 2, canvas.height / 2 + 130);
+
+      // Social media handles (bottom area)
+      ctx.font = '35px monospace';
+      ctx.fillStyle = '#9900FF';
+      ctx.fillText('@virtuallife | virtual-life.co.za', canvas.width / 2, canvas.height - 200);
+
+      // Decorative elements
+      // Left side circuit pattern
+      ctx.strokeStyle = 'rgba(0, 200, 255, 0.3)';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 5; i++) {
+        const y = 300 + i * 150;
+        ctx.beginPath();
+        ctx.moveTo(100, y);
+        ctx.lineTo(300, y);
+        ctx.lineTo(350, y + 50);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(350, y + 50, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#00C8FF';
+        ctx.fill();
+      }
+
+      // Right side circuit pattern
+      for (let i = 0; i < 5; i++) {
+        const y = 300 + i * 150;
+        ctx.beginPath();
+        ctx.moveTo(canvas.width - 100, y);
+        ctx.lineTo(canvas.width - 300, y);
+        ctx.lineTo(canvas.width - 350, y - 50);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(canvas.width - 350, y - 50, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#FF00CC';
+        ctx.fill();
+      }
+    }
+
+    // YouTube Thumbnail 2
+    function drawYouTubeThumbnail2() {
+      const canvas = document.getElementById('yt-thumb-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1280;
+      canvas.height = 720;
+
+      // Gradient explosion background
+      const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+      gradient.addColorStop(0, '#FF00CC');
+      gradient.addColorStop(0.3, '#9900FF');
+      gradient.addColorStop(0.6, '#00C8FF');
+      gradient.addColorStop(1, '#000000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient orbs
+      drawSentientOrbs(ctx, canvas.width, canvas.height, 0.15);
+
+      // Dark overlay for text
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Logo in corner
+      // Logo removed - drawLogo(ctx, canvas.width - 150, 150, 140);
+
+      // NEW badge
+      ctx.save();
+      ctx.translate(100, 100);
+      ctx.rotate(-15 * Math.PI / 180);
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(-60, -30, 120, 60);
+      ctx.font = 'bold 30px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.fillText('NEW!', 0, 10);
+      ctx.restore();
+
+      // Main announcement
+      ctx.font = 'bold 120px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = '#FF00CC';
+      ctx.shadowBlur = 40;
+      ctx.textAlign = 'center';
+      ctx.fillText('AI LAUNCH', canvas.width / 2, canvas.height / 2);
+
+      // Subtitle
+      ctx.font = '50px Inter';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('Revolutionary Features', canvas.width / 2, canvas.height / 2 + 80);
+
+      // Virtual Life
+      ctx.font = '35px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillText('VIRTUAL LIFE SOLUTIONS', canvas.width / 2, canvas.height - 100);
+    }
+
+    // Instagram Story 1
+    function drawInstagramStory1() {
+      const canvas = document.getElementById('ig-story-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1080;
+      canvas.height = 1920;
+
+      // Vertical gradient
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, '#00C8FF');
+      gradient.addColorStop(0.5, '#000000');
+      gradient.addColorStop(1, '#9900FF');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Dark overlay
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Top section
+      ctx.font = 'bold 80px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 30;
+      ctx.fillText('VIRTUAL', canvas.width / 2, 300);
+      ctx.fillText('LIFE', canvas.width / 2, 400);
+
+      // Middle section - services
+      ctx.font = '40px Inter';
+      ctx.fillStyle = '#00C8FF';
+      const services = ['CLOUD SOLUTIONS', 'AI INTEGRATION', 'MOBILE APPS', 'WEB DEVELOPMENT'];
+      services.forEach((service, index) => {
+        ctx.fillText(service, canvas.width / 2, 800 + (index * 80));
+      });
+
+      // Bottom CTA
+      ctx.fillStyle = '#FF00CC';
+      ctx.fillRect(100, canvas.height - 400, canvas.width - 200, 150);
+      ctx.font = 'bold 50px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillText('SWIPE UP', canvas.width / 2, canvas.height - 330);
+
+      // Website
+      ctx.font = '30px monospace';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('virtual-life.co.za', canvas.width / 2, canvas.height - 150);
+    }
+
+    // Instagram Story 2 - Matrix style
+    function drawInstagramStory2() {
+      const canvas = document.getElementById('ig-story-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1080;
+      canvas.height = 1920;
+
+      // Black background
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Matrix rain
+      ctx.font = '20px monospace';
+      ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
+      for (let x = 0; x < canvas.width; x += 30) {
+        for (let y = 0; y < canvas.height; y += 30) {
+          ctx.fillText(Math.random() > 0.5 ? '0' : '1', x, y);
+        }
+      }
+
+      // Central message box
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillRect(50, canvas.height/2 - 400, canvas.width - 100, 800);
+      ctx.strokeStyle = '#00FF00';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(50, canvas.height/2 - 400, canvas.width - 100, 800);
+
+      // Message
+      ctx.font = 'bold 70px monospace';
+      ctx.fillStyle = '#00FF00';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#00FF00';
+      ctx.shadowBlur = 20;
+      ctx.fillText('</> CODE', canvas.width / 2, canvas.height / 2 - 200);
+      ctx.fillText('THE', canvas.width / 2, canvas.height / 2 - 100);
+      ctx.fillText('FUTURE', canvas.width / 2, canvas.height / 2);
+
+      // Virtual Life
+      ctx.font = '50px monospace';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2 + 200);
+    }
+
+    // Instagram Story 3 - Gradient wave
+    function drawInstagramStory3() {
+      const canvas = document.getElementById('ig-story-3');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1080;
+      canvas.height = 1920;
+
+      // Animated gradient background
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#FF00CC');
+      gradient.addColorStop(0.25, '#00C8FF');
+      gradient.addColorStop(0.5, '#9900FF');
+      gradient.addColorStop(0.75, '#00C8FF');
+      gradient.addColorStop(1, '#FF00CC');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Wave pattern overlay
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+      for (let y = 0; y < canvas.height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        for (let x = 0; x <= canvas.width; x += 10) {
+          ctx.lineTo(x, y + Math.sin(x * 0.01) * 20);
+        }
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Content
+      ctx.font = 'bold 90px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#000000';
+      ctx.shadowBlur = 10;
+      ctx.fillText('INNOVATE', canvas.width / 2, 400);
+
+      // Icons and services
+      ctx.font = '50px Inter';
+      const items = [
+        { icon: '☁️', text: 'CLOUD' },
+        { icon: '🤖', text: 'AI' },
+        { icon: '📱', text: 'MOBILE' },
+        { icon: '🌐', text: 'WEB' }
+      ];
+      items.forEach((item, index) => {
+        ctx.font = '60px sans-serif';
+        ctx.fillText(item.icon, canvas.width / 2 - 150, 800 + index * 150);
+        ctx.font = '50px Orbitron';
+        ctx.fillText(item.text, canvas.width / 2 + 50, 800 + index * 150);
+      });
+
+      // Bottom branding
+      ctx.font = 'bold 60px Orbitron';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height - 200);
+    }
+
+    // Discord Banner 1 with Logo
+    function drawDiscordBanner1() {
+      const canvas = document.getElementById('discord-banner-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 960;
+      canvas.height = 540;
+
+      // Gaming style gradient
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+      gradient.addColorStop(0, '#5865F2');
+      gradient.addColorStop(0.5, '#FF00CC');
+      gradient.addColorStop(1, '#00C8FF');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Dark overlay
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient background
+      drawSentientOrbs(ctx, canvas.width, canvas.height, 0.15);
+
+      // Hexagon pattern
+      for (let x = 0; x < canvas.width; x += 60) {
+        for (let y = 0; y < canvas.height; y += 60) {
+          ctx.strokeStyle = 'rgba(88, 101, 242, 0.3)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          for (let i = 0; i < 6; i++) {
+            const angle = (Math.PI / 3) * i;
+            const px = x + 20 * Math.cos(angle);
+            const py = y + 20 * Math.sin(angle);
+            if (i === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+          }
+          ctx.closePath();
+          ctx.stroke();
+        }
+      }
+
+      // Draw logo above text (increased size)
+      // Logo removed - drawLogo(ctx, canvas.width / 2, canvas.height / 2 - 100, 140);
+
+      // Server name (adjusted position without logo)
+      ctx.font = 'bold 70px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#5865F2';
+      ctx.shadowBlur = 30;
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2 - 20);
+
+      // Tagline
+      ctx.font = '30px Inter';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('Tech Community Hub', canvas.width / 2, canvas.height / 2 + 30);
+    }
+
+    // Discord Banner 2
+    function drawDiscordBanner2() {
+      const canvas = document.getElementById('discord-banner-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 960;
+      canvas.height = 540;
+
+      // Tech community style
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Grid background
+      ctx.strokeStyle = 'rgba(0, 200, 255, 0.1)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 30) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 30) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Center glow
+      const glow = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 300);
+      glow.addColorStop(0, 'rgba(0, 200, 255, 0.3)');
+      glow.addColorStop(1, 'rgba(0, 200, 255, 0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Text
+      ctx.font = 'bold 60px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 20;
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2 - 20);
+
+      // Icons
+      ctx.font = '25px Inter';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillText('💻 CODE • 🚀 DEPLOY • 🤖 INNOVATE', canvas.width / 2, canvas.height / 2 + 40);
+    }
+
+    // Pinterest Pin 1
+    function drawPinterestPin1() {
+      const canvas = document.getElementById('pinterest-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1000;
+      canvas.height = 1500;
+
+      // Background
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, '#111827');
+      gradient.addColorStop(1, '#000000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient background
+      drawSentientBackground(ctx, canvas.width, canvas.height, 0.1);
+
+      // Title section with logo
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillRect(0, 0, canvas.width, 200);
+      
+      // Draw logo in title section
+      // Logo removed - drawLogo(ctx, 170, 100, 120);
+      
+      ctx.font = 'bold 60px Orbitron';
+      ctx.fillStyle = '#000000';
+      ctx.textAlign = 'center';
+      ctx.fillText('TECH TIPS', canvas.width / 2 + 50, 130);
+
+      // Tips list
+      ctx.font = 'bold 45px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'left';
+      const tips = [
+        '1. AUTOMATE',
+        '2. CONTAINERIZE',
+        '3. MONITOR',
+        '4. OPTIMIZE',
+        '5. SCALE'
+      ];
+      tips.forEach((tip, index) => {
+        ctx.fillText(tip, 100, 400 + index * 150);
+        ctx.font = '25px Inter';
+        ctx.fillStyle = '#FFFFFF';
+        const descriptions = [
+          'Infrastructure as Code',
+          'Docker & Kubernetes',
+          'Real-time Analytics',
+          'Performance Tuning',
+          'Cloud Architecture'
+        ];
+        ctx.fillText(descriptions[index], 100, 440 + index * 150);
+        ctx.font = 'bold 45px Orbitron';
+        ctx.fillStyle = '#00C8FF';
+      });
+
+      // Bottom branding
+      ctx.fillStyle = '#FF00CC';
+      ctx.fillRect(0, canvas.height - 150, canvas.width, 150);
+      ctx.font = 'bold 40px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height - 60);
+    }
+
+    // Pinterest Pin 2
+    function drawPinterestPin2() {
+      const canvas = document.getElementById('pinterest-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1000;
+      canvas.height = 1500;
+
+      // Gradient background
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#FF00CC');
+      gradient.addColorStop(0.5, '#9900FF');
+      gradient.addColorStop(1, '#00C8FF');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient orbs
+      drawSentientOrbs(ctx, canvas.width, canvas.height, 0.15);
+
+      // Dark overlay
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillRect(50, 50, canvas.width - 100, canvas.height - 100);
+
+      // Logo at top
+      // Logo removed - drawLogo(ctx, canvas.width / 2, 140, 130);
+
+      // Infographic style
+      ctx.font = 'bold 50px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.fillText('OUR PROCESS', canvas.width / 2, 250);
+
+      // Process steps with icons
+      const steps = [
+        { num: '01', title: 'DISCOVER', icon: '🔍' },
+        { num: '02', title: 'DESIGN', icon: '✏️' },
+        { num: '03', title: 'DEVELOP', icon: '💻' },
+        { num: '04', title: 'DEPLOY', icon: '🚀' },
+        { num: '05', title: 'DELIVER', icon: '✅' }
+      ];
+
+      steps.forEach((step, index) => {
+        const y = 350 + index * 200;
+        
+        // Number
+        ctx.font = 'bold 60px Orbitron';
+        ctx.fillStyle = '#00C8FF';
+        ctx.textAlign = 'left';
+        ctx.fillText(step.num, 150, y);
+        
+        // Icon
+        ctx.font = '50px sans-serif';
+        ctx.fillText(step.icon, 280, y - 5);
+        
+        // Title
+        ctx.font = 'bold 40px Orbitron';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(step.title, 380, y);
+      });
+
+      // Virtual Life
+      ctx.font = 'bold 45px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'center';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height - 100);
+    }
+
+    // Pinterest Pin 3
+    function drawPinterestPin3() {
+      const canvas = document.getElementById('pinterest-3');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1000;
+      canvas.height = 1500;
+
+      // Black background
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient background
+      drawSentientBackground(ctx, canvas.width, canvas.height, 0.08);
+
+      // Border frame
+      ctx.strokeStyle = '#00C8FF';
+      ctx.lineWidth = 5;
+      ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
+
+      // Logo at top
+      // Logo removed - drawLogo(ctx, canvas.width / 2, 120, 120);
+
+      // Header
+      ctx.font = 'bold 55px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'center';
+      ctx.fillText('SERVICES', canvas.width / 2, 200);
+
+      // Service boxes
+      const services = [
+        { title: 'CLOUD', desc: 'Azure Architecture', color: '#00C8FF' },
+        { title: 'AI', desc: 'Smart Integration', color: '#FF00CC' },
+        { title: 'MOBILE', desc: 'Flutter Apps', color: '#9900FF' },
+        { title: 'WEB', desc: 'Modern Sites', color: '#00FF00' },
+        { title: 'IAC', desc: 'Terraform', color: '#FF6B00' }
+      ];
+
+      services.forEach((service, index) => {
+        const y = 280 + index * 220;
+        
+        // Box
+        ctx.fillStyle = service.color;
+        ctx.fillRect(100, y, canvas.width - 200, 180);
+        
+        // Dark overlay
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        ctx.fillRect(100, y, canvas.width - 200, 180);
+        
+        // Border
+        ctx.strokeStyle = service.color;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(100, y, canvas.width - 200, 180);
+        
+        // Text
+        ctx.font = 'bold 45px Orbitron';
+        ctx.fillStyle = service.color;
+        ctx.textAlign = 'center';
+        ctx.fillText(service.title, canvas.width / 2, y + 70);
+        
+        ctx.font = '28px Inter';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(service.desc, canvas.width / 2, y + 120);
+      });
+
+      // Footer
+      ctx.font = 'bold 40px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height - 80);
+    }
+
+    // Email Header 1
+    function drawEmailHeader1() {
+      const canvas = document.getElementById('email-header-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 600;
+      canvas.height = 200;
+
+      // Professional gradient
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+      gradient.addColorStop(0, '#111827');
+      gradient.addColorStop(0.5, '#1a1a2e');
+      gradient.addColorStop(1, '#111827');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Subtle grid
+      ctx.strokeStyle = 'rgba(0, 200, 255, 0.05)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 20) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+
+      // Logo and text
+      ctx.font = 'bold 35px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'left';
+      ctx.fillText('VIRTUAL LIFE', 30, 80);
+
+      ctx.font = '18px Inter';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillText('Innovative Digital Solutions', 30, 110);
+
+      // Contact info
+      ctx.font = '14px monospace';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'right';
+      ctx.fillText('virtual-life.co.za', canvas.width - 30, 150);
+      ctx.fillText('office@virtual-life.co.za', canvas.width - 30, 170);
+    }
+
+    // Email Header 2
+    function drawEmailHeader2() {
+      const canvas = document.getElementById('email-header-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 600;
+      canvas.height = 200;
+
+      // Newsletter style gradient
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#00C8FF');
+      gradient.addColorStop(1, '#9900FF');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Dark overlay
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Newsletter text
+      ctx.font = 'bold 40px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 20;
+      ctx.fillText('TECH UPDATE', canvas.width / 2, 80);
+
+      // Virtual Life branding
+      ctx.font = '25px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, 130);
+
+      // Decorative line
+      ctx.strokeStyle = '#00C8FF';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(100, 150);
+      ctx.lineTo(canvas.width - 100, 150);
+      ctx.stroke();
+    }
+
+    // YouTube Thumbnail 3 - Coding Tutorial
+    function drawYouTubeThumbnail3() {
+      const canvas = document.getElementById('yt-thumb-3');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1280;
+      canvas.height = 720;
+
+      // Dark code editor background
+      ctx.fillStyle = '#1e1e1e';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add subtle sentient background
+      drawSentientBackground(ctx, canvas.width, canvas.height, 0.05);
+
+      // Code lines effect
+      ctx.font = '14px monospace';
+      const codeColors = ['#569cd6', '#4ec9b0', '#dcdcaa', '#ce9178', '#b5cea8'];
+      for (let y = 20; y < canvas.height; y += 20) {
+        ctx.fillStyle = codeColors[Math.floor(Math.random() * codeColors.length)];
+        ctx.globalAlpha = 0.3;
+        const codeLength = Math.random() * 500 + 100;
+        ctx.fillRect(50, y, codeLength, 2);
+      }
+      ctx.globalAlpha = 1;
+
+      // Terminal window
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+      ctx.fillRect(50, 50, 600, 400);
+      ctx.strokeStyle = '#00FF00';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(50, 50, 600, 400);
+
+      // Terminal header
+      ctx.fillStyle = '#333333';
+      ctx.fillRect(50, 50, 600, 30);
+      ctx.fillStyle = '#FF0000';
+      ctx.beginPath();
+      ctx.arc(70, 65, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#FFFF00';
+      ctx.beginPath();
+      ctx.arc(90, 65, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#00FF00';
+      ctx.beginPath();
+      ctx.arc(110, 65, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Code text
+      ctx.font = 'bold 60px monospace';
+      ctx.fillStyle = '#00FF00';
+      ctx.shadowColor = '#00FF00';
+      ctx.shadowBlur = 20;
+      ctx.fillText('</> FLUTTER', 100, 200);
+      ctx.fillText('TUTORIAL', 100, 280);
+
+      // Right side text
+      ctx.font = 'bold 80px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'right';
+      ctx.fillText('BUILD', canvas.width - 100, 250);
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('APPS', canvas.width - 100, 350);
+      ctx.fillStyle = '#FF00CC';
+      ctx.fillText('FAST', canvas.width - 100, 450);
+
+      // Logo in corner (good size to avoid pixelation)
+      // Logo removed - drawLogo(ctx, 120, canvas.height - 120, 100);
+      
+      // Virtual Life branding
+      ctx.font = '30px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'center';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height - 50);
+    }
+
+    // YouTube Thumbnail 4 - Live Stream
+    function drawYouTubeThumbnail4() {
+      const canvas = document.getElementById('yt-thumb-4');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1280;
+      canvas.height = 720;
+
+      // Animated background gradient
+      const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+      gradient.addColorStop(0, '#FF0000');
+      gradient.addColorStop(0.5, '#000000');
+      gradient.addColorStop(1, '#FF0000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Live indicator
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(50, 50, 150, 60);
+      ctx.font = 'bold 35px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.fillText('● LIVE', 125, 90);
+
+      // Pulse effect circles
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.arc(canvas.width/2, canvas.height/2, 100 + i * 50, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255, 0, 0, ${0.3 - i * 0.1})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+
+      // Main text
+      ctx.font = 'bold 100px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#FF0000';
+      ctx.shadowBlur = 40;
+      ctx.fillText('LIVE CODING', canvas.width / 2, canvas.height / 2);
+
+      // Subtitle
+      ctx.font = '40px Inter';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('Building Cloud Infrastructure', canvas.width / 2, canvas.height / 2 + 80);
+
+      // Time and viewers
+      ctx.font = '30px monospace';
+      ctx.fillStyle = '#FFFFFF';
+      // Logo at bottom right
+      // Logo removed - drawLogo(ctx, canvas.width - 130, canvas.height - 130, 110);
+      
+      ctx.textAlign = 'left';
+      ctx.fillText('🔴 2.5K watching', 50, canvas.height - 50);
+      ctx.textAlign = 'right';
+      ctx.fillText('VIRTUAL LIFE', canvas.width - 180, canvas.height - 50);
+    }
+
+    // YouTube End Screen 1 - Subscribe
+    function drawYouTubeEndScreen1() {
+      const canvas = document.getElementById('yt-end-screen-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1920;
+      canvas.height = 1080;
+
+      // Dark gradient background
+      const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width/2);
+      gradient.addColorStop(0, '#111827');
+      gradient.addColorStop(1, '#000000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Grid overlay
+      ctx.strokeStyle = 'rgba(0, 200, 255, 0.1)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 50) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 50) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Subscribe button area
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(canvas.width/2 - 200, canvas.height/2 - 60, 400, 120);
+      ctx.font = 'bold 50px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.fillText('SUBSCRIBE', canvas.width / 2, canvas.height / 2 + 15);
+
+      // Video suggestion boxes (left)
+      ctx.strokeStyle = '#00C8FF';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(100, 200, 350, 200);
+      ctx.font = '20px Inter';
+      ctx.fillStyle = '#00C8FF';
+      ctx.textAlign = 'left';
+      ctx.fillText('NEXT VIDEO', 120, 180);
+
+      // Video suggestion boxes (right)
+      ctx.strokeRect(canvas.width - 450, 200, 350, 200);
+      ctx.textAlign = 'right';
+      ctx.fillText('RECOMMENDED', canvas.width - 120, 180);
+
+      // Logo at top
+      // Logo removed - drawLogo(ctx, canvas.width / 2, 100, 140);
+
+      // Thanks message
+      ctx.font = 'bold 70px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 30;
+      ctx.fillText('THANKS FOR WATCHING!', canvas.width / 2, 200);
+
+      // Virtual Life branding
+      ctx.font = '40px Orbitron';
+      ctx.fillStyle = '#FF00CC';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height - 150);
+      ctx.font = '25px monospace';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('virtual-life.co.za', canvas.width / 2, canvas.height - 100);
+    }
+
+    // YouTube End Screen 2 - Next Video
+    function drawYouTubeEndScreen2() {
+      const canvas = document.getElementById('yt-end-screen-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1920;
+      canvas.height = 1080;
+
+      // Gradient background
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#FF00CC');
+      gradient.addColorStop(0.5, '#000000');
+      gradient.addColorStop(1, '#00C8FF');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Dark overlay
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Main container
+      ctx.fillStyle = 'rgba(17, 24, 39, 0.9)';
+      ctx.fillRect(100, 100, canvas.width - 200, canvas.height - 200);
+      ctx.strokeStyle = '#00C8FF';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(100, 100, canvas.width - 200, canvas.height - 200);
+
+      // Title
+      ctx.font = 'bold 60px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.fillText('WATCH NEXT', canvas.width / 2, 250);
+
+      // Video cards
+      const cardWidth = 400;
+      const cardHeight = 225;
+      const cards = [
+        { x: 250, y: 350, title: 'CLOUD DEPLOY' },
+        { x: 760, y: 350, title: 'AI INTEGRATION' },
+        { x: 1270, y: 350, title: 'FLUTTER APPS' }
+      ];
+
+      cards.forEach(card => {
+        // Card background
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(card.x, card.y, cardWidth, cardHeight);
+        ctx.strokeStyle = '#FF00CC';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(card.x, card.y, cardWidth, cardHeight);
+
+        // Card title
+        ctx.font = 'bold 25px Orbitron';
+        ctx.fillStyle = '#00C8FF';
+        ctx.textAlign = 'center';
+        ctx.fillText(card.title, card.x + cardWidth/2, card.y + cardHeight/2);
+
+        // Play button
+        ctx.beginPath();
+        ctx.moveTo(card.x + cardWidth/2 - 20, card.y + cardHeight/2 + 30);
+        ctx.lineTo(card.x + cardWidth/2 + 20, card.y + cardHeight/2 + 50);
+        ctx.lineTo(card.x + cardWidth/2 - 20, card.y + cardHeight/2 + 70);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.fill();
+      });
+
+      // Subscribe reminder
+      ctx.font = '35px Inter';
+      ctx.fillStyle = '#FF0000';
+      ctx.fillText('Don\'t forget to SUBSCRIBE!', canvas.width / 2, 700);
+
+      // Logo at bottom
+      // Logo removed - drawLogo(ctx, canvas.width / 2, canvas.height - 140, 120);
+
+      // Virtual Life
+      ctx.font = '40px Orbitron';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('VIRTUAL LIFE SOLUTIONS', canvas.width / 2, canvas.height - 180);
+    }
+
+    // YouTube Intro 1
+    function drawYouTubeIntro1() {
+      const canvas = document.getElementById('yt-intro-1');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1920;
+      canvas.height = 1080;
+
+      // Black background
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient background
+      drawSentientBackground(ctx, canvas.width, canvas.height, 0.1);
+
+      // Animated lines effect
+      for (let i = 0; i < 20; i++) {
+        const y = Math.random() * canvas.height;
+        const width = Math.random() * canvas.width;
+        const gradient = ctx.createLinearGradient(0, y, width, y);
+        gradient.addColorStop(0, 'transparent');
+        gradient.addColorStop(0.5, '#00C8FF');
+        gradient.addColorStop(1, 'transparent');
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = Math.random() * 3;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      // Center logo area
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+      ctx.fillRect(canvas.width/2 - 400, canvas.height/2 - 200, 800, 400);
+
+      // Logo at center
+      // Logo removed - drawLogo(ctx, canvas.width / 2, canvas.height / 2 - 120, 160);
+
+      // Logo text with glitch effect
+      ctx.font = 'bold 120px Orbitron';
+      ctx.textAlign = 'center';
+      
+      // Glitch layers
+      ctx.fillStyle = '#FF00CC';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2 + 5, canvas.height / 2 + 50);
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2 - 5, canvas.height / 2 + 50);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillText('VIRTUAL LIFE', canvas.width / 2, canvas.height / 2 + 50);
+
+      // Subtitle
+      ctx.font = '30px Inter';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('PRESENTS', canvas.width / 2, canvas.height / 2 + 80);
+
+      // Corner elements
+      ctx.strokeStyle = '#00C8FF';
+      ctx.lineWidth = 3;
+      // Top left
+      ctx.beginPath();
+      ctx.moveTo(50, 50);
+      ctx.lineTo(150, 50);
+      ctx.moveTo(50, 50);
+      ctx.lineTo(50, 150);
+      ctx.stroke();
+      // Bottom right
+      ctx.beginPath();
+      ctx.moveTo(canvas.width - 50, canvas.height - 50);
+      ctx.lineTo(canvas.width - 150, canvas.height - 50);
+      ctx.moveTo(canvas.width - 50, canvas.height - 50);
+      ctx.lineTo(canvas.width - 50, canvas.height - 150);
+      ctx.stroke();
+    }
+
+    // YouTube Intro 2
+    function drawYouTubeIntro2() {
+      const canvas = document.getElementById('yt-intro-2');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 1920;
+      canvas.height = 1080;
+
+      // Tech grid background
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, '#1a0033');
+      gradient.addColorStop(1, '#000000');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add sentient orbs
+      drawSentientOrbs(ctx, canvas.width, canvas.height, 0.1);
+
+      // Grid lines
+      ctx.strokeStyle = 'rgba(0, 200, 255, 0.2)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Center hexagon
+      ctx.strokeStyle = '#00C8FF';
+      ctx.lineWidth = 4;
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 20;
+      ctx.beginPath();
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = 200;
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+
+      // Inner hexagon
+      ctx.strokeStyle = '#FF00CC';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i;
+        const x = centerX + (radius * 0.7) * Math.cos(angle);
+        const y = centerY + (radius * 0.7) * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+
+      // Logo in hexagon (increased size)
+      // Logo removed - drawLogo(ctx, canvas.width / 2, canvas.height / 2 - 100, 140);
+
+      // Logo text
+      ctx.font = 'bold 80px Orbitron';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#00C8FF';
+      ctx.shadowBlur = 30;
+      ctx.fillText('VIRTUAL', canvas.width / 2, canvas.height / 2 + 40);
+      ctx.fillText('LIFE', canvas.width / 2, canvas.height / 2 + 120);
+
+      // Tech tagline
+      ctx.font = '25px monospace';
+      ctx.fillStyle = '#00C8FF';
+      ctx.fillText('< INNOVATIVE SOLUTIONS />', canvas.width / 2, canvas.height / 2 + 150);
+    }
+
+    // Initialize all banners
+    function initBanners() {
+      drawFacebookBanner1();
+      drawFacebookBanner2();
+      drawTwitterBanner1();
+      drawTwitterBanner2();
+      drawLinkedInBanner1();
+      drawLinkedInBanner2();
+      drawInstagramPost1();
+      drawInstagramPost2();
+      drawYouTubeChannelArt();
+      drawYouTubeThumbnail1();
+      drawYouTubeThumbnail2();
+      drawYouTubeThumbnail3();
+      drawYouTubeThumbnail4();
+      drawYouTubeEndScreen1();
+      drawYouTubeEndScreen2();
+      drawYouTubeIntro1();
+      drawYouTubeIntro2();
+      drawInstagramStory1();
+      drawInstagramStory2();
+      drawInstagramStory3();
+      drawDiscordBanner1();
+      drawDiscordBanner2();
+      drawPinterestPin1();
+      drawPinterestPin2();
+      drawPinterestPin3();
+      drawEmailHeader1();
+      drawEmailHeader2();
+    }
+
+    // Download function
+    function downloadBanner(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = `virtual-life-${canvasId}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // Initialize on load with delay for images
+    window.addEventListener('load', () => {
+      // Wait for images to load
+      Promise.all([
+        new Promise(resolve => {
+          if (logoImg.complete) resolve();
+          else logoImg.onload = resolve;
+        }),
+        new Promise(resolve => {
+          if (sentientImg1.complete) resolve();
+          else sentientImg1.onload = resolve;
+        }),
+        new Promise(resolve => {
+          if (sentientImg2.complete) resolve();
+          else sentientImg2.onload = resolve;
+        })
+      ]).then(() => {
+        initBanners();
+      }).catch(() => {
+        // Initialize anyway if images fail to load
+        initBanners();
+      });
+    });
+  </script>
+</body>
+</html>

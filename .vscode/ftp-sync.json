@@ -1,0 +1,44 @@
+{
+  "remotePath": "/virtual-life.co.za/",
+  "host": "41.185.13.154",
+  "username": "virtuall",
+  "password": "",
+  "port": 21,
+  "secure": false,
+  "protocol": "ftp",
+  "uploadOnSave": false,
+  "passive": true,
+  "debug": false,
+  "privateKeyPath": null,
+  "passphrase": null,
+  "agent": null,
+  "allow": [],
+  "ignore": [
+    "\\.vscode",
+    "\\.git",
+    "\\.gitignore",
+    "node_modules",
+    ".DS_Store",
+    "*.log",
+    "CLAUDE.md",
+    "${input"
+  ],
+  "generatedFiles": {
+    "extensionsToInclude": [
+      ".html",
+      ".css",
+      ".js",
+      ".png",
+      ".jpg",
+      ".jpeg",
+      ".gif",
+      ".svg",
+      ".ico",
+      ".woff",
+      ".woff2",
+      ".ttf",
+      ".eot"
+    ],
+    "path": ""
+  }
+}

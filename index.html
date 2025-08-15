@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Virtual Life - Innovative Digital Solutions</title>
+  <!-- Favicon - Lightning Cloud Emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌩️</text></svg>">
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- FontAwesome -->
@@ -16,7 +18,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">
-        <div class="navbar-logo-wrapper">
+        <div class="navbar-logo-wrapper" onclick="window.location.href='sheep_rumble.html'; event.stopPropagation();" style="cursor: pointer;">
           <img src="images/vlLogo.png" alt="Virtual Life Solutions Logo" height="50">
           <div class="logo-pulse-bg"></div>
         </div>
@@ -72,7 +74,7 @@
       </defs>
     </svg>
     <div class="container text-center hero-content">
-      <h1 class="display-4 mb-4 hero-shimmer" data-text="Build It Right. Deploy It Fast.">Build It Right. Deploy It Fast.</h1>
+      <h1 class="display-4 mb-4 hero-shimmer" data-text="Dream It. Build It. Launch It.">Dream It. Build It. Launch It.</h1>
       <p class="lead mb-5 data-stream">From mobile apps to cloud infrastructure - we turn your vision into production-ready reality.</p>
       <div class="d-flex justify-content-center gap-3">
         <a href="#services" class="btn btn-glow btn-primary btn-lg">See What We Build</a>
@@ -244,10 +246,9 @@
             <p><i class="fas fa-map-marker-alt me-2"></i> 75 Country Walk, Mooikloof Ridge Estate, Pretoria East, South Africa</p>
             <p><i class="fas fa-phone me-2"></i> <a href="tel:+27743488311">(074) 348-8311</a></p>
             <p><i class="fas fa-envelope me-2"></i> <a href="mailto:office@virtual-life.co.za">office@virtual-life.co.za</a></p>
-            <p><i class="fas fa-globe me-2"></i> <a href="http://www.virtual-life.co.za" target="_blank">www.virtual-life.co.za</a></p>
+            <p><i class="fas fa-globe me-2"></i> <a href="https://www.virtual-life.co.za" target="_blank">www.virtual-life.co.za</a></p>
             <div class="social-links mt-4">
               <a href="#" class="me-3" target="_blank"><i class="fab fa-facebook fa-2x"></i></a>
-              <a href="#" class="me-3" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
               <a href="#" class="me-3" target="_blank"><i class="fab fa-linkedin fa-2x"></i></a>
             </div>
           </div>
@@ -317,16 +318,16 @@
       // Neural network nodes
       const nodes = [];
       const connections = [];
-      const nodeCount = 15;
+      const nodeCount = 25; // Increased from 15
 
       // Create nodes
       for (let i = 0; i < nodeCount; i++) {
         nodes.push({
           x: Math.random() * neuralCanvas.width,
           y: Math.random() * neuralCanvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          radius: Math.random() * 3 + 2,
+          vx: (Math.random() - 0.5) * 1.5, // Increased speed
+          vy: (Math.random() - 0.5) * 1.5, // Increased speed
+          radius: Math.random() * 5 + 4, // Bigger nodes
           pulsePhase: Math.random() * Math.PI * 2
         });
       }
@@ -341,21 +342,21 @@
             const dy = nodes[i].y - nodes[j].y;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance < 200) {
-              const opacity = (1 - distance / 200) * 0.4;
+            if (distance < 300) { // Increased connection distance
+              const opacity = (1 - distance / 300) * 0.8; // Much more visible
               const gradient = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
               gradient.addColorStop(0, `rgba(255, 0, 255, ${opacity})`);
-              gradient.addColorStop(0.5, `rgba(255, 107, 0, ${opacity * 0.8})`);
+              gradient.addColorStop(0.5, `rgba(255, 107, 0, ${opacity})`);
               gradient.addColorStop(1, `rgba(0, 212, 255, ${opacity})`);
               ctx.strokeStyle = gradient;
-              ctx.lineWidth = 1.5;
+              ctx.lineWidth = 2.5; // Thicker lines
               ctx.beginPath();
               ctx.moveTo(nodes[i].x, nodes[i].y);
               ctx.lineTo(nodes[j].x, nodes[j].y);
               ctx.stroke();
 
               // Data packets
-              if (Math.random() < 0.01) {
+              if (Math.random() < 0.03) { // More frequent packets
                 const packet = {
                   x: nodes[i].x,
                   y: nodes[i].y,
@@ -382,13 +383,13 @@
           const x = packet.x + (packet.targetX - packet.x) * packet.progress;
           const y = packet.y + (packet.targetY - packet.y) * packet.progress;
 
-          const glow = ctx.createRadialGradient(x, y, 0, x, y, 4);
+          const glow = ctx.createRadialGradient(x, y, 0, x, y, 8); // Bigger glow
           glow.addColorStop(0, 'rgba(255, 0, 255, 1)');
-          glow.addColorStop(0.5, 'rgba(255, 107, 0, 0.8)');
-          glow.addColorStop(1, 'rgba(0, 212, 255, 0.6)');
+          glow.addColorStop(0.3, 'rgba(255, 107, 0, 0.9)');
+          glow.addColorStop(1, 'rgba(0, 212, 255, 0.7)');
           ctx.fillStyle = glow;
           ctx.beginPath();
-          ctx.arc(x, y, 2, 0, Math.PI * 2);
+          ctx.arc(x, y, 4, 0, Math.PI * 2); // Bigger packet
           ctx.fill();
         }
 
@@ -409,17 +410,27 @@
           // Update pulse
           node.pulsePhase += 0.02;
 
-          // Draw node
+          // Draw node with stronger visibility
           const pulseSize = Math.sin(node.pulsePhase) * 0.5 + 1;
-          const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, node.radius * pulseSize * 3);
+          const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, node.radius * pulseSize * 4);
           gradient.addColorStop(0, 'rgba(255, 0, 255, 1)');
-          gradient.addColorStop(0.5, 'rgba(255, 107, 0, 0.8)');
-          gradient.addColorStop(1, 'rgba(0, 212, 255, 0.4)');
+          gradient.addColorStop(0.3, 'rgba(255, 107, 0, 1)');
+          gradient.addColorStop(0.6, 'rgba(0, 212, 255, 0.8)');
+          gradient.addColorStop(1, 'rgba(0, 212, 255, 0.3)');
           ctx.fillStyle = gradient;
-          ctx.shadowBlur = 30;
+          ctx.shadowBlur = 50; // Stronger shadow
           ctx.shadowColor = '#ff00ff';
           ctx.beginPath();
           ctx.arc(node.x, node.y, node.radius * pulseSize, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Add a bright core to each node
+          const coreGradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, node.radius * pulseSize * 0.5);
+          coreGradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+          coreGradient.addColorStop(1, 'rgba(255, 0, 255, 0.7)');
+          ctx.fillStyle = coreGradient;
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, node.radius * pulseSize * 0.5, 0, Math.PI * 2);
           ctx.fill();
           ctx.shadowBlur = 0;
         });
@@ -443,16 +454,16 @@
       dataCanvas.height = window.innerHeight;
 
       const dataStreams = [];
-      const streamCount = 5;
+      const streamCount = 12; // More streams
 
       class DataStream {
         constructor() {
           this.x = Math.random() * dataCanvas.width;
           this.y = 0;
-          this.speed = Math.random() * 2 + 1;
-          this.length = Math.random() * 100 + 50;
-          this.opacity = Math.random() * 0.5 + 0.5;
-          this.chars = '01';
+          this.speed = Math.random() * 3 + 2; // Faster
+          this.length = Math.random() * 150 + 100; // Longer trails
+          this.opacity = Math.random() * 0.7 + 0.6; // More visible
+          this.chars = '01101001';
         }
 
         update() {
@@ -466,15 +477,19 @@
         draw() {
           const gradient = ctx.createLinearGradient(this.x, this.y - this.length, this.x, this.y);
           gradient.addColorStop(0, 'rgba(0, 255, 224, 0)');
+          gradient.addColorStop(0.5, `rgba(0, 255, 224, ${this.opacity * 0.7})`);
           gradient.addColorStop(1, `rgba(0, 255, 224, ${this.opacity})`);
           
-          ctx.font = '10px monospace';
+          ctx.font = '14px monospace'; // Bigger font
           ctx.fillStyle = gradient;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = '#00ffe0';
           
-          for (let i = 0; i < this.length; i += 10) {
+          for (let i = 0; i < this.length; i += 15) {
             const char = this.chars[Math.floor(Math.random() * this.chars.length)];
             ctx.fillText(char, this.x, this.y - i);
           }
+          ctx.shadowBlur = 0;
         }
       }
 
