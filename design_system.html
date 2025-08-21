@@ -111,42 +111,84 @@
     <p>Our color palette is designed to create a cyberpunk aesthetic with neon accents against dark backgrounds.</p>
     
     <div class="component-demo">
-      <div class="color-swatch" style="background: var(--black);">
-        --black<br>#000000<br>Primary BG
+      <h4 style="color: var(--neon-blue);">Primary Colors</h4>
+      <div class="mb-4">
+        <div class="color-swatch" style="background: #000000;">
+          --black<br>#000000<br>Base
+        </div>
+        <div class="color-swatch" style="background: #0a0015;">
+          --deep-purple-bg<br>#0a0015<br>Primary BG
+        </div>
+        <div class="color-swatch" style="background: #1a0033;">
+          --grid-purple<br>#1a0033<br>Grid BG
+        </div>
+        <div class="color-swatch" style="background: #111827;">
+          --deep-navy<br>#111827<br>Cards
+        </div>
       </div>
-      <div class="color-swatch" style="background: var(--deep-navy);">
-        --deep-navy<br>#111827<br>Secondary BG
+      
+      <h4 style="color: var(--neon-blue);">Neon Accents</h4>
+      <div class="mb-4">
+        <div class="color-swatch" style="background: #ff00ff;">
+          --ai-primary<br>#ff00ff<br>Magenta
+        </div>
+        <div class="color-swatch" style="background: #00d4ff;">
+          --ai-secondary<br>#00d4ff<br>Cyan
+        </div>
+        <div class="color-swatch" style="background: #ff6b00;">
+          --ai-accent<br>#ff6b00<br>Orange
+        </div>
+        <div class="color-swatch" style="background: #9945ff;">
+          --electric-purple<br>#9945ff<br>Purple
+        </div>
+        <div class="color-swatch" style="background: #ff0099;">
+          --magenta-pink<br>#ff0099<br>Pink
+        </div>
+        <div class="color-swatch" style="background: #00ffff;">
+          --data-cyan<br>#00ffff<br>Bright Cyan
+        </div>
       </div>
-      <div class="color-swatch" style="background: var(--neon-blue);">
-        --neon-blue<br>#00C8FF<br>Primary Accent
-      </div>
-      <div class="color-swatch" style="background: var(--electric-purple);">
-        --electric-purple<br>#9900FF<br>Secondary Accent
-      </div>
-      <div class="color-swatch" style="background: var(--magenta-pink);">
-        --magenta-pink<br>#FF00CC<br>Highlight
-      </div>
-      <div class="color-swatch" style="background: var(--cyan-blue);">
-        --cyan-blue<br>#0099CC<br>Links
-      </div>
-      <div class="color-swatch" style="background: var(--light-gray);">
-        --light-gray<br>#CCCCCC<br>Text
-      </div>
-      <div class="color-swatch" style="background: var(--white);">
-        --white<br>#FFFFFF<br>Emphasis
+      
+      <h4 style="color: var(--neon-blue);">Text Colors</h4>
+      <div>
+        <div class="color-swatch" style="background: #e0d0ff;">
+          --light-gray<br>#e0d0ff<br>Body Text
+        </div>
+        <div class="color-swatch" style="background: #FFFFFF;">
+          --white<br>#FFFFFF<br>Headers
+        </div>
       </div>
     </div>
 
     <div class="code-block">
       :root {
+        /* Background Colors */
         --black: #000000;
+        --deep-purple-bg: #0a0015;
+        --grid-purple: #1a0033;
+        --neural-purple: #2a0845;
         --deep-navy: #111827;
-        --neon-blue: #00C8FF;
-        --electric-purple: #9900FF;
-        --magenta-pink: #FF00CC;
-        --cyan-blue: #0099CC;
-        --light-gray: #CCCCCC;
+        
+        /* Primary Neon Colors */
+        --ai-primary: #ff00ff;    /* Magenta */
+        --ai-secondary: #00d4ff;  /* Cyan */
+        --ai-accent: #ff6b00;     /* Orange */
+        
+        /* Additional Neons */
+        --electric-purple: #9945ff;
+        --magenta-pink: #ff0099;
+        --data-cyan: #00ffff;
+        --neon-blue: #00d4ff;
+        --hologram-blue: #0099ff;
+        
+        /* Text Colors */
+        --light-gray: #e0d0ff;
         --white: #FFFFFF;
+        
+        /* Effect Colors */
+        --ai-glow: #ff00aa;
+        --text-glow: #ff00ff;
+        --border-purple: #6600cc;
       }
     </div>
 
@@ -180,23 +222,39 @@
     <!-- Buttons -->
     <h3 class="subsection-title">Buttons</h3>
     <div class="component-demo">
-      <button class="btn btn-primary me-2">Primary Button</button>
-      <button class="btn btn-outline-light me-2">Secondary Button</button>
-      <button id="startGame" class="me-2">Game Button</button>
+      <button class="btn btn-glow me-2">Glow Button</button>
+      <button class="btn btn-pulse me-2">Pulse Button</button>
+      <button class="btn btn-outline-light me-2">Outline Button</button>
+      <button class="btn btn-explore me-2">
+        <span class="btn-text">Explore Button</span>
+        <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
+      </button>
     </div>
 
     <div class="code-block">
-      .btn-primary {
-        background: var(--neon-blue);
-        border: none;
-        box-shadow: 0 0 10px var(--neon-blue);
-        transition: all 0.3s ease;
+      /* Glow Button */
+      .btn-glow {
+        background: linear-gradient(135deg, #ff00ff, #ff6b00, #00d4ff);
+        box-shadow: 0 5px 30px rgba(255, 0, 255, 0.5);
       }
 
+      /* Pulse Button */
+      .btn-pulse {
+        animation: pulse 2s infinite;
+        border: 2px solid var(--neon-blue);
+        background: transparent;
+      }
+
+      /* Outline Button */
       .btn-outline-light {
-        border-color: var(--light-gray);
-        color: var(--light-gray);
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, rgba(10, 0, 21, 0.9), rgba(10, 0, 21, 0.9)) padding-box,
+          linear-gradient(135deg, #ff00ff, #ff6b00, #00d4ff) border-box;
+      }
+
+      /* Explore Button */
+      .btn-explore {
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 255, 0.1));
+        border: 2px solid transparent;
       }
     </div>
 
@@ -232,8 +290,17 @@
 
     <h3 class="subsection-title">Gradient Backgrounds</h3>
     <div class="code-block">
-      background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(17, 24, 39, 0.98));
-      background: linear-gradient(90deg, var(--neon-blue), var(--electric-purple));
+      /* Page Background */
+      background: linear-gradient(180deg, #0a0015 0%, #1a0033 100%);
+      
+      /* Hero Shimmer */
+      background: linear-gradient(135deg, #00d4ff 0%, #ff00ff 20%, #00ffff 40%, #ff6b00 60%);
+      
+      /* Card Gradients */
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.03), rgba(0, 255, 224, 0.03));
+      
+      /* Button Gradients */
+      background: linear-gradient(135deg, #ff00ff, #ff6b00, #00d4ff);
     </div>
 
     <!-- Animation Guidelines -->
@@ -246,12 +313,30 @@
       box-shadow: 0 0 20px var(--neon-blue);
     </div>
 
-    <h3 class="subsection-title">Loading Animations</h3>
+    <h3 class="subsection-title">Key Animations</h3>
     <div class="code-block">
-      @keyframes glow-pulse {
-        0% { opacity: 0.5; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.05); }
-        100% { opacity: 0.5; transform: scale(1); }
+      /* Hero Shimmer */
+      @keyframes heroShimmer {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+      
+      /* Glitch Effect */
+      @keyframes glitch {
+        0% { text-shadow: 0.02em 0 0 rgba(0, 245, 255, 0.7); }
+        50% { text-shadow: -0.02em 0 0 rgba(255, 0, 153, 0.7); }
+      }
+      
+      /* Pulse */
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(0, 212, 255, 0); }
+      }
+      
+      /* Float */
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
       }
     </div>
 
@@ -283,19 +368,107 @@
       };
     </div>
 
+    <!-- Special Effects -->
+    <h2 class="section-title">Special Effects</h2>
+    
+    <h3 class="subsection-title">Text Effects</h3>
+    <div class="component-demo">
+      <h4 class="hero-shimmer" data-text="Hero Shimmer">Hero Shimmer</h4>
+      <h4 class="ai-text" data-text="AI Glitch Text">AI Glitch Text</h4>
+      <h4 class="data-stream">Data Stream Effect</h4>
+      <h4 class="insight-icon-shimmer">Icon Shimmer</h4>
+    </div>
+    
+    <h3 class="subsection-title">Card Hover Effects</h3>
+    <div class="code-block">
+      /* Service Card Hover */
+      .service-card:hover {
+        transform: translateY(-15px) rotateX(-5deg) scale(1.05);
+        box-shadow: 0 30px 60px rgba(255, 0, 255, 0.4);
+      }
+      
+      /* Insight Card */
+      .insight-card {
+        background: rgba(255, 0, 255, 0.1);
+        border-left: 4px solid var(--ai-primary);
+      }
+    </div>
+    
+    <h3 class="subsection-title">Background Effects</h3>
+    <div class="code-block">
+      /* Scanline Overlay */
+      body::after {
+        background: linear-gradient(transparent 50%, rgba(0, 200, 255, 0.025) 50%);
+        background-size: 100% 4px;
+      }
+      
+      /* Neural Network Canvas */
+      #neuralCanvas { /* Dynamic particle system */ }
+      
+      /* Data Stream Canvas */
+      #dataStreamCanvas { /* Falling binary rain */ }
+    </div>
+
+    <!-- Component Library -->
+    <h2 class="section-title">Component Library</h2>
+    
+    <h3 class="subsection-title">Navigation</h3>
+    <div class="code-block">
+      /* Navbar */
+      .navbar {
+        background: rgba(10, 0, 21, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 20px rgba(255, 0, 255, 0.3);
+      }
+      
+      /* Logo Wrapper */
+      .navbar-logo-wrapper {
+        position: relative;
+        cursor: pointer;
+      }
+      
+      .logo-pulse-bg {
+        position: absolute;
+        animation: pulse 2s infinite;
+      }
+    </div>
+    
+    <h3 class="subsection-title">Hero Section</h3>
+    <div class="code-block">
+      /* Hero Content */
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        background: linear-gradient(180deg, #0a0015 0%, #1a0033 100%);
+      }
+      
+      /* Neural Nodes */
+      .neural-nodes .node {
+        position: absolute;
+        animation: float 6s ease-in-out infinite;
+      }
+    </div>
+
     <!-- Best Practices -->
     <h2 class="section-title">Best Practices</h2>
     <div class="component-demo">
       <ul class="list-unstyled">
         <li class="mb-3">✓ Always use CSS variables for consistent colors</li>
-        <li class="mb-3">✓ Maintain dark backgrounds with neon accents</li>
-        <li class="mb-3">✓ Include hover effects on interactive elements</li>
-        <li class="mb-3">✓ Use appropriate font families for different content types</li>
-        <li class="mb-3">✓ Implement smooth transitions and animations</li>
-        <li class="mb-3">✓ Ensure high contrast for readability</li>
-        <li class="mb-3">✓ Add subtle glow effects to important elements</li>
-        <li class="mb-3">✓ Use grid and perspective effects for depth</li>
+        <li class="mb-3">✓ Maintain dark backgrounds (#0a0015 to #1a0033) with neon accents</li>
+        <li class="mb-3">✓ Include hover effects on all interactive elements</li>
+        <li class="mb-3">✓ Use Orbitron for headers, Inter for body, Share Tech Mono for code</li>
+        <li class="mb-3">✓ Implement smooth transitions (0.3s to 0.8s cubic-bezier)</li>
+        <li class="mb-3">✓ Ensure high contrast (light text on dark backgrounds)</li>
+        <li class="mb-3">✓ Add glow effects using box-shadow and text-shadow</li>
+        <li class="mb-3">✓ Use multiple gradient layers for depth</li>
+        <li class="mb-3">✓ Include scanline and grid overlays for cyberpunk aesthetic</li>
+        <li class="mb-3">✓ Animate with GPU-accelerated transforms</li>
       </ul>
+    </div>
+    
+    <!-- Tagline -->
+    <div class="text-center my-5">
+      <h2 class="hero-shimmer" data-text="Dream It. Build It. Launch It.">Dream It. Build It. Launch It.</h2>
     </div>
   </div>
 
