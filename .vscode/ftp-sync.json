@@ -21,7 +21,14 @@
     ".DS_Store",
     "*.log",
     "CLAUDE.md",
-    "${input"
+    "${input",
+    // Exclude internal invoice generator from deploy
+    "invoice-generator.html",
+    "invoice-generator-clean.html",
+    "invoice-template.html",
+    "INVOICE-GENERATOR-SETUP.md",
+    // Never upload secured content by accident
+    "private"
   ],
   "generatedFiles": {
     "extensionsToInclude": [

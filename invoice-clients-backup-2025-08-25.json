@@ -1,0 +1,30 @@
+{
+  "clients": [
+    {
+      "id": "BH001",
+      "name": "",
+      "company": "Britehouse mobility (PTY) Ltd",
+      "address": "Private Bag 127",
+      "city": "Bryanston",
+      "state": "",
+      "zip": "2021",
+      "email": "",
+      "phone": "",
+      "rate": 412.8,
+      "code": "BH",
+      "vatNumber": "4130205356",
+      "regNumber": "1997/014442/07",
+      "vatRate": 0
+    }
+  ],
+  "invoiceNumbers": {
+    "BH": 118
+  },
+  "clientPeriods": {
+    "BH": {
+      "lastPeriodEnd": "2025-08-24"
+    }
+  },
+  "exportDate": "2025-08-25T22:56:18.515Z",
+  "version": "1.0"
+}

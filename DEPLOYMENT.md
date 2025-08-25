@@ -35,17 +35,47 @@ This website is configured to deploy to the Virtual Life FTP server at:
 ## Files Included in Deployment
 
 The deployment includes:
-- All HTML files (index.html, game.html, sheep_rumble.html, terms.html, design_system.html)
+- Public HTML files (index.html, game.html, sheep_rumble.html, terms.html, design_system.html)
 - CSS file (style.css)
 - Images (sentient.png, sentient2.png, vlLogo.png)
 - Templates directory
 - Images directory
+
+Excluded by default (internal tools):
+- `invoice-generator.html`
+- `invoice-generator-clean.html`
+- `invoice-template.html`
+- `INVOICE-GENERATOR-SETUP.md`
+
+These files are intentionally excluded from deployment for security/privacy. VS Code ftp-sync is configured to ignore them in `.vscode/ftp-sync.json`, and the PowerShell deployment scripts only upload a fixed allowlist that does not include them.
+
+If you ever need to publish the invoice tool, consider putting it behind HTTP authentication (see below) rather than making it publicly accessible.
 
 ## Security Notes
 
 - **Never commit your FTP password to version control**
 - The password field in `.vscode/ftp-sync.json` should remain empty
 - Always enter your password manually when deploying
+
+### Protecting Internal Pages (Optional)
+
+If you need to host internal tools (e.g., invoice generator) with access control:
+
+- Easiest (server-side) on Apache: move the tool into a subfolder (e.g., `/private/`) and place an `.htaccess` file requiring Basic Auth, with a corresponding `.htpasswd` file on the server. This requires HTTPS to be secure.
+  Example `.htaccess`:
+  
+  ```
+  AuthType Basic
+  AuthName "Restricted"
+  AuthUserFile /path/to/.htpasswd
+  Require valid-user
+  ```
+  
+  Generate credentials locally: `htpasswd -c .htpasswd youruser` (upload to a non-web-accessible path if possible).
+
+- Alternatively: use a reverse-proxy access control (e.g., Cloudflare Access/Zero Trust) to gate the URL by email identity — no code changes needed.
+
+- Avoid client-side-only logins for sensitive tools. A static HTML/JS login can be bypassed by viewing source.
 
 ## Troubleshooting
 
@@ -81,3 +111,20 @@ If automated deployment fails, you can use any FTP client:
 For deployment issues, contact Virtual Life support:
 - Email: office@virtual-life.co.za
 - Phone: (074) 348-8311
+
+## Secured Invoice Tool Deployment (IIS)
+
+To deploy only the secured invoice generator into `/private/invoice` without touching the public site:
+
+1. Ensure IIS Basic Authentication + authorization is configured on the `private/invoice` folder and that the authorized Windows user has NTFS Read permissions.
+2. Run the dedicated script:
+
+```powershell
+./deploy-invoice.ps1 -Password "your_ftp_password"
+```
+
+This uploads only:
+- `invoice-generator.html` as `index.html` (and also as `invoice-generator.html`)
+- `images/vlLogo.png` to `/private/invoice/images/`
+
+You can also use `deploy-invoice.bat` for a guided prompt on Windows.
