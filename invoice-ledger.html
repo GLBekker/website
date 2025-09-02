@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Invoice Ledger - Virtual Life</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root { --dark-purple: #0a0015; --mid-purple: #1a0033; --neon-blue: #00d4ff; --ai-primary: #ff00ff; --ai-secondary: #00f5ff; --ai-accent: #ff6b00; --light-gray: #e0e0e0; }
+    body { background-color: var(--dark-purple); color: var(--light-gray); font-family: 'Share Tech Mono', monospace; }
+    .card-panel { background: linear-gradient(135deg, rgba(10,0,21,0.95), rgba(26,0,51,0.95)); border: 1px solid var(--neon-blue); border-radius: 12px; box-shadow: 0 0 30px rgba(0,212,255,0.2); }
+    .section-header { background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+    .table thead th { background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(255,0,255,0.2)); color: #ffffff; font-family: 'Orbitron', sans-serif; text-shadow: 0 1px 2px rgba(0,0,0,0.5); border-color: rgba(0,212,255,0.3); }
+    .table td { color: #e0e0e0; background: rgba(26,0,51,0.8); border-color: rgba(0,212,255,0.2); }
+    .filter-bar input { background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0,212,255,0.3); color: var(--light-gray); }
+    .filter-bar input:focus { border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); color: var(--light-gray); background: rgba(0, 0, 0, 0.7); }
+    .btn-primary { background: linear-gradient(135deg, #0099cc, #00d4ff); border: 1px solid #00d4ff; color: #000; font-weight: 600; }
+    .btn-primary:hover { background: linear-gradient(135deg, #00d4ff, #00ffff); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,212,255,0.4); }
+    .btn-secondary { background: linear-gradient(135deg, #444, #666); border: 1px solid #777; color: #fff; }
+    .btn-secondary:hover { background: linear-gradient(135deg, #555, #777); transform: translateY(-1px); }
+    .btn-success { background: linear-gradient(135deg, #00a844, #00d355); border: 1px solid #00d355; color: #000; font-weight: 600; }
+    .btn-success:hover { background: linear-gradient(135deg, #00d355, #00ff66); transform: translateY(-1px); }
+    .btn-warning { background: linear-gradient(135deg, #ff9900, #ffcc00); border: 1px solid #ffcc00; color: #000; font-weight: 600; }
+    .btn-warning:hover { background: linear-gradient(135deg, #ffcc00, #ffdd33); transform: translateY(-1px); }
+    .btn-danger { background: linear-gradient(135deg, #cc0033, #ff0044); border: 1px solid #ff0044; color: #fff; }
+    .btn-danger:hover { background: linear-gradient(135deg, #ff0044, #ff3366); transform: translateY(-1px); }
+    .table tbody tr:hover td { background: rgba(0,212,255,0.1); transition: background 0.2s; }
+    .text-muted { color: #a0a0a0 !important; }
+    .table th:nth-child(2), .table td:nth-child(2) { min-width: 100px; }
+    .table th:nth-child(3), .table td:nth-child(3) { min-width: 150px; }
+    .table th:nth-child(5), .table td:nth-child(5) { min-width: 140px; }
+  </style>
+  <script>
+    function loadLedger() {
+      const key = 'invoiceLedger';
+      const raw = localStorage.getItem(key);
+      let data = [];
+      try { data = raw ? JSON.parse(raw) : []; } catch { data = []; }
+      data.sort((a,b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+      const tbody = document.getElementById('ledgerBody');
+      tbody.innerHTML = data.map((e, idx) => {
+        const safe = (v) => v ? String(v).replace(/</g,'&lt;').replace(/>/g,'&gt;') : '';
+        const period = `${safe(e.periodStart)} - ${safe(e.periodEnd)}`;
+        const client = (e.client?.company || e.client?.name) ? `${safe(e.client?.company||'')} ${safe(e.client?.name||'')}`.trim() : '';
+        const total = e.totals?.total != null ? Number(e.totals.total).toFixed(2) : '';
+        const invDate = e.invoiceDate || '';
+        
+        // Calculate total hours and rate per hour
+        let totalHours = 0;
+        let ratePerHour = 0;
+        if (e.items && Array.isArray(e.items)) {
+          e.items.forEach(item => {
+            if (item.hours != null) {
+              totalHours += Number(item.hours) || 0;
+            }
+          });
+          // Calculate average rate per hour if we have hours and total
+          if (totalHours > 0 && e.totals?.subtotal != null) {
+            ratePerHour = (Number(e.totals.subtotal) / totalHours).toFixed(2);
+          } else if (e.items.length > 0 && e.items[0].rate != null) {
+            // Use the first item's rate if available
+            ratePerHour = Number(e.items[0].rate).toFixed(2);
+          }
+        }
+        
+        return `
+          <tr data-id="${safe(e.id)}">
+            <td class="text-center"><input type="checkbox" class="form-check-input select-entry" /></td>
+            <td>${safe(e.invoiceNumber)}</td>
+            <td>${client}</td>
+            <td>${safe(invDate)}</td>
+            <td>${period}</td>
+            <td class="text-end">${totalHours > 0 ? totalHours.toFixed(1) : '-'}</td>
+            <td class="text-end">${ratePerHour > 0 ? 'R ' + ratePerHour : '-'}</td>
+            <td class="text-end">R ${total}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-secondary me-1" onclick="viewInvoice('${encodeURIComponent(safe(e.id))}')"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-sm btn-danger" onclick="removeEntry('${encodeURIComponent(safe(e.id))}')"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>`;
+      }).join('');
+      document.getElementById('countSpan').textContent = data.length;
+    }
+
+    function viewInvoice(idEnc) {
+      const id = decodeURIComponent(idEnc);
+      const arr = JSON.parse(localStorage.getItem('invoiceLedger') || '[]');
+      const e = arr.find(x => x.id === id);
+      if (!e) return alert('Entry not found');
+      const w = window.open('', '_blank');
+      w.document.write(e.html || '<p>No HTML stored.</p>');
+      w.document.close();
+    }
+
+    function removeEntry(idEnc) {
+      if (!confirm('Remove this ledger entry?')) return;
+      const id = decodeURIComponent(idEnc);
+      let arr = JSON.parse(localStorage.getItem('invoiceLedger') || '[]');
+      arr = arr.filter(x => x.id !== id);
+      localStorage.setItem('invoiceLedger', JSON.stringify(arr));
+      loadLedger();
+    }
+
+    function removeSelected() {
+      const checks = Array.from(document.querySelectorAll('.select-entry'));
+      const rows = checks.filter(c => c.checked).map(c => c.closest('tr'));
+      if (rows.length === 0) return alert('No entries selected.');
+      if (!confirm(`Remove ${rows.length} selected entr${rows.length===1?'y':'ies'}?`)) return;
+      const ids = rows.map(r => r.getAttribute('data-id'));
+      let arr = JSON.parse(localStorage.getItem('invoiceLedger') || '[]');
+      arr = arr.filter(x => !ids.includes(x.id));
+      localStorage.setItem('invoiceLedger', JSON.stringify(arr));
+      loadLedger();
+    }
+
+    function exportLedger() {
+      const data = localStorage.getItem('invoiceLedger') || '[]';
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
+      a.download = `invoice-ledger-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+    }
+
+    function importLedger(ev) {
+      const file = ev.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const arr = JSON.parse(reader.result);
+          if (!Array.isArray(arr)) throw new Error('Invalid JSON');
+          localStorage.setItem('invoiceLedger', JSON.stringify(arr));
+          loadLedger();
+          alert('Ledger imported.');
+        } catch (e) { alert('Import failed: ' + e.message); }
+      };
+      reader.readAsText(file);
+    }
+
+    function filterLedger() {
+      const q = (document.getElementById('filterInput').value || '').toLowerCase();
+      document.querySelectorAll('#ledgerBody tr').forEach(tr => {
+        const txt = tr.textContent.toLowerCase();
+        tr.style.display = txt.includes(q) ? '' : 'none';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadLedger);
+  </script>
+</head>
+<body>
+  <div class="container py-4">
+    <div class="d-flex align-items-center mb-3">
+      <img src="images/vlLogo.png" alt="VL Logo" style="height:48px;width:auto" class="me-3"/>
+      <h2 class="section-header mb-0">Invoice Ledger</h2>
+      <div class="ms-auto">
+        <a href="index.html" class="btn btn-sm btn-primary me-2"><i class="fa fa-file-invoice me-1"></i>Invoice Generator</a>
+        <a href="statement-generator.html" class="btn btn-sm btn-warning me-2"><i class="fa fa-file-alt me-1"></i>Statements</a>
+        <button class="btn btn-sm btn-success me-2" onclick="exportLedger()"><i class="fa fa-download me-1"></i>Export</button>
+        <label class="btn btn-sm btn-secondary mb-0">
+          <i class="fa fa-upload me-1"></i>Import
+          <input type="file" accept="application/json" onchange="importLedger(event)" hidden />
+        </label>
+        <button class="btn btn-sm btn-danger" onclick="removeSelected()"><i class="fa fa-trash me-1"></i>Remove Selected</button>
+      </div>
+    </div>
+
+    <div class="card-panel p-3">
+      <div class="row g-2 align-items-center mb-3 filter-bar">
+        <div class="col-sm-6">
+          <input id="filterInput" type="text" class="form-control" placeholder="Filter by invoice number, client, date..." oninput="filterLedger()" />
+        </div>
+        <div class="col-sm-6 text-sm-end">
+          <span class="text-muted">Entries: <span id="countSpan">0</span></span>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr>
+              <th class="text-center" style="width:32px"><input type="checkbox" class="form-check-input" onclick="document.querySelectorAll('.select-entry').forEach(cb => cb.checked = this.checked)"/></th>
+              <th>Invoice #</th>
+              <th>Client</th>
+              <th>Date</th>
+              <th>Period</th>
+              <th class="text-end">Hours</th>
+              <th class="text-end">R/Hr</th>
+              <th class="text-end">Total</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ledgerBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

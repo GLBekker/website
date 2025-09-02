@@ -15,6 +15,8 @@ $localPath = (Get-Location).Path
 $filesToUpload = @(
     @{ Local = "invoice-generator.html"; Remote = "index.html" }, # serve as default document
     @{ Local = "invoice-generator.html"; Remote = "invoice-generator.html" }, # optional direct link
+    @{ Local = "invoice-ledger.html"; Remote = "ledger.html" },
+    @{ Local = "statement-generator.html"; Remote = "statement-generator.html" },
     @{ Local = "images/vlLogo.png"; Remote = "images/vlLogo.png" }
 )
 

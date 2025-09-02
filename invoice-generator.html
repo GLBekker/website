@@ -298,6 +298,14 @@
                 <p>
                     Create professional invoices with AI-powered precision
                 </p>
+                <div class="mt-3">
+                    <a href="ledger.html" class="btn btn-sm me-2" style="background: rgba(0, 212, 255, 0.2); border: 1px solid var(--neon-blue); color: var(--neon-blue);">
+                        <i class="fas fa-book me-1"></i>View Ledger
+                    </a>
+                    <a href="statement-generator.html" class="btn btn-sm" style="background: rgba(255, 107, 0, 0.2); border: 1px solid var(--ai-accent); color: var(--ai-accent);">
+                        <i class="fas fa-file-alt me-1"></i>Generate Statements
+                    </a>
+                </div>
             </div>
 
             <form id="invoiceForm">
@@ -612,6 +620,9 @@ Mooikloof, Pretoria</textarea>
                         style="background: rgba(255, 0, 0, 0.2); border: 1px solid rgba(255, 0, 0, 0.5); color: #ff4444;"
                         data-bs-dismiss="modal">
                         <i class="fas fa-times me-2"></i>Close
+                    </button>
+                    <button type="button" class="btn btn-add-service me-auto" onclick="saveToLedger()" title="Save this invoice to the ledger">
+                        <i class="fas fa-book me-2"></i>Save to Ledger
                     </button>
                     <button type="button" class="btn btn-generate me-2" onclick="generatePDFPrint()">
                         <i class="fas fa-print me-2"></i>Print to PDF
@@ -1199,7 +1210,50 @@ Mooikloof, Pretoria</textarea>
             // Set the content for the modal preview and for the PDF generation
             document.getElementById('invoicePreviewContent').innerHTML = finalHtml;
             window.currentInvoiceHTML = finalHtml;
+            window.currentInvoiceData = data;
             new bootstrap.Modal(document.getElementById('invoicePreviewModal')).show();
+        }
+
+        function saveToLedger() {
+            try {
+                if (!window.currentInvoiceHTML || !window.currentInvoiceData) {
+                    alert('Please preview the invoice before saving to the ledger.');
+                    return;
+                }
+                const data = window.currentInvoiceData;
+                const ledgerKey = 'invoiceLedger';
+                const ledger = JSON.parse(localStorage.getItem(ledgerKey) || '[]');
+                const entry = {
+                    id: `${data.invoice.number}-${Date.now()}`,
+                    createdAt: new Date().toISOString(),
+                    invoiceNumber: data.invoice.number,
+                    invoiceDate: data.invoice.date,
+                    dueDate: data.invoice.dueDate,
+                    periodStart: data.invoice.periodStart,
+                    periodEnd: data.invoice.periodEnd,
+                    client: {
+                        name: data.client.name || '',
+                        company: data.client.company || '',
+                        code: data.client.code || ''
+                    },
+                    totals: data.totals,
+                    html: window.currentInvoiceHTML
+                };
+                ledger.push(entry);
+                localStorage.setItem(ledgerKey, JSON.stringify(ledger));
+                alert('Saved to ledger. You can view it in the Ledger page.');
+                // Offer quick navigation to ledger in secured folder if running from there
+                try {
+                    const loc = window.location;
+                    const base = `${loc.protocol}//${loc.host}`;
+                    const ledgerUrl = `${base}/private/invoice/ledger.html`;
+                    const go = confirm('Open ledger now?');
+                    if (go) window.open(ledgerUrl, '_blank');
+                } catch (e) { /* noop */ }
+            } catch (err) {
+                console.error('Failed to save to ledger', err);
+                alert('Failed to save to ledger.');
+            }
         }
 
         async function generatePDF() {

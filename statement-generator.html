@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Statement Generator - Virtual Life</title>
+    <!-- Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --dark-purple: #0a0015;
+            --mid-purple: #1a0033;
+            --neon-blue: #00d4ff;
+            --ai-primary: #ff00ff;
+            --ai-secondary: #00f5ff;
+            --ai-accent: #ff6b00;
+            --light-gray: #e0e0e0;
+            --success-green: #00ff66;
+            --warning-orange: #ff9900;
+            --error-red: #ff4444;
+        }
+
+        body {
+            background-color: var(--dark-purple);
+            color: var(--light-gray);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .generator-container {
+            background: linear-gradient(135deg, rgba(10, 0, 21, 0.95), rgba(26, 0, 51, 0.95));
+            border: 1px solid var(--neon-blue);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .generator-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 245, 255, 0.03) 2px,
+                    rgba(0, 245, 255, 0.03) 4px),
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(189, 0, 255, 0.03) 2px,
+                    rgba(189, 0, 255, 0.03) 4px);
+            pointer-events: none;
+        }
+
+        .form-control,
+        .form-select {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: var(--light-gray);
+            border-radius: 8px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            color: var(--light-gray);
+        }
+
+        .form-label {
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .client-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .client-card:hover {
+            border-color: var(--ai-primary);
+            background: rgba(255, 0, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.3);
+        }
+
+        .client-card.selected {
+            border: 2px solid var(--ai-primary);
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(255, 107, 0, 0.1));
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+        }
+
+        .client-card h6 {
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 0.5rem;
+        }
+
+        .invoice-info-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .invoice-info-card h5 {
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary));
+            border: none;
+            color: white;
+            padding: 1rem 3rem;
+            border-radius: 25px;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 30px rgba(255, 0, 255, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(255, 0, 255, 0.5);
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, var(--ai-accent), rgba(255, 107, 0, 0.8));
+            border: none;
+            color: white;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 107, 0, 0.4);
+        }
+
+        .invoice-table {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .invoice-table thead th {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 255, 0.1));
+            color: var(--light-gray);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 1rem;
+            border-bottom: 2px solid var(--neon-blue);
+        }
+
+        .invoice-table tbody td {
+            padding: 0.75rem 1rem;
+            color: var(--light-gray);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .invoice-table tbody tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-paid {
+            background: rgba(0, 255, 102, 0.2);
+            color: var(--success-green);
+            border: 1px solid var(--success-green);
+        }
+
+        .status-pending {
+            background: rgba(255, 153, 0, 0.2);
+            color: var(--warning-orange);
+            border: 1px solid var(--warning-orange);
+        }
+
+        .status-overdue {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--error-red);
+            border: 1px solid var(--error-red);
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(255, 107, 0, 0.1));
+            border: 1px solid var(--ai-primary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary-amount {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--ai-primary);
+            text-shadow: 0 0 15px var(--ai-primary);
+        }
+
+        #pdf-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 0, 21, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .invoice-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .date-range-selector {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="pdf-loader">
+        <i class="fas fa-cog fa-spin me-3"></i> Generating Statement...
+    </div>
+
+    <div class="container py-5">
+        <div class="generator-container p-4 p-md-5">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <div class="d-flex align-items-center justify-content-center mb-3">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDgwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZjAwZmY7c3RvcC1vcGFjaXR5OjEiIC8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMDBmNWZmO3N0b3Btb3BhY2l0eToxIiAvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxwYXRoIGQ9Ik00MCAwIEwxNSA1MCBMMzUgNTAgTDIwIDEwMCBMNzAgNDAgTDUwIDQwIFoiIGZpbGw9InVybCgjZ3JhZCkiLz48L3N2Zz4="
+                        alt="Virtual Life Logo" height="60" class="me-3">
+                    <h1 class="section-header mb-0">Statement Generator</h1>
+                </div>
+                <p>Generate professional account statements from your invoice ledger</p>
+                <div class="mt-3">
+                    <a href="index.html" class="btn btn-sm me-2"
+                        style="background: rgba(0, 212, 255, 0.2); border: 1px solid var(--neon-blue); color: var(--neon-blue);">
+                        <i class="fas fa-file-invoice me-1"></i>Invoice Generator
+                    </a>
+                    <a href="ledger.html" class="btn btn-sm"
+                        style="background: rgba(255, 107, 0, 0.2); border: 1px solid var(--ai-accent); color: var(--ai-accent);">
+                        <i class="fas fa-book me-1"></i>View Ledger
+                    </a>
+                </div>
+            </div>
+
+            <!-- Client Selection -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h3 class="section-header">
+                        <i class="fas fa-users me-2"></i>Select Client
+                    </h3>
+                </div>
+                <div class="col-12">
+                    <div class="invoice-info-card">
+                        <div class="row" id="clientList">
+                            <!-- Client cards will be populated here -->
+                        </div>
+                        <div id="noClientsMessage" class="text-center py-4" style="display: none;">
+                            <p class="mb-2">No clients found in the invoice ledger.</p>
+                            <a href="index.html" class="btn btn-action">
+                                <i class="fas fa-file-invoice me-2"></i>Go to Invoice Generator
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Range & Options -->
+            <div class="row mb-5" id="dateRangeSection" style="display: none;">
+                <div class="col-12">
+                    <h3 class="section-header">
+                        <i class="fas fa-calendar-alt me-2"></i>Statement Period
+                    </h3>
+                </div>
+                <div class="col-12">
+                    <div class="date-range-selector">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="statementMonth" class="form-label">Statement Month</label>
+                                <select class="form-select" id="statementMonth">
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="statementYear" class="form-label">Statement Year</label>
+                                <input type="number" class="form-control" id="statementYear" min="2020" max="2030">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="dateFrom" class="form-label">Custom From</label>
+                                <input type="date" class="form-control" id="dateFrom">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="dateTo" class="form-label">Custom To</label>
+                                <input type="date" class="form-control" id="dateTo">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <button class="btn btn-action me-2" onclick="useMonthYear()">
+                                    <i class="fas fa-calendar me-2"></i>Use Month/Year
+                                </button>
+                                <button class="btn btn-action me-2" onclick="useCustomDates()">
+                                    <i class="fas fa-calendar-check me-2"></i>Use Custom Dates
+                                </button>
+                                <button class="btn btn-action" onclick="loadAllInvoices()">
+                                    <i class="fas fa-list me-2"></i>Show All
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoice Selection -->
+            <div class="row mb-5" id="invoiceSection" style="display: none;">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="section-header mb-0">
+                            <i class="fas fa-file-invoice me-2"></i>Invoices
+                        </h3>
+                        <div>
+                            <button class="btn btn-sm btn-action me-2" onclick="selectAllInvoices()">
+                                <i class="fas fa-check-square me-1"></i>Select All
+                            </button>
+                            <button class="btn btn-sm btn-action" onclick="deselectAllInvoices()">
+                                <i class="fas fa-square me-1"></i>Deselect All
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="invoice-info-card">
+                        <table class="table invoice-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">Include</th>
+                                    <th>Invoice #</th>
+                                    <th>Date</th>
+                                    <th>Period</th>
+                                    <th class="text-end">Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoiceTableBody">
+                                <!-- Invoices will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="row mb-5" id="summarySection" style="display: none;">
+                <div class="col-12">
+                    <h3 class="section-header">
+                        <i class="fas fa-calculator me-2"></i>Statement Summary
+                    </h3>
+                </div>
+                <div class="col-md-6 offset-md-6">
+                    <div class="summary-card">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Total Invoiced:</span>
+                            <span id="totalInvoiced">R0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Total Paid:</span>
+                            <span id="totalPaid" style="color: var(--success-green);">R0.00</span>
+                        </div>
+                        <hr style="border-color: var(--ai-primary);">
+                        <div class="d-flex justify-content-between">
+                            <span><strong>Amount Due:</strong></span>
+                            <span class="summary-amount" id="amountDue">R0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <div class="text-center" id="generateSection" style="display: none;">
+                <button type="button" class="btn btn-generate" onclick="generateStatement()">
+                    <i class="fas fa-file-alt me-2"></i>Generate Statement
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statement Preview Modal -->
+    <div class="modal fade" id="statementPreviewModal" tabindex="-1" aria-labelledby="statementPreviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content"
+                style="background: linear-gradient(135deg, rgba(10, 0, 21, 0.95), rgba(26, 0, 51, 0.95)); border: 1px solid var(--neon-blue);">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(0, 212, 255, 0.3);">
+                    <h5 class="modal-title" id="statementPreviewModalLabel"
+                        style="color: var(--neon-blue); font-family: 'Orbitron', sans-serif;">
+                        <i class="fas fa-eye me-2"></i>Statement Preview
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="filter: invert(1);"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="statementPreviewContent" style="max-height: 80vh; overflow-y: auto;">
+                        <!-- Statement preview will be loaded here -->
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid rgba(0, 212, 255, 0.3);">
+                    <button type="button" class="btn"
+                        style="background: rgba(255, 0, 0, 0.2); border: 1px solid rgba(255, 0, 0, 0.5); color: #ff4444;"
+                        data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Close
+                    </button>
+                    <button type="button" class="btn btn-generate me-2" onclick="generatePDFPrint()">
+                        <i class="fas fa-print me-2"></i>Print to PDF
+                    </button>
+                    <button type="button" class="btn btn-generate" onclick="generatePDF()">
+                        <i class="fas fa-file-pdf me-2"></i>Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        let ledgerData = [];
+        let selectedClient = null;
+        let selectedInvoices = [];
+        let clientInvoices = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            loadLedgerData();
+            initializeDateSelectors();
+        });
+
+        function initializeDateSelectors() {
+            const today = new Date();
+            document.getElementById('statementYear').value = today.getFullYear();
+            document.getElementById('statementMonth').value = String(today.getMonth() + 1).padStart(2, '0');
+
+            // Set default date range to current month
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+            document.getElementById('dateFrom').valueAsDate = firstDay;
+            document.getElementById('dateTo').valueAsDate = lastDay;
+        }
+
+        function loadLedgerData() {
+            const savedLedger = localStorage.getItem('invoiceLedger');
+            if (savedLedger) {
+                try {
+                    ledgerData = JSON.parse(savedLedger);
+                    populateClientList();
+                } catch (e) {
+                    console.error('Error loading ledger data:', e);
+                    ledgerData = [];
+                }
+            }
+
+            if (ledgerData.length === 0) {
+                document.getElementById('noClientsMessage').style.display = 'block';
+            }
+        }
+
+        function populateClientList() {
+            const clientList = document.getElementById('clientList');
+            const clientsMap = new Map();
+
+            // Group invoices by client
+            ledgerData.forEach(invoice => {
+                const clientKey = invoice.client?.company || 'Unknown Client';
+                if (!clientsMap.has(clientKey)) {
+                    clientsMap.set(clientKey, {
+                        company: invoice.client?.company || 'Unknown Client',
+                        name: invoice.client?.name || '',
+                        code: invoice.client?.code || 'UNK',
+                        invoices: []
+                    });
+                }
+                clientsMap.get(clientKey).invoices.push(invoice);
+            });
+
+            if (clientsMap.size === 0) {
+                document.getElementById('noClientsMessage').style.display = 'block';
+                return;
+            }
+
+            clientList.innerHTML = '';
+            clientsMap.forEach((client, key) => {
+                const unpaidCount = client.invoices.filter(inv => !inv.paid).length;
+                const totalDue = client.invoices
+                    .filter(inv => !inv.paid)
+                    .reduce((sum, inv) => sum + (inv.totals?.total || 0), 0);
+
+                const clientCard = document.createElement('div');
+                clientCard.className = 'col-md-6 col-lg-4 mb-3';
+                clientCard.innerHTML = `
+                    <div class="client-card h-100" onclick="selectClient('${key}')" data-client-key="${key}">
+                        <h6><i class="fas fa-building me-2"></i>${client.company}</h6>
+                        ${client.name ? `<p class="mb-2"><small>${client.name}</small></p>` : ''}
+                        <p class="mb-1"><small>Total Invoices: ${client.invoices.length}</small></p>
+                        <p class="mb-1"><small>Unpaid: ${unpaidCount}</small></p>
+                        <p class="mb-0" style="color: var(--ai-accent); font-weight: bold;">
+                            Due: R${totalDue.toFixed(2)}
+                        </p>
+                    </div>
+                `;
+                clientList.appendChild(clientCard);
+            });
+        }
+
+        function selectClient(clientKey) {
+            // Clear previous selection
+            document.querySelectorAll('.client-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Mark as selected
+            document.querySelector(`[data-client-key="${clientKey}"]`).classList.add('selected');
+
+            // Get client invoices
+            clientInvoices = ledgerData.filter(invoice =>
+                (invoice.client?.company || 'Unknown Client') === clientKey
+            );
+
+            selectedClient = {
+                company: clientInvoices[0]?.client?.company || clientKey,
+                name: clientInvoices[0]?.client?.name || '',
+                code: clientInvoices[0]?.client?.code || 'UNK'
+            };
+
+            // Show date range section
+            document.getElementById('dateRangeSection').style.display = 'block';
+
+            // Load all invoices by default
+            loadAllInvoices();
+        }
+
+        function useMonthYear() {
+            const month = document.getElementById('statementMonth').value;
+            const year = document.getElementById('statementYear').value;
+
+            const firstDay = new Date(year, parseInt(month) - 1, 1);
+            const lastDay = new Date(year, parseInt(month), 0);
+
+            document.getElementById('dateFrom').valueAsDate = firstDay;
+            document.getElementById('dateTo').valueAsDate = lastDay;
+
+            filterInvoicesByDate();
+        }
+
+        function useCustomDates() {
+            filterInvoicesByDate();
+        }
+
+        function loadAllInvoices() {
+            displayInvoices(clientInvoices);
+        }
+
+        function filterInvoicesByDate() {
+            const dateFrom = new Date(document.getElementById('dateFrom').value);
+            const dateTo = new Date(document.getElementById('dateTo').value);
+            dateTo.setHours(23, 59, 59, 999); // Include entire last day
+
+            const filtered = clientInvoices.filter(invoice => {
+                const invDate = new Date(invoice.invoiceDate);
+                return invDate >= dateFrom && invDate <= dateTo;
+            });
+
+            displayInvoices(filtered);
+        }
+
+        function displayInvoices(invoices) {
+            const tbody = document.getElementById('invoiceTableBody');
+            tbody.innerHTML = '';
+
+            if (invoices.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4">No invoices found for the selected period.</td>
+                    </tr>
+                `;
+                document.getElementById('invoiceSection').style.display = 'block';
+                document.getElementById('summarySection').style.display = 'none';
+                document.getElementById('generateSection').style.display = 'none';
+                return;
+            }
+
+            invoices.sort((a, b) => new Date(a.invoiceDate) - new Date(b.invoiceDate));
+
+            invoices.forEach(invoice => {
+                const row = document.createElement('tr');
+                const isPaid = invoice.paid || false;
+                const statusClass = isPaid ? 'status-paid' : 'status-pending';
+                const statusText = isPaid ? 'PAID' : 'PENDING';
+
+                row.innerHTML = `
+                    <td class="text-center">
+                        <input type="checkbox" class="form-check-input invoice-checkbox" 
+                               data-invoice-id="${invoice.id}" 
+                               onchange="updateSummary()" checked>
+                    </td>
+                    <td>${invoice.invoiceNumber || 'N/A'}</td>
+                    <td>${formatDate(invoice.invoiceDate)}</td>
+                    <td>${formatDate(invoice.periodStart)} - ${formatDate(invoice.periodEnd)}</td>
+                    <td class="text-end">R${(invoice.totals?.total || 0).toFixed(2)}</td>
+                    <td>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                        <button class="btn btn-sm btn-link p-0 ms-2" onclick="togglePaidStatus('${invoice.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('invoiceSection').style.display = 'block';
+            document.getElementById('summarySection').style.display = 'block';
+            document.getElementById('generateSection').style.display = 'block';
+
+            updateSummary();
+        }
+
+        function togglePaidStatus(invoiceId) {
+            const invoice = ledgerData.find(inv => inv.id === invoiceId);
+            if (invoice) {
+                invoice.paid = !invoice.paid;
+                localStorage.setItem('invoiceLedger', JSON.stringify(ledgerData));
+                filterInvoicesByDate(); // Refresh display
+            }
+        }
+
+        function selectAllInvoices() {
+            document.querySelectorAll('.invoice-checkbox').forEach(cb => cb.checked = true);
+            updateSummary();
+        }
+
+        function deselectAllInvoices() {
+            document.querySelectorAll('.invoice-checkbox').forEach(cb => cb.checked = false);
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const checkboxes = document.querySelectorAll('.invoice-checkbox:checked');
+            selectedInvoices = [];
+            let totalInvoiced = 0;
+            let totalPaid = 0;
+
+            checkboxes.forEach(cb => {
+                const invoiceId = cb.dataset.invoiceId;
+                const invoice = ledgerData.find(inv => inv.id === invoiceId);
+                if (invoice) {
+                    selectedInvoices.push(invoice);
+                    const amount = invoice.totals?.total || 0;
+                    totalInvoiced += amount;
+                    if (invoice.paid) {
+                        totalPaid += amount;
+                    }
+                }
+            });
+
+            const amountDue = totalInvoiced - totalPaid;
+
+            document.getElementById('totalInvoiced').textContent = `R${totalInvoiced.toFixed(2)}`;
+            document.getElementById('totalPaid').textContent = `R${totalPaid.toFixed(2)}`;
+            document.getElementById('amountDue').textContent = `R${amountDue.toFixed(2)}`;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        function generateStatement() {
+            if (selectedInvoices.length === 0) {
+                alert('Please select at least one invoice to include in the statement.');
+                return;
+            }
+
+            const statementHTML = generateStatementHTML();
+            document.getElementById('statementPreviewContent').innerHTML = statementHTML;
+            window.currentStatementHTML = statementHTML;
+
+            new bootstrap.Modal(document.getElementById('statementPreviewModal')).show();
+        }
+
+        function generateStatementHTML() {
+            const statementMonth = document.getElementById('statementMonth');
+            const statementYear = document.getElementById('statementYear').value;
+            const monthName = statementMonth.options[statementMonth.selectedIndex].text;
+            const statementTitle = `STATEMENT ${monthName.toUpperCase()} ${statementYear}`;
+
+            // Get company details from localStorage or use defaults
+            const savedClients = localStorage.getItem('invoiceClients');
+            let companyDetails = {
+                name: 'Virtual Life Solutions PTY (Ltd)',
+                address: '75 Country Walk, Mooikloof Ridge Estate\nMooikloof, Pretoria',
+                reg: '2015/123337/07',
+                website: 'www.virtual-life.co.za',
+                email: 'office@virtual-life.co.za',
+                phone: '074 348 8311'
+            };
+
+            // Calculate totals
+            let totalInvoiced = 0;
+            let totalPaid = 0;
+            selectedInvoices.forEach(inv => {
+                const amount = inv.totals?.total || 0;
+                totalInvoiced += amount;
+                if (inv.paid) totalPaid += amount;
+            });
+            const amountDue = totalInvoiced - totalPaid;
+
+            // Generate invoice rows
+            const invoiceRows = selectedInvoices.map(inv => {
+                const amount = (inv.totals?.total || 0).toFixed(2);
+                const isPaid = inv.paid || false;
+                return `
+                    <tr>
+                        <td>${formatDate(inv.invoiceDate)}</td>
+                        <td>${inv.invoiceNumber || 'N/A'}</td>
+                        <td class="text-center">${isPaid ? 'paid' : ''}</td>
+                        <td class="text-end">${!isPaid ? amount : ''}</td>
+                        <td class="text-end">${amount}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Get the first matching client from saved clients if available
+            let clientDetails = {
+                company: selectedClient.company,
+                name: selectedClient.name,
+                address: 'Address not available'
+            };
+
+            if (savedClients) {
+                try {
+                    const clients = JSON.parse(savedClients);
+                    const matchingClient = clients.find(c => c.company === selectedClient.company);
+                    if (matchingClient) {
+                        clientDetails.address = matchingClient.address || clientDetails.address;
+                    }
+                } catch (e) {
+                    console.error('Error parsing saved clients:', e);
+                }
+            }
+
+            // Calculate due date - last day of next month based on the latest unpaid invoice
+            let dueDate = new Date();
+
+            // Find the latest unpaid invoice
+            const unpaidInvoices = selectedInvoices.filter(inv => !inv.paid);
+            if (unpaidInvoices.length > 0) {
+                // Sort by invoice date to get the latest one
+                unpaidInvoices.sort((a, b) => new Date(b.invoiceDate) - new Date(a.invoiceDate));
+                const latestInvoiceDate = new Date(unpaidInvoices[0].invoiceDate);
+
+                // Set to first day of next month after the latest invoice
+                dueDate = new Date(latestInvoiceDate.getFullYear(), latestInvoiceDate.getMonth() + 2, 0);
+            } else {
+                // If no unpaid invoices, use last day of next month from today
+                const today = new Date();
+                dueDate = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+            }
+
+            const dueDateFormatted = dueDate.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            }).toUpperCase();
+
+            return `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Statement - Virtual Life</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+                    <link rel="preconnect" href="https://fonts.googleapis.com">
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+                    <style>
+                        :root { 
+                            --dark-purple: #0a0015; 
+                            --mid-purple: #1a0033; 
+                            --neon-blue: #00d4ff; 
+                            --ai-primary: #ff00ff; 
+                            --ai-secondary: #00f5ff; 
+                            --ai-accent: #ff6b00; 
+                            --light-gray: #e0e0e0; 
+                        }
+                        body { 
+                            background: var(--dark-purple); 
+                            color: var(--light-gray); 
+                            font-family: 'Share Tech Mono', monospace; 
+                        }
+                        .statement-container { 
+                            background: linear-gradient(135deg, rgba(10, 0, 21, 0.95), rgba(26, 0, 51, 0.95)); 
+                            border: 1px solid var(--neon-blue); 
+                            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2); 
+                            backdrop-filter: blur(10px); 
+                            position: relative; 
+                            overflow: hidden; 
+                            border-radius: 12px; 
+                        }
+                        .statement-container::before { 
+                            content: ''; 
+                            position: absolute; 
+                            top: 0; 
+                            left: 0; 
+                            right: 0; 
+                            bottom: 0; 
+                            background: 
+                                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 245, 255, 0.03) 2px, rgba(0, 245, 255, 0.03) 4px), 
+                                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(189, 0, 255, 0.03) 2px, rgba(189, 0, 255, 0.03) 4px); 
+                            pointer-events: none; 
+                        }
+                        .statement-header { 
+                            background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary)); 
+                            -webkit-background-clip: text; 
+                            -webkit-text-fill-color: transparent; 
+                            background-clip: text; 
+                            text-shadow: 0 0 20px rgba(255, 0, 255, 0.5); 
+                            position: relative; 
+                            z-index: 2; 
+                            font-family: 'Orbitron', sans-serif; 
+                            font-size: 2.5rem;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                            letter-spacing: 3px;
+                        }
+                        .company-logo { 
+                            filter: drop-shadow(0 0 15px rgba(255, 0, 255, 0.6)); 
+                            animation: pulse-glow 3s ease-in-out infinite; 
+                            height: 237px; 
+                            width: auto; 
+                            max-width: 100%; 
+                            object-fit: contain; 
+                        }
+                        .logo-container {
+                            min-height: 150px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        @keyframes pulse-glow { 
+                            0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 0, 255, 0.6)); } 
+                            50% { filter: drop-shadow(0 0 25px rgba(255, 0, 255, 0.8)); } 
+                        }
+                        .info-card { 
+                            background: rgba(0, 0, 0, 0.4); 
+                            border: 1px solid rgba(0, 212, 255, 0.3); 
+                            border-radius: 10px; 
+                            padding: 1.5rem; 
+                            position: relative; 
+                            z-index: 2; 
+                        }
+                        .info-card h5 { 
+                            color: var(--neon-blue); 
+                            font-family: 'Orbitron', sans-serif; 
+                            text-transform: uppercase; 
+                            letter-spacing: 1px; 
+                            margin-bottom: 1rem; 
+                            text-shadow: 0 0 10px var(--neon-blue); 
+                        }
+                        .statement-table { 
+                            background: rgba(255, 255, 255, 0.95); 
+                            border: 1px solid rgba(0, 212, 255, 0.3); 
+                            border-radius: 10px; 
+                            overflow: hidden; 
+                            position: relative; 
+                            z-index: 2; 
+                        }
+                        .statement-table th { 
+                            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 255, 0.1)); 
+                            color: #1a1a1a; 
+                            font-family: 'Orbitron', sans-serif; 
+                            text-transform: uppercase; 
+                            letter-spacing: 1px; 
+                            border-bottom: 2px solid var(--neon-blue); 
+                            font-weight: 600; 
+                            padding: 0.75rem;
+                        }
+                        .statement-table td { 
+                            color: #2a2a2a; 
+                            background: rgba(255, 255, 255, 0.9); 
+                            border-bottom: 1px solid rgba(0, 212, 255, 0.2); 
+                            vertical-align: middle; 
+                            font-weight: 500; 
+                            padding: 0.75rem;
+                        }
+                        .amount-due-section { 
+                            background: linear-gradient(135deg, rgba(255, 0, 255, 0.15), rgba(255, 107, 0, 0.15)); 
+                            border: 2px solid var(--ai-primary); 
+                            border-radius: 10px; 
+                            padding: 1.5rem;
+                            position: relative; 
+                            z-index: 2; 
+                            margin: 2rem 0;
+                        }
+                        .amount-due-label {
+                            font-family: 'Orbitron', sans-serif;
+                            text-transform: uppercase;
+                            letter-spacing: 2px;
+                            color: var(--neon-blue);
+                            font-size: 1.2rem;
+                            text-shadow: 0 0 10px var(--neon-blue);
+                        }
+                        .amount-due-value { 
+                            font-family: 'Orbitron', sans-serif; 
+                            font-size: 2rem; 
+                            font-weight: 700; 
+                            color: var(--ai-primary); 
+                            text-shadow: 0 0 20px var(--ai-primary); 
+                        }
+                        .banking-details {
+                            background: rgba(0, 212, 255, 0.1);
+                            border-left: 4px solid var(--neon-blue);
+                            padding: 1rem;
+                            border-radius: 0 10px 10px 0;
+                            position: relative;
+                            z-index: 2;
+                            margin-top: 2rem;
+                        }
+                        .banking-details h6 {
+                            color: var(--neon-blue);
+                            font-family: 'Orbitron', sans-serif;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                            margin-bottom: 1rem;
+                        }
+                        .thank-you-message {
+                            font-family: 'Orbitron', sans-serif;
+                            color: var(--ai-primary);
+                            font-size: 1.3rem;
+                            text-align: center;
+                            margin-top: 2rem;
+                            text-shadow: 0 0 15px var(--ai-primary);
+                        }
+                        @media print {
+                            @page { size: A4; margin: 0 !important; }
+                            body { margin: 0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container py-3">
+                        <div class="statement-container p-4">
+                            <!-- Header -->
+                            <div class="text-center mb-4">
+                                <h1 class="statement-header">STATEMENT</h1>
+                            </div>
+
+                            <!-- Company Info -->
+                            <div class="row mb-4 align-items-stretch">
+                                <div class="col-md-4">
+                                    <div class="logo-container h-100">
+                                        <img src="images/vlLogo.png" alt="Virtual Life Logo" class="company-logo">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="info-card h-100">
+                                        <p class="mb-1"><strong>${companyDetails.name}</strong></p>
+                                        <p class="mb-1">${companyDetails.address.replace(/\n/g, '<br>')}</p>
+                                        <p class="mb-1">Reg: ${companyDetails.reg}</p>
+                                        <p class="mb-1">Website: ${companyDetails.website}</p>
+                                        <p class="mb-1">Email: ${companyDetails.email}</p>
+                                        <p class="mb-0">Phone: ${companyDetails.phone}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TO Section -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="info-card">
+                                        <h5><i class="fas fa-user me-2"></i>TO</h5>
+                                        <p class="mb-1"><strong>${clientDetails.company}</strong></p>
+                                        ${clientDetails.name ? `<p class="mb-1">${clientDetails.name}</p>` : ''}
+                                        <p class="mb-0">${clientDetails.address.replace(/\n/g, '<br>')}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-card text-center">
+                                        <h4 style="color: var(--ai-accent); font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px var(--ai-accent);">
+                                            ${statementTitle}
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Statement Table -->
+                            <div class="table-responsive mb-4">
+                                <table class="table statement-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Invoice #</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-end">Outstanding</th>
+                                            <th class="text-end">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${invoiceRows}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Amount Due Section -->
+                            <div class="amount-due-section text-center">
+                                <div class="amount-due-label mb-3">
+                                    AMOUNT DUE ${dueDateFormatted}
+                                </div>
+                                <div class="amount-due-value">
+                                    R ${amountDue.toFixed(2)}
+                                </div>
+                            </div>
+
+                            <!-- Banking Details -->
+                            <div class="banking-details">
+                                <h6><i class="fas fa-university me-2"></i>Banking Details</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="mb-1"><strong>Bank:</strong> FNB</p>
+                                        <p class="mb-1"><strong>Account Type:</strong> CHEQUE</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1"><strong>Account Number:</strong> 62805281920</p>
+                                        <p class="mb-1"><strong>Branch:</strong> WOODLANDS</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Thank You Message -->
+                            <div class="thank-you-message">
+                                <p class="mb-0">Thank you</p>
+                                <p>FOR YOUR BUSINESS</p>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+        }
+
+        async function generatePDF() {
+            if (!window.currentStatementHTML) {
+                alert('Please generate a statement first.');
+                return;
+            }
+
+            const loader = document.getElementById('pdf-loader');
+            loader.style.display = 'flex';
+
+            const iframe = document.createElement('iframe');
+            try {
+                iframe.style.position = 'absolute';
+                iframe.style.left = '-9999px';
+                iframe.style.width = '210mm'; // A4 width
+                document.body.appendChild(iframe);
+
+                iframe.contentDocument.open();
+                iframe.contentDocument.write(window.currentStatementHTML);
+                iframe.contentDocument.close();
+
+                // Force full-width for PDF
+                const noMarginStyle = iframe.contentDocument.createElement('style');
+                noMarginStyle.textContent = `
+                    html, body { margin: 0 !important; padding: 0 !important; }
+                    .container { max-width: 100% !important; padding: 0 !important; }
+                    .statement-container { margin: 0 !important; width: 100% !important; border-radius: 0 !important; }
+                `;
+                (iframe.contentDocument.head || iframe.contentDocument.body).appendChild(noMarginStyle);
+
+                await new Promise(resolve => {
+                    iframe.onload = async () => {
+                        await iframe.contentWindow.document.fonts.ready;
+                        setTimeout(resolve, 300);
+                    };
+                });
+
+                const statementElement = iframe.contentDocument.querySelector('.statement-container');
+                const canvas = await html2canvas(statementElement, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: null,
+                });
+
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+
+                const ratio = imgHeight / imgWidth;
+                const totalPDFHeight = pdfWidth * ratio;
+
+                let heightLeft = totalPDFHeight;
+                let position = 0;
+
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, totalPDFHeight);
+                heightLeft -= pdfHeight;
+
+                while (heightLeft > 0) {
+                    position -= pdfHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, totalPDFHeight);
+                    heightLeft -= pdfHeight;
+                }
+
+                const statementMonth = document.getElementById('statementMonth');
+                const monthName = statementMonth.options[statementMonth.selectedIndex].text;
+                const year = document.getElementById('statementYear').value;
+                const clientCode = selectedClient.code || 'STMT';
+
+                pdf.save(`Statement_${clientCode}_${monthName}_${year}.pdf`);
+
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('An error occurred while generating the PDF. Please try the Print to PDF option.');
+            } finally {
+                loader.style.display = 'none';
+                document.body.removeChild(iframe);
+            }
+        }
+
+        function generatePDFPrint() {
+            if (!window.currentStatementHTML) {
+                alert('Please generate a statement first.');
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(window.currentStatementHTML);
+            printWindow.document.close();
+            printWindow.onload = function () {
+                const style = printWindow.document.createElement('style');
+                style.textContent = `
+                    @page { size: A4; margin: 0 !important; }
+                    html, body { margin: 0 !important; padding: 0 !important; }
+                    .container { max-width: 100% !important; padding: 0 !important; }
+                    .statement-container { margin: 0 !important; width: 100% !important; border-radius: 0 !important; }
+                `;
+                (printWindow.document.head || printWindow.document.body).appendChild(style);
+                printWindow.print();
+            };
+        }
+    </script>
+</body>
+
+</html>
